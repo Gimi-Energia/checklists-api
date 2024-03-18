@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "django_filters",
     "apps.users.apps.UsersConfig",
+    "apps.checklists.apps.ChecklistsConfig",
 ]
 
 MIDDLEWARE = [

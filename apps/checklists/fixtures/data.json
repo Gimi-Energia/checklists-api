@@ -1,0 +1,58 @@
+[
+  {
+    "model": "checklists.product",
+    "pk": "A",
+    "fields": {
+      "name": "Dados Cadastrais"
+    }
+  },
+  {
+    "model": "checklists.product",
+    "pk": "B",
+    "fields": {
+      "name": "Cabine Primária Convencional"
+    }
+  },
+  {
+    "model": "checklists.product",
+    "pk": "C",
+    "fields": {
+      "name": "Cabine Primária Multimedição"
+    }
+  },
+  {
+    "model": "checklists.product",
+    "pk": "D",
+    "fields": {
+      "name": "Cabine de Barramentos"
+    }
+  },
+  {
+    "model": "checklists.product",
+    "pk": "E",
+    "fields": {
+      "name": "Cabine Primária Simplificada - Medição MT (Enel)"
+    }
+  },
+  {
+    "model": "checklists.product",
+    "pk": "F",
+    "fields": {
+      "name": "Subestação PMT"
+    }
+  },
+  {
+    "model": "checklists.product",
+    "pk": "G",
+    "fields": {
+      "name": "Emissão de ART"
+    }
+  },
+  {
+    "model": "checklists.product",
+    "pk": "H",
+    "fields": {
+      "name": "Skid Solar"
+    }
+  }
+]
