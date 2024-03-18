@@ -6,11 +6,11 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from apps.users.validators.superuser import valid_email, valid_name, valid_phone
+from apps.users.validators.superuser import valid_email, valid_name
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, name, email, company, phone=None, password=None):
+    def create_user(self, name, email, company, password=None):
         if not email:
             raise ValueError("Users must have an email address")
 
@@ -26,7 +26,7 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(
-        self, name, email, company, phone=None, password=None
+        self, name, email, company, password=None
     ):
         user = self.create_user(
             name=name,
@@ -50,9 +50,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = None
     name = models.CharField(_("Complete Name"), max_length=100, validators=[valid_name])
     email = models.EmailField(_("E-mail"), unique=True, max_length=100, validators=[valid_email])
-    phone = models.CharField(
-        _("Phone"), max_length=11, validators=[valid_phone], blank=True, null=True
-    )
     company = models.CharField(_("Company"), choices=COMPANIES, default="Gimi", max_length=5)
     is_active = models.BooleanField(_("Active Account"), default=True)
     is_admin = models.BooleanField(_("Administrator"), default=False)

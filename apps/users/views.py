@@ -15,12 +15,12 @@ class UsersList(generics.ListCreateAPIView):
     ordering_fields = ["name", "email"]
     filterset_fields = ["id", "email", "company", "is_admin"]
 
-    # def get_permissions(self):
-    #     if self.request.method == "GET":
-    #         return [IsAdminGet()]
-    #     elif self.request.method == "POST":
-    #         return [AllowAnyPost()]
-    #     return super().get_permissions()
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [IsAdminGet()]
+        elif self.request.method == "POST":
+            return [AllowAnyPost()]
+        return super().get_permissions()
 
 
 class UsersDetail(generics.RetrieveUpdateDestroyAPIView):

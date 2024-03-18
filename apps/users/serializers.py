@@ -20,7 +20,6 @@ class UserSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "email",
-            "phone",
             "company",
             "password",
             "password_confirm",
@@ -32,10 +31,6 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"name": "Don't include numbers in this field!"})
         if not valid_email(data["email"]):
             raise serializers.ValidationError({"email": "Invalid email!"})
-        if not valid_phone(data["phone"]):
-            raise serializers.ValidationError(
-                {"phone": "O número de celular deve seguir o padrão: (XX) 9XXXX-XXXX!"}
-            )
         if not equal_passwords(data["password"], data["password_confirm"]):
             raise serializers.ValidationError({"password_confirm": "Password don't match"})
         if not valid_password(data["password"]):
