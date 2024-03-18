@@ -1,6 +1,6 @@
-# Nome do projeto
+# Checklists API
 
-Pequeno resumo do projeto.
+A Requisitions API foi desenhada para facilitar a gestão de envios de checklists para os clientes.
 
 ## ✔️ Tecnologias usadas
 - Python
@@ -13,15 +13,16 @@ Pequeno resumo do projeto.
 
 ## 📁 Acesso ao deploy
 
-[![Deploy with Vercel](https://vercel.com/button)](https://www.google.com.br/?hl=pt-BR)
+[![Deploy with Vercel](https://vercel.com/button)](https://checklists-api.vercel.app/)
 
 ## 🔨 Funcionalidades
 
-- **Teste**: Crie, atualize, leia e delete.
+- **Autenticação**: Sistema de tokens para acesso seguro à API.
+- **Gestão de Usuários**: Administração de usuários que podem acessar a API.
 
 ## 📌 Uso
 
-Nome do projeto segue os princípios REST para comunicação. Os seguintes endpoints estão disponíveis:
+A Checklists API segue os princípios REST para comunicação. Os seguintes endpoints estão disponíveis:
 
 ### /users/
 - Gerenciar usuários e realizar operações CRUD.
