@@ -25,9 +25,7 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(
-        self, name, email, company, password=None
-    ):
+    def create_superuser(self, name, email, company, password=None):
         user = self.create_user(
             name=name,
             email=self.normalize_email(email),
@@ -42,7 +40,14 @@ class UserManager(BaseUserManager):
         return user
 
 
-COMPANIES = [("Gimi", "Gimi"), ("GBL", "GBL"), ("GPB", "GPB"), ("Group", "Group")]
+COMPANIES = [
+    ("Gimi", "Gimi"),
+    ("GBL", "GBL"),
+    ("GPB", "GPB"),
+    ("GS", "GS"),
+    ("GIR", "GIR"),
+    ("Group", "Group"),
+]
 
 
 class User(AbstractBaseUser, PermissionsMixin):
