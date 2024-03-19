@@ -12,8 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from datetime import timedelta
-import dj_database_url
 from pathlib import Path
+
+import dj_database_url
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -180,5 +181,5 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = str(os.getenv("EMAIL_HOST_USER"))
-EMAIL_HOST_PASSWORD = str(os.getenv("EMAIL_HOST_PASSWORD"))
+EMAIL_HOST_USER = "dev2@engenhadev.com"
+EMAIL_HOST_PASSWORD = "fexb ztls xtfq jbjb"

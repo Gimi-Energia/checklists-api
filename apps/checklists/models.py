@@ -24,7 +24,7 @@ class Product(models.Model):
     name = models.CharField(_("Product Name"), max_length=50)
 
     def __str__(self):
-        return self.id
+        return f"Checklist {self.id} - {self.name}"
 
 
 class Checklist(models.Model):
