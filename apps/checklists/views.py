@@ -47,8 +47,23 @@ class ChecklistViewSet(viewsets.ModelViewSet):
                     status=http_status.HTTP_400_BAD_REQUEST,
                 )
 
-            status = product_data.get("status", "")
-            ChecklistProduct.objects.create(checklist=checklist, product=product, status=status)
+            quantity = product_data.get("quantity", "")
+            items_numbers = product_data.get("items_numbers", [])
+            items_answered = product_data.get("items_answered", [])
+
+            if quantity != len(items_numbers):
+                return Response(
+                    {"error": "Quantity and the length of items_numbers must be equal."},
+                    status=http_status.HTTP_400_BAD_REQUEST,
+                )
+
+            ChecklistProduct.objects.create(
+                checklist=checklist,
+                product=product,
+                quantity=quantity,
+                items_numbers=items_numbers,
+                items_answered=items_answered,
+            )
 
         return Response(
             {"success": "Products successfully added."}, status=http_status.HTTP_201_CREATED
@@ -77,20 +92,43 @@ class ChecklistViewSet(viewsets.ModelViewSet):
                     status=http_status.HTTP_404_NOT_FOUND,
                 )
 
-            new_status = product_data.get("status")
             try:
                 checklist_product = ChecklistProduct.objects.get(
                     checklist=checklist, product=product
                 )
-                if checklist_product.status != new_status:
-                    checklist_product.status = new_status
-                    checklist_product.save()
-                    updates_made = True
+                new_quantity = product_data.get("quantity", checklist_product.quantity)
+                new_items_numbers = product_data.get(
+                    "items_numbers", checklist_product.items_numbers
+                )
+                new_items_answered = product_data.get(
+                    "items_answered", checklist_product.items_answered
+                )
+
             except ChecklistProduct.DoesNotExist:
                 return Response(
                     {"error": f"Product with ID '{product_id}' is not on the checklist."},
                     status=http_status.HTTP_404_NOT_FOUND,
                 )
+
+            if new_quantity is not None and (
+                len(new_items_numbers) != new_quantity or len(new_items_answered) != new_quantity
+            ):
+                return Response(
+                    {"error": "Quantity and the length of items must be equal."},
+                    status=http_status.HTTP_400_BAD_REQUEST,
+                )
+
+            if new_quantity is not None:
+                checklist_product.quantity = new_quantity
+                updates_made = True
+            if new_items_numbers is not None:
+                checklist_product.items_numbers = new_items_numbers
+                updates_made = True
+            if new_items_answered is not None:
+                checklist_product.items_answered = new_items_answered
+                updates_made = True
+            if updates_made:
+                checklist_product.save()
 
         if updates_made:
             return Response(

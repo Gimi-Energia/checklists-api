@@ -12,12 +12,6 @@ COMPANIES = [
     ("Group", "Group"),
 ]
 
-STATUS = [
-    ("Opened", "Opened"),
-    ("Canceled", "Canceled"),
-    ("Answered", "Answered"),
-]
-
 
 class Product(models.Model):
     id = models.CharField(primary_key=True, max_length=1, unique=True)
@@ -42,7 +36,9 @@ class Checklist(models.Model):
 class ChecklistProduct(models.Model):
     checklist = models.ForeignKey(Checklist, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    status = models.CharField(max_length=8, choices=STATUS, default="Opened")
+    quantity = models.PositiveIntegerField(_("Quantity"))
+    items_numbers = models.JSONField(_("Item Numbers"), default=list)
+    items_answered = models.JSONField(_("Item Answered"), default=list)
 
     def __str__(self):
         return f"{self.checklist} - {self.produto}"
