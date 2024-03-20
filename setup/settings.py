@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "django_filters",
     "apps.users.apps.UsersConfig",
     "apps.checklists.apps.ChecklistsConfig",
+    "apps.registrations.apps.RegistrationsConfig",
 ]
 
 MIDDLEWARE = [
