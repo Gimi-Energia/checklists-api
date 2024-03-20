@@ -1,23 +1,30 @@
 [
   {
     "model": "checklists.product",
-    "pk": "A",
+    "pk": "Init",
     "fields": {
       "name": "Dados Cadastrais"
     }
   },
   {
     "model": "checklists.product",
-    "pk": "B",
+    "pk": "A",
     "fields": {
       "name": "Cabine Primária Convencional"
     }
   },
   {
     "model": "checklists.product",
+    "pk": "B",
+    "fields": {
+      "name": "Cabine Primária Simplificada - Medição BT"
+    }
+  },
+  {
+    "model": "checklists.product",
     "pk": "C",
     "fields": {
-      "name": "Cabine Primária Multimedição"
+      "name": "Cabine Primária Convencional Multimedição"
     }
   },
   {
@@ -38,7 +45,7 @@
     "model": "checklists.product",
     "pk": "F",
     "fields": {
-      "name": "Subestação PMT"
+      "name": "Subestações PMT"
     }
   },
   {
@@ -52,7 +59,7 @@
     "model": "checklists.product",
     "pk": "H",
     "fields": {
-      "name": "Skid Solar"
+      "name": "Skid Solar - Transformador"
     }
   }
 ]

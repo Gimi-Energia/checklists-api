@@ -14,7 +14,7 @@ COMPANIES = [
 
 
 class Product(models.Model):
-    id = models.CharField(primary_key=True, max_length=1, unique=True)
+    id = models.CharField(primary_key=True, max_length=4, unique=True)
     name = models.CharField(_("Product Name"), max_length=50)
 
     def __str__(self):
