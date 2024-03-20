@@ -95,7 +95,7 @@ DATABASES = {
     }
 }
 
-# DATABASES["default"] = dj_database_url.parse(str(os.getenv("POSTGRES_URL")))
+DATABASES["default"] = dj_database_url.parse(str(os.getenv("POSTGRES_URL")))
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -156,7 +156,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:5173",
-    "https://checklist-web.vercel.app",
+    "https://checklist-web-psi.vercel.app",
 ]
 
 SIMPLE_JWT = {
