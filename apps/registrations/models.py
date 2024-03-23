@@ -19,7 +19,7 @@ class Registration(models.Model):
     )
 
     process_number = models.CharField(_("Process Number"), max_length=10)
-    billing_cnpj = models.CharField(_("Billing CNPJ"), max_length=14)
+    billing_cnpj = models.CharField(_("Billing CNPJ"), max_length=18)
     is_taxpayer = models.BooleanField(_("Is Taxpayer"), default=True)
     deadline = models.DateField(_("Deadline"), blank=True, null=True)
     minimum_value = models.FloatField(_("Minimum Value"))
