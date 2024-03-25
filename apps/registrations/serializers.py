@@ -1,7 +1,9 @@
 from rest_framework import serializers
 
+from utils.validators.custom_validators import valid_cep, valid_cnpj
+
 from .models import Registration
-from utils.validators.custom_validators import valid_cnpj, valid_cep
+from .services.email_service import send_registration_email
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -16,3 +18,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"zip_code": "Invalid CEP."})
 
         return data
+
+    def create(self, validated_data):
+        registration = super().create(validated_data)
+
+        send_registration_email(registration)
+
+        return registration
