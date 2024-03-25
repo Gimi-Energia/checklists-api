@@ -9,14 +9,36 @@ def send_new_checklist_email(checklist):
     <html>
     <head>
         <style>
-            /* Seu CSS aqui */
+            body {{
+                font-family: Arial, sans-serif;
+                font-size: 16px;
+            }}
+            .btn {{
+                display: inline-block;
+                background-color: #f0f0f0;
+                padding: 8px 16px;
+                text-align: center;
+                text-decoration: none;
+                font-size: 16px;
+                border-radius: 10px;
+                margin-top: 10px;
+                border: 2px solid black;
+                font-weight: bold;
+            }}
+            .code {{
+                background-color: #f0f0f0;
+                padding: 2px 4px;
+                border-radius: 4px;
+                font-family: monospace;
+                font-weight: bold;
+            }}
         </style>
     </head>
     <body>
         <p>Olá <strong>{checklist.client_name}</strong>!</p>
         <p>Um novo checklist do Grupo Gimi foi enviado. 🎉</p>
         <p>Insira o ID <span class="code">{checklist.id}</span> em nosso webapp para prosseguir.</p>
-        <a href="https://www.google.com/" target="_blank" class="btn">Acessar Webapp</a>
+        <a href="https://checklist-web-psi.vercel.app/checklist" target="_blank" class="btn">Acessar Webapp</a>
     </body>
     </html>
     """
