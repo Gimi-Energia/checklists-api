@@ -22,7 +22,7 @@ class Registration(models.Model):
     billing_cnpj = models.CharField(_("Billing CNPJ"), max_length=18)
     is_taxpayer = models.BooleanField(_("Is Taxpayer"), default=True)
     deadline = models.DateField(_("Deadline"), blank=True, null=True)
-    minimum_value = models.FloatField(_("Minimum Value"))
+    minimum_value = models.FloatField(_("Minimum Value"), blank=True, null=True)
     material_destination = models.CharField(
         _("Material Destination"), max_length=50, choices=MATERIAL_CHOICES
     )
