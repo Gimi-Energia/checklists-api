@@ -3,7 +3,7 @@ from uuid import uuid4
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from apps.checklists.models import Checklist
+from apps.checklists.models import COMPANIES, Checklist
 
 MATERIAL_CHOICES = (("UC", "Use and Consumption"), ("R", "Resale"), ("I", "Industrialization"))
 
@@ -15,10 +15,11 @@ class Registration(models.Model):
         verbose_name=_("Parent Checklist"),
         on_delete=models.CASCADE,
         blank=True,
-        null=True
+        null=True,
     )
 
     process_number = models.CharField(_("Process Number"), max_length=10)
+    company = models.CharField(_("Company"), choices=COMPANIES, default="Gimi", max_length=4)
     billing_cnpj = models.CharField(_("Billing CNPJ"), max_length=18)
     is_taxpayer = models.BooleanField(_("Is Taxpayer"), default=True)
     deadline = models.DateField(_("Deadline"), blank=True, null=True)
@@ -64,8 +65,6 @@ class Registration(models.Model):
     fr_phone_2 = models.CharField(_("FR Phone"), max_length=13, blank=True, null=True)
     fr_email_2 = models.EmailField(_("FR Email"), max_length=254, blank=True, null=True)
 
-    commercial_satisfaction = models.PositiveIntegerField(_("Commercial Satisfaction"))
-    budget_satisfaction = models.PositiveIntegerField(_("Budget Satisfaction"))
     suggestions = models.TextField(_("Suggestions"), blank=True, null=True)
 
     def __str__(self):

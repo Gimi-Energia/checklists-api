@@ -9,7 +9,6 @@ COMPANIES = [
     ("GPB", "GPB"),
     ("GS", "GS"),
     ("GIR", "GIR"),
-    ("Group", "Group"),
 ]
 
 
@@ -23,7 +22,7 @@ class Product(models.Model):
 
 class Checklist(models.Model):
     id = models.UUIDField(primary_key=True, unique=True, default=uuid4, editable=False)
-    company = models.CharField(_("Company"), choices=COMPANIES, default="Gimi", max_length=5)
+    company = models.CharField(_("Company"), choices=COMPANIES, default="Gimi", max_length=4)
     budget_number = models.CharField(_("Budget Number"), max_length=10)
     client_name = models.CharField(_("Client Name"), max_length=120)
     client_email = models.EmailField(_("Cliente Email"), max_length=254)
