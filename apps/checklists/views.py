@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 
 from .mixins import ProductActionsMixin
 from .models import Checklist, Product
@@ -8,6 +8,8 @@ from .serializers import ChecklistSerializer, ProductSerializer
 class ChecklistViewSet(ProductActionsMixin, viewsets.ModelViewSet):
     queryset = Checklist.objects.all()
     serializer_class = ChecklistSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["company", "budget_number", "client_name", "client_email"]
 
 
 class ProductViewSet(viewsets.ModelViewSet):
