@@ -19,6 +19,10 @@ class ChecklistProductSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         if "quantity" in data and "items_numbers" in data:
+            if not isinstance(data["items_numbers"], list):
+                raise serializers.ValidationError(
+                    "The field 'items_numbers' must be an array of strings."
+                )
             if len(data["items_numbers"]) != data["quantity"]:
                 raise serializers.ValidationError(
                     "The length of 'items_numbers' must be equal to 'quantity'."
