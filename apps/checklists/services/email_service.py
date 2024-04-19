@@ -3,7 +3,7 @@ from django.core.mail import send_mail
 
 
 def send_new_checklist_email(checklist):
-    subject = "Grupo Gimi - Novo Checklist Criado"
+    subject = "Grupo Gimi - Novo Checklist para preenchimento"
     message = f"""
     <!DOCTYPE html>
     <html>
