@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 COMPANIES = [
@@ -27,6 +28,7 @@ class Checklist(models.Model):
     client_name = models.CharField(_("Client Name"), max_length=120)
     client_email = models.EmailField(_("Cliente Email"), max_length=254)
     products = models.ManyToManyField(Product, through="ChecklistProduct")
+    created_at = models.DateTimeField(_("Created At"), default=timezone.now)
 
     def __str__(self):
         return self.budget_number
