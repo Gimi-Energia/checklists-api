@@ -65,7 +65,5 @@ class Registration(models.Model):
     fr_phone_2 = models.CharField(_("FR Phone"), max_length=13, blank=True, null=True)
     fr_email_2 = models.EmailField(_("FR Email"), max_length=254, blank=True, null=True)
 
-    suggestions = models.TextField(_("Suggestions"), blank=True, null=True)
-
     def __str__(self):
         return self.process_number
