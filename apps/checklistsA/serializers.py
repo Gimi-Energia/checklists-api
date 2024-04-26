@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from .models import ChecklistA, Transformer, CurrentTransformer
+
+from .models import ChecklistA, CurrentTransformer, Transformer
+from .services.email_service import send_registration_email
 
 
 class TransformerSerializer(serializers.ModelSerializer):
@@ -32,5 +34,7 @@ class ChecklistASerializer(serializers.ModelSerializer):
 
         for ct_data in current_transformers_data:
             CurrentTransformer.objects.create(checklist=checklist, **ct_data)
+
+        send_registration_email(checklist)
 
         return checklist
