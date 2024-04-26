@@ -26,7 +26,7 @@ def draw_footer(c, page_number, width):
 def add_page(c, width, height, page_number, margin, company):
     c.showPage()
     page_number += 1
-    draw_header(c, f"apps/registrations/images/logo_{company}.png", width, height, margin)
+    draw_header(c, f"setup/images/logo_{company}.png", width, height, margin)
     draw_footer(c, page_number, width)
     return page_number, height - margin - 1.3 * inch
 
@@ -43,7 +43,7 @@ def generate_pdf(registration):
     page_number = 1
 
     company = registration.company.lower()
-    draw_header(c, f"apps/registrations/images/logo_{company}.png", width, height, margin)
+    draw_header(c, f"setup/images/logo_{company}.png", width, height, margin)
     draw_footer(c, page_number, width)
 
     current_height = height - margin - inch

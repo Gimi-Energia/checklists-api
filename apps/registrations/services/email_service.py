@@ -13,7 +13,7 @@ def send_registration_email(registration):
 
     email = EmailMessage(
         subject=subject,
-        body=f"Checklist de dados cadastrais do CF {registration.process_number} foi respondido.",
+        body=f"Checklist de dados cadastrais ({registration.process_number}) foi respondido.",
         from_email=email_from,
         to=recipient_list,
     )
@@ -21,7 +21,7 @@ def send_registration_email(registration):
     pdf_file = generate_pdf(registration)
     with open(pdf_file, "rb") as pdf_file:
         email.attach(
-            f"Checklist_Dados_Cadastrais_CF_{registration.process_number}.pdf",
+            f"Checklist_Dados_Cadastrais_{registration.process_number}.pdf",
             pdf_file.read(),
             "application/pdf",
         )
