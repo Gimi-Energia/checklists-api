@@ -31,7 +31,7 @@ class Checklist(models.Model):
     created_at = models.DateTimeField(_("Created At"), default=timezone.now)
 
     def __str__(self):
-        return self.budget_number
+        return f"{self.company} - {self.budget_number}"
 
 
 class ChecklistProduct(models.Model):
