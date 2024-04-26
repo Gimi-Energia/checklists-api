@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "apps.users.apps.UsersConfig",
     "apps.checklists.apps.ChecklistsConfig",
     "apps.registrations.apps.RegistrationsConfig",
+    "apps.checklistsA.apps.ChecklistsAConfig",
 ]
 
 MIDDLEWARE = [
@@ -95,7 +96,7 @@ DATABASES = {
     }
 }
 
-DATABASES["default"] = dj_database_url.parse(str(os.getenv("POSTGRES_URL")))
+# DATABASES["default"] = dj_database_url.parse(str(os.getenv("POSTGRES_URL")))
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
