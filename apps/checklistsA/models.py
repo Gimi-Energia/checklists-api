@@ -25,6 +25,8 @@ PANEL_USAGE_CHOICES = [("Sheltered", "Sheltered"), ("Unsheltered", ("Unsheltered
 
 CABLE_SIDE_CHOICES = [("Left", "Left"), ("Right", "Right")]
 
+TYPE_CHOICES = [("Air", "Air"), ("Oil", "Oil")]
+
 
 class ChecklistA(models.Model):
     id = models.UUIDField(primary_key=True, unique=True, default=uuid4, editable=False)
@@ -92,6 +94,9 @@ class ChecklistA(models.Model):
 class Transformer(models.Model):
     checklist = models.ForeignKey(ChecklistA, on_delete=models.CASCADE, related_name="transformers")
     power = models.PositiveIntegerField(_("Transformer Power"))
+    impedance = models.FloatField(_("Impedance"), blank=True, null=True)
+    demand = models.FloatField(_("Demand"), blank=True, null=True)
+    type = models.CharField(_("Type"), choices=TYPE_CHOICES, max_length=3, blank=True, null=True)
 
 
 class CurrentTransformer(models.Model):

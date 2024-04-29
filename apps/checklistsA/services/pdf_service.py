@@ -35,7 +35,6 @@ def generate_pdf(instance):
     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
         filename = tmpfile.name
 
-    # Assuming these models are correctly imported and used here
     checklist = ChecklistA.objects.get(id=instance.id)
     transformers = checklist.transformers.all()
     current_transformers = checklist.current_transformers.all()
@@ -54,7 +53,7 @@ def generate_pdf(instance):
     current_height = height - margin - inch
 
     c.setFont("Helvetica", 14)
-    title = "Checklist de Instalação"
+    title = "Checklist Cabine Primária Convencional"
     text_width = c.stringWidth(title, "Helvetica", 14)
     c.drawString((width - text_width) / 2, current_height, title)
     current_height -= line_height * 2
@@ -64,14 +63,13 @@ def generate_pdf(instance):
 
     c.setFont("Helvetica", 10)
 
-    # Main checklist details
     main_details = [
         f"Número do processo: {escape(checklist.process_number)}",
         f"Concessionária: {escape(checklist.concessionaire)}",
         f"Outra Concessionária: {escape(checklist.other_concessionaire)}",
         f"Tensão Primária: {checklist.primary_voltage} kV",
         f"Uso do Painel: {checklist.panel_usage}",
-        f"Lado do Cabo: {checklist.cable_side}",
+        f"Lado da Entrada dos Cabos: {checklist.cable_side}",
         f"Demanda Contratada: {checklist.contracted_demand}",
         f"Quantidade de Transformadores: {checklist.transformers_quantity}",
         f"Nome do Contratante: {escape(checklist.contractor_name)}",
@@ -88,7 +86,18 @@ def generate_pdf(instance):
         f"Documento do Proprietário: {escape(checklist.owner_document)}",
         f"Contato do Proprietário: {escape(checklist.owner_contact)}",
         f"Telefone do Proprietário: {escape(checklist.owner_phone)}",
-        f"Estudo GIMI: {'Sim' if checklist.gimi_study else 'Não'}",
+        f"Rua da Obra: {escape(checklist.contractor_street)}",
+        f"Número da Obra: {escape(checklist.contractor_number)}",
+        f"Bairro da Obra: {escape(checklist.contractor_neighborhood)}",
+        f"Cidade da Obra: {escape(checklist.contractor_city)}",
+        f"Estado da Obra: {escape(checklist.contractor_state)}",
+        f"CEP da Obra: {escape(checklist.contractor_zip_code)}",
+        f"Fornecimento do estudo: {'Gimi' if checklist.gimi_study else 'Cliente'}",
+        f"Trifásico (Icc3f): {escape(checklist.icc3f)}",
+        f"Bifásico (Icc2f): {escape(checklist.icc2f)}",
+        f"Fase e Terra Máximo (IccfTmáx): {escape(checklist.iccftmax)}",
+        f"Fase e Terra Mínimo (IccfTmín): {escape(checklist.iccftmin)}",
+        f"Possui o estudo: {'Sim' if checklist.gimi_study else 'Não'}",
         f"Quantidade de Disjuntores: {checklist.breakers_quantity}",
     ]
 
@@ -98,26 +107,25 @@ def generate_pdf(instance):
         c.drawString(margin, current_height, detail)
         current_height -= line_height
 
-    # Section for Transformers
-    c.setFont("Helvetica", 12)
+    c.setFont("Helvetica", 14)
     transformer_title = "Transformadores"
     c.drawString(margin, current_height, transformer_title)
     current_height -= line_height
 
     for transformer in transformers:
-        transformer_details = f"Potência do Transformador: {transformer.power}"
+        transformer_details = f"Potência: {transformer.power}, Impedância: {transformer.impedance}, Demanda: {transformer.demand}, Tipo: {transformer.type}"
         if current_height <= margin + (2 * line_height):
             page_number, current_height = add_page(c, width, height, page_number, margin, company)
         c.drawString(margin, current_height, transformer_details)
         current_height -= line_height
 
-    # Section for Current Transformers
-    ct_title = "Transformadores de Corrente"
+    c.setFont("Helvetica", 14)
+    ct_title = "Definição dos TCs de Proteção"
     c.drawString(margin, current_height, ct_title)
     current_height -= line_height
 
     for ct in current_transformers:
-        ct_details = f"Razão do TC: {ct.ratio}, Precisão: {ct.accuracy}"
+        ct_details = f"Relação: {ct.ratio}, Exatidão: {ct.accuracy}"
         if current_height <= margin + (2 * line_height):
             page_number, current_height = add_page(c, width, height, page_number, margin, company)
         c.drawString(margin, current_height, ct_details)
