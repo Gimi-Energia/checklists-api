@@ -10,6 +10,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from apps.checklists.views import ChecklistViewSet, ProductViewSet
 from apps.checklistsA.views import ChecklistAViewSet
 from apps.checklistsB.views import ChecklistBViewSet
+from apps.checklistsC.views import ChecklistCViewSet
 from apps.registrations.views import RegistrationViewSet
 from utils.token import CustomTokenObtainPairView
 
@@ -32,6 +33,7 @@ router.register(r"api/products", ProductViewSet, basename="product")
 router.register(r"api/registrations", RegistrationViewSet, basename="registration")
 router.register(r"api/checklist/a", ChecklistAViewSet, basename="checklists-a")
 router.register(r"api/checklist/b", ChecklistBViewSet, basename="checklists-b")
+router.register(r"api/checklist/c", ChecklistCViewSet, basename="checklists-c")
 
 urlpatterns = [
     path("", include(router.urls)),
