@@ -12,6 +12,7 @@ from apps.checklistsA.views import ChecklistAViewSet
 from apps.checklistsB.views import ChecklistBViewSet
 from apps.checklistsC.views import ChecklistCViewSet
 from apps.checklistsD.views import ChecklistDViewSet
+from apps.checklistsE.views import ChecklistEViewSet
 from apps.registrations.views import RegistrationViewSet
 from utils.token import CustomTokenObtainPairView
 
@@ -36,6 +37,7 @@ router.register(r"api/checklist/a", ChecklistAViewSet, basename="checklists-a")
 router.register(r"api/checklist/b", ChecklistBViewSet, basename="checklists-b")
 router.register(r"api/checklist/c", ChecklistCViewSet, basename="checklists-c")
 router.register(r"api/checklist/d", ChecklistDViewSet, basename="checklists-d")
+router.register(r"api/checklist/e", ChecklistEViewSet, basename="checklists-e")
 
 urlpatterns = [
     path("", include(router.urls)),

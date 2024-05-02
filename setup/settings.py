@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "apps.checklistsB.apps.ChecklistsBConfig",
     "apps.checklistsC.apps.ChecklistsCConfig",
     "apps.checklistsD.apps.ChecklistsDConfig",
+    "apps.checklistsE.apps.ChecklistsEConfig",
 ]
 
 MIDDLEWARE = [
@@ -150,7 +151,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
-    "EXCEPTION_HANDLER": "setup.exceptions.exception_handler.custom_exception_handler",
+    # "EXCEPTION_HANDLER": "setup.exceptions.exception_handler.custom_exception_handler",
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 500,
 }
