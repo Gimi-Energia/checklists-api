@@ -100,9 +100,6 @@ class ChecklistC(models.Model):
 class Transformer(models.Model):
     checklist = models.ForeignKey(ChecklistC, on_delete=models.CASCADE, related_name="transformers")
     power = models.PositiveIntegerField(_("Transformer Power"))
-    impedance = models.FloatField(_("Impedance"), blank=True, null=True)
-    demand = models.FloatField(_("Demand"), blank=True, null=True)
-    type = models.CharField(_("Type"), choices=TYPE_CHOICES, max_length=3, blank=True, null=True)
 
 
 class CurrentTransformer(models.Model):

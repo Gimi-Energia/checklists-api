@@ -122,7 +122,7 @@ def generate_pdf(instance):
     current_height -= line_height
 
     for transformer in transformers:
-        transformer_details = f"Potência: {transformer.power}, Impedância: {transformer.impedance}, Demanda: {transformer.demand}, Tipo: {transformer.type}"
+        transformer_details = f"Potência: {transformer.power}"
         if current_height <= margin + (2 * line_height):
             page_number, current_height = add_page(c, width, height, page_number, margin, company)
         c.drawString(margin, current_height, transformer_details)

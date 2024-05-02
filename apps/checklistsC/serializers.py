@@ -7,7 +7,7 @@ from .services.email_service import send_registration_email
 class TransformerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transformer
-        fields = ["power", "impedance", "demand", "type"]
+        fields = ["power"]
 
 
 class CurrentTransformerSerializer(serializers.ModelSerializer):
