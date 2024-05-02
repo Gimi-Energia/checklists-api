@@ -8,12 +8,14 @@ class TransformerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transformer
         fields = ["power"]
+        ref_name = "TransformerChecklistC"
 
 
 class CurrentTransformerSerializer(serializers.ModelSerializer):
     class Meta:
         model = CurrentTransformer
         fields = ["ratio", "accuracy"]
+        ref_name = "CurrentTransformerChecklistC"
 
 
 class ChecklistCSerializer(serializers.ModelSerializer):

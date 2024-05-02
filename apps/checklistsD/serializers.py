@@ -8,6 +8,7 @@ class TransformerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transformer
         fields = ["power"]
+        ref_name = "TransformerChecklistD"
 
 
 class ChecklistDSerializer(serializers.ModelSerializer):
