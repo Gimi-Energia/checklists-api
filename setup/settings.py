@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "apps.checklistsA.apps.ChecklistsAConfig",
     "apps.checklistsB.apps.ChecklistsBConfig",
     "apps.checklistsC.apps.ChecklistsCConfig",
+    "apps.checklistsD.apps.ChecklistsDConfig",
 ]
 
 MIDDLEWARE = [
