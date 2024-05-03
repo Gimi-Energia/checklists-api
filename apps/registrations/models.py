@@ -27,7 +27,7 @@ class Registration(models.Model):
     material_destination = models.CharField(
         _("Material Destination"), max_length=50, choices=MATERIAL_CHOICES
     )
-    nf_email = models.EmailField(_("NF Email"), max_length=254)
+    nf_email = models.TextField(_("NF Emails"))
     additional_data = models.TextField(_("Additional Data"), blank=True, null=True)
 
     street = models.CharField(_("Street"), max_length=255)
