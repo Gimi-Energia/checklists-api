@@ -47,7 +47,7 @@ class ChecklistE(models.Model):
         _("Panel Usage"), max_length=20, choices=PANEL_USAGE_CHOICES, default="Sheltered"
     )
     cable_side = models.CharField(
-        _("Panel Usage"), max_length=20, choices=CABLE_SIDE_CHOICES, default="Left"
+        _("Cable Side"), max_length=20, choices=CABLE_SIDE_CHOICES, default="Left"
     )
     transformer_power = models.PositiveIntegerField(_("Transformer Power"))
     transformer_type = models.CharField(
