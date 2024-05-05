@@ -18,12 +18,12 @@ def send_registration_email(instance):
         to=recipient_list,
     )
 
-    # pdf_file = generate_pdf(instance)
-    # with open(pdf_file, "rb") as pdf_file:
-    #     email.attach(
-    #         f"Checklist_Subestacoes_PMT_{instance.process_number}.pdf",
-    #         pdf_file.read(),
-    #         "application/pdf",
-    #     )
+    pdf_file = generate_pdf(instance)
+    with open(pdf_file, "rb") as pdf_file:
+        email.attach(
+            f"Checklist_Subestacoes_PMT_{instance.process_number}.pdf",
+            pdf_file.read(),
+            "application/pdf",
+        )
 
     email.send()
