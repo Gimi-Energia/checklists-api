@@ -1,6 +1,6 @@
 # Checklists API
 
-A Requisitions API foi desenhada para facilitar a gestão de envios de checklists para os clientes.
+A Checklists API foi desenhada para facilitar a gestão de envios de checklists para os clientes.
 
 ## ✔️ Tecnologias usadas
 - Python
@@ -10,6 +10,7 @@ A Requisitions API foi desenhada para facilitar a gestão de envios de checklist
 - Simple JWT
 - Swagger/Redoc
 - Vercel
+- ReportLab Toolkit
 
 ## 📁 Acesso ao deploy
 
@@ -19,10 +20,55 @@ A Requisitions API foi desenhada para facilitar a gestão de envios de checklist
 
 - **Autenticação**: Sistema de tokens para acesso seguro à API.
 - **Gestão de Usuários**: Administração de usuários que podem acessar a API.
+- **Gestão de Checklists**: Gerencie as listas e os checklists relacionados a estas.
+- **Autenticação**: Sistema de tokens para acesso seguro à API.
+- **Notificações**: Notificações por e-mail com arquivos PDF.
 
 ## 📌 Uso
 
 A Checklists API segue os princípios REST para comunicação. Os seguintes endpoints estão disponíveis:
+
+### /registrations/
+- Gerenciar checklist Dados Cadastrais e realizar operações CRUD.
+
+### /checklist/a/
+- Gerenciar checklist A e realizar operações CRUD.
+
+### /checklist/b/
+- Gerenciar checklist B e realizar operações CRUD.
+
+### /checklist/c/
+- Gerenciar checklist C e realizar operações CRUD.
+
+### /checklist/d/
+- Gerenciar checklist D e realizar operações CRUD.
+
+### /checklist/e/
+- Gerenciar checklist E e realizar operações CRUD.
+
+### /checklist/f/
+- Gerenciar checklist F e realizar operações CRUD.
+
+### /checklist/g/
+- Gerenciar checklist G e realizar operações CRUD.
+
+### /checklists/
+- Gerenciar checklists gerais e realizar operações CRUD.
+
+### /checklists/add_products/
+- Adicionar produtos a um checklist específico.
+
+### /checklists/register_answer/
+- Registrar uma resposta para um checklist específico.
+
+### /checklists/remove_products/
+- Remover produtos de um checklist específico.
+
+### /checklists/update_products/
+- Atualizar produtos em um checklist específico.
+
+### /products/
+- Gerenciar produtos e realizar operações CRUD.
 
 ### /users/
 - Gerenciar usuários e realizar operações CRUD.
