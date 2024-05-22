@@ -27,7 +27,8 @@ class Checklist(models.Model):
     budget_number = models.CharField(_("Budget Number"), max_length=10)
     client_name = models.CharField(_("Client Name"), max_length=120)
     client_email = models.EmailField(_("Cliente Email"), max_length=254)
-    products = models.ManyToManyField(Product, through="ChecklistProduct")
+    products = models.ManyToManyField(Product, through="ChecklistProduct", null=True, blank=True)
+    answered_registration = models.BooleanField(_("Answered Registration"), default=False)
     created_at = models.DateTimeField(_("Created At"), default=timezone.now)
 
     def __str__(self):
