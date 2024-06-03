@@ -5,7 +5,11 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.checklists.models import COMPANIES, Checklist
 
-MATERIAL_CHOICES = (("UC", "Use and Consumption"), ("R", "Resale"), ("I", "Industrialization"))
+MATERIAL_CHOICES = (
+    ("Uso e consumo", "Uso e consumo"),
+    ("Revenda", "Revenda"),
+    ("Industrialização", "Industrialização"),
+)
 
 
 class Registration(models.Model):
@@ -45,24 +49,24 @@ class Registration(models.Model):
     down_payment_date = models.DateField(_("Down Payment Date"), blank=True, null=True)
 
     tr_name = models.CharField(_("TR Name"), max_length=50)
-    tr_phone = models.CharField(_("TR Phone"), max_length=13)
+    tr_phone = models.CharField(_("TR Phone"), max_length=15)
     tr_email = models.EmailField(_("TR Email"), max_length=254)
     tr_name_2 = models.CharField(_("TR Name"), max_length=50, blank=True, null=True)
-    tr_phone_2 = models.CharField(_("TR Phone"), max_length=13, blank=True, null=True)
+    tr_phone_2 = models.CharField(_("TR Phone"), max_length=15, blank=True, null=True)
     tr_email_2 = models.EmailField(_("TR Email"), max_length=254, blank=True, null=True)
 
     mr_name = models.CharField(_("MR Name"), max_length=50)
-    mr_phone = models.CharField(_("MR Phone"), max_length=13)
+    mr_phone = models.CharField(_("MR Phone"), max_length=15)
     mr_email = models.EmailField(_("MR Email"), max_length=254)
     mr_name_2 = models.CharField(_("MR Name"), max_length=50, blank=True, null=True)
-    mr_phone_2 = models.CharField(_("MR Phone"), max_length=13, blank=True, null=True)
+    mr_phone_2 = models.CharField(_("MR Phone"), max_length=15, blank=True, null=True)
     mr_email_2 = models.EmailField(_("MR Email"), max_length=254, blank=True, null=True)
 
     fr_name = models.CharField(_("FR Name"), max_length=50)
-    fr_phone = models.CharField(_("FR Phone"), max_length=13)
+    fr_phone = models.CharField(_("FR Phone"), max_length=15)
     fr_email = models.EmailField(_("FR Email"), max_length=254)
     fr_name_2 = models.CharField(_("FR Name"), max_length=50, blank=True, null=True)
-    fr_phone_2 = models.CharField(_("FR Phone"), max_length=13, blank=True, null=True)
+    fr_phone_2 = models.CharField(_("FR Phone"), max_length=15, blank=True, null=True)
     fr_email_2 = models.EmailField(_("FR Email"), max_length=254, blank=True, null=True)
 
     def __str__(self):
