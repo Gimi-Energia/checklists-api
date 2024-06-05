@@ -17,10 +17,15 @@ class ChecklistCViewSet(viewsets.ModelViewSet):
 
             if serializer.validated_data["measurements_consumers_quantity"] != transformers_count:
                 return Response(
-                    {"error": "Measurements/Consumers quantity do not match their respective count."},
+                    {
+                        "error": "Measurements/Consumers quantity do not match their respective count."
+                    },
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-            elif serializer.validated_data["breakers_quantity"] != current_transformers_count:
+            if (
+                current_transformers_count > 0
+                and serializer.validated_data["breakers_quantity"] != current_transformers_count
+            ):
                 return Response(
                     {"error": "Breakers quantity do not match their respective count."},
                     status=status.HTTP_400_BAD_REQUEST,
