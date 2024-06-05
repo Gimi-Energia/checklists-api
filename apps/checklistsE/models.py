@@ -49,7 +49,7 @@ class ChecklistE(models.Model):
     cable_side = models.CharField(
         _("Cable Side"), max_length=20, choices=CABLE_SIDE_CHOICES, default="Left"
     )
-    transformer_power = models.PositiveIntegerField(_("Transformer Power"))
+    transformer_power = models.FloatField(_("Transformer Power"))
     transformer_type = models.CharField(
         _("Transformer Type"), choices=TRANSFORMERS_CHOICES, max_length=15
     )

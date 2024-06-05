@@ -56,6 +56,13 @@ class ChecklistC(models.Model):
         _("Transformer Fire Exit"), default=False, null=True, blank=True
     )
     fire_transformer_power = models.FloatField(_("Fire Transformer Power"), null=True, blank=True)
+    fire_transformer_demand = models.FloatField(_("Fire Transformer Demand"), null=True, blank=True)
+    fire_transformer_impedance = models.FloatField(
+        _("Fire Transformer Impedance"), null=True, blank=True
+    )
+    fire_transformer_type = models.CharField(
+        _("Fire Transformer Type"), choices=TYPE_CHOICES, max_length=3, blank=True, null=True
+    )
     measurements_consumers_quantity = models.PositiveIntegerField(_("Measurements/Consumers"))
 
     contractor_name = models.CharField(_("Contractor Name"), max_length=50)
@@ -99,7 +106,7 @@ class ChecklistC(models.Model):
 
 class Transformer(models.Model):
     checklist = models.ForeignKey(ChecklistC, on_delete=models.CASCADE, related_name="transformers")
-    power = models.PositiveIntegerField(_("Transformer Power"))
+    power = models.FloatField(_("Transformer Power"))
     impedance = models.FloatField(_("Impedance"), blank=True, null=True)
     demand = models.FloatField(_("Demand"), blank=True, null=True)
     type = models.CharField(_("Type"), choices=TYPE_CHOICES, max_length=3, blank=True, null=True)
