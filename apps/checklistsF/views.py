@@ -36,12 +36,12 @@ class ChecklistFViewSet(viewsets.ModelViewSet):
                     )
 
             breakers_quantity = serializer.validated_data.get("breakers_quantity")
-            current_transformers = request.data.get("current_transformers", [])
+            current_transformers_count = len(request.data.get("current_transformers", []))
 
-            if breakers_quantity != len(current_transformers):
+            if current_transformers_count > 0 and breakers_quantity != current_transformers_count:
                 return Response(
                     {
-                        "error": f"Breakers quantity ({breakers_quantity}) does not match the count ({len(current_transformers)})."
+                        "error": f"Breakers quantity ({breakers_quantity}) does not match the count ({current_transformers_count})."
                     },
                     status=status.HTTP_400_BAD_REQUEST,
                 )

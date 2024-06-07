@@ -20,7 +20,7 @@ class CurrentTransformerSerializer(serializers.ModelSerializer):
 
 class ChecklistASerializer(serializers.ModelSerializer):
     transformers = TransformerSerializer(many=True)
-    current_transformers = CurrentTransformerSerializer(many=True)
+    current_transformers = CurrentTransformerSerializer(many=True, required=False)
 
     class Meta:
         model = ChecklistA
@@ -28,14 +28,15 @@ class ChecklistASerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         transformers_data = validated_data.pop("transformers")
-        current_transformers_data = validated_data.pop("current_transformers")
+        current_transformers_data = validated_data.pop("current_transformers", None)
         checklist = ChecklistA.objects.create(**validated_data)
 
         for transformer_data in transformers_data:
             Transformer.objects.create(checklist=checklist, **transformer_data)
 
-        for ct_data in current_transformers_data:
-            CurrentTransformer.objects.create(checklist=checklist, **ct_data)
+        if current_transformers_data:
+            for ct_data in current_transformers_data:
+                CurrentTransformer.objects.create(checklist=checklist, **ct_data)
 
         send_registration_email(checklist)
 

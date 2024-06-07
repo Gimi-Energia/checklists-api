@@ -87,6 +87,9 @@ class ChecklistA(models.Model):
     iccftmax = models.FloatField(_("Icc3f"), blank=True, null=True)
     iccftmin = models.FloatField(_("Icc3f"), blank=True, null=True)
     have_study = models.BooleanField(_("Have Study?"), default=False)
+    study_prediction = models.DateField(
+        _("Study Prediction"), auto_now=False, auto_now_add=False, blank=True, null=True
+    )
 
     breakers_quantity = models.PositiveIntegerField(_("Breakers Quantity"))
 

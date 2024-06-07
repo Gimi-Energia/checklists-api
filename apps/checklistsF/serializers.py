@@ -35,7 +35,7 @@ class SubstationSerializer(serializers.ModelSerializer):
 
 class ChecklistFSerializer(serializers.ModelSerializer):
     substations = SubstationSerializer(many=True)
-    current_transformers = CurrentTransformerSerializer(many=True)
+    current_transformers = CurrentTransformerSerializer(many=True, required=False)
 
     class Meta:
         model = ChecklistF
@@ -43,7 +43,7 @@ class ChecklistFSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         substations_data = validated_data.pop("substations")
-        current_transformers_data = validated_data.pop("current_transformers")
+        current_transformers_data = validated_data.pop("current_transformers", None)
 
         checklist = ChecklistF.objects.create(**validated_data)
 
@@ -54,8 +54,9 @@ class ChecklistFSerializer(serializers.ModelSerializer):
             for transformer_data in transformers_data:
                 Transformer.objects.create(substation=substation, **transformer_data)
 
-        for ct_data in current_transformers_data:
-            CurrentTransformer.objects.create(checklist=checklist, **ct_data)
+        if current_transformers_data:
+            for ct_data in current_transformers_data:
+                CurrentTransformer.objects.create(checklist=checklist, **ct_data)
 
         send_registration_email(checklist)
 
