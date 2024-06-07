@@ -81,8 +81,6 @@ def generate_pdf(registration):
         f"Nome do responsável financeiro: {escape(registration.fr_name)}",
         f"Telefone do responsável financeiro: {escape(registration.fr_phone)}",
         f"Email do responsável financeiro: {escape(registration.fr_email)}",
-        f"Satisfação comercial: {registration.commercial_satisfaction}",
-        f"Satisfação orçamento: {registration.budget_satisfaction}",
     ]
 
     optional_fields = {
@@ -92,7 +90,6 @@ def generate_pdf(registration):
         "Complemento": registration.complement,
         "Restrição de acesso": registration.access_restriction,
         "Data sinal": registration.down_payment_date,
-        "Sugestões": registration.suggestions,
         "Nome do responsável tecnico 2": registration.tr_name_2,
         "Telefone do responsável tecnico 2": registration.tr_phone_2,
         "Email do responsável tecnico 2": registration.tr_email_2,
