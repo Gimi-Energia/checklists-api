@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from utils.validators.custom_validators import valid_cep, valid_cnpj
+from utils.validators.custom_validators import valid_cnpj
 
 from .models import Registration
 from .services.email_service import send_registration_email
@@ -14,8 +14,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
     def validate(self, data):
         if not valid_cnpj(data["billing_cnpj"]):
             raise serializers.ValidationError({"billing_cpf": "Invalid CNPJ."})
-        if not valid_cep(data["zip_code"]):
-            raise serializers.ValidationError({"zip_code": "Invalid CEP."})
 
         return data
 
