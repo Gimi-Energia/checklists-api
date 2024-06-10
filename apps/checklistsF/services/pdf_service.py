@@ -71,6 +71,7 @@ def generate_pdf(instance):
 
     main_details = [
         f"Número do processo: {escape(checklist.process_number)}",
+        f"Item: {escape(checklist.item)}",
         f"Quantidade de Subestações: {checklist.substations_quantity}",
         f"Proteção de Disjuntor: {'Sim' if checklist.breakers_protection else 'Não'}",
         f"Fornecimento do estudo: {'Gimi' if checklist.gimi_study else 'Cliente'}",

@@ -17,6 +17,7 @@ class ChecklistG(models.Model):
     )
 
     process_number = models.CharField(_("Process Number"), max_length=10)
+    item = models.CharField(_("Item"), max_length=3, default="1")
     company = models.CharField(_("Company"), choices=COMPANIES, default="Gimi", max_length=4)
 
     responsible_name = models.CharField(_("Responsible Name"), max_length=50)

@@ -63,6 +63,7 @@ def generate_pdf(instance):
 
     main_details = [
         f"Número do processo: {escape(checklist.process_number)}",
+        f"Item: {escape(checklist.item)}",
         f"Nome do Responsável Tecnico: {escape(checklist.responsible_name)}",
         f"Telefone do Contratante: {escape(checklist.responsible_phone)}",
         f"E-mail do Contratante: {escape(checklist.responsible_email)}",

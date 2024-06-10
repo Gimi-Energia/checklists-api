@@ -34,6 +34,7 @@ class ChecklistB(models.Model):
     )
 
     process_number = models.CharField(_("Process Number"), max_length=10)
+    item = models.CharField(_("Item"), max_length=3, default="1")
     company = models.CharField(_("Company"), choices=COMPANIES, default="Gimi", max_length=4)
     concessionaire = models.CharField(
         max_length=20, choices=CONCESSIONAIRE_CHOICES, default="CEEE", null=True, blank=True

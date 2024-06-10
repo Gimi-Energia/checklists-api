@@ -71,6 +71,7 @@ def generate_pdf(instance):
 
     main_details = [
         f"Número do processo: {escape(checklist.process_number)}",
+        f"Item: {escape(checklist.item)}",
         f"Concessionária: {escape(checklist.concessionaire)}",
         f"Outra Concessionária: {escape(checklist.other_concessionaire)}",
         f"Tensão Primária: {checklist.primary_voltage} kV",
