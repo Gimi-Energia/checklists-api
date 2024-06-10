@@ -15,19 +15,7 @@ class ChecklistProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ChecklistProduct
-        fields = ["product_id", "quantity", "items_numbers", "items_answered"]
-
-    def validate(self, data):
-        if "quantity" in data and "items_numbers" in data:
-            if not isinstance(data["items_numbers"], list):
-                raise serializers.ValidationError(
-                    "The field 'items_numbers' must be an array of strings."
-                )
-            if len(data["items_numbers"]) != data["quantity"]:
-                raise serializers.ValidationError(
-                    "The length of 'items_numbers' must be equal to 'quantity'."
-                )
-        return data
+        fields = ["product_id", "item", "is_answered"]
 
 
 class ChecklistSerializer(serializers.ModelSerializer):
@@ -43,14 +31,14 @@ class ChecklistSerializer(serializers.ModelSerializer):
 
         for product_data in products_data:
             product = Product.objects.get(id=product_data["product"]["id"])
-            quantity = product_data.get("quantity")
-            items_numbers = product_data.get("items_numbers", [])
+            item = product_data.get("item")
+            is_answered = product_data.get("is_answered")
 
             ChecklistProduct.objects.create(
                 checklist=checklist,
                 product=product,
-                quantity=quantity,
-                items_numbers=items_numbers,
+                item=item,
+                is_answered=is_answered,
             )
 
         send_new_checklist_email(checklist)
@@ -65,12 +53,10 @@ class ChecklistSerializer(serializers.ModelSerializer):
             product = Product.objects.get(id=product_id)
 
             defaults = {}
-            if "quantity" in product_data:
-                defaults["quantity"] = product_data["quantity"]
-            if "items_numbers" in product_data:
-                defaults["items_numbers"] = product_data["items_numbers"]
-            if "items_answered" in product_data:
-                defaults["items_answered"] = product_data["items_answered"]
+            if "item" in product_data:
+                defaults["item"] = product_data["item"]
+            if "is_answered" in product_data:
+                defaults["is_answered"] = product_data["is_answered"]
 
             checklist_product, created = ChecklistProduct.objects.update_or_create(
                 checklist=instance, product=product, defaults=defaults

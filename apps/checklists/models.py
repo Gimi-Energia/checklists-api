@@ -38,9 +38,8 @@ class Checklist(models.Model):
 class ChecklistProduct(models.Model):
     checklist = models.ForeignKey(Checklist, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(_("Quantity"))
-    items_numbers = models.JSONField(_("Item Numbers"), default=list)
-    items_answered = models.JSONField(_("Item Answered"), default=list)
+    item = models.CharField(_("Item"), max_length=3, default="1")
+    is_answered = models.BooleanField(_("Answered"), default=False)
 
     def __str__(self):
-        return f"{self.checklist} - {self.produto}"
+        return f"{self.checklist} - {self.product}"
