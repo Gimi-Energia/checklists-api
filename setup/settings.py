@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "apps.users.apps.UsersConfig",
     "apps.checklists.apps.ChecklistsConfig",
     "apps.registrations.apps.RegistrationsConfig",
+    "apps.optionals.apps.OptionalsConfig",
     "apps.checklistsA.apps.ChecklistsAConfig",
     "apps.checklistsB.apps.ChecklistsBConfig",
     "apps.checklistsC.apps.ChecklistsCConfig",
