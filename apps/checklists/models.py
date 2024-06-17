@@ -29,6 +29,7 @@ class Checklist(models.Model):
     client_email = models.EmailField(_("Cliente Email"), max_length=254)
     products = models.ManyToManyField(Product, through="ChecklistProduct", null=True, blank=True)
     answered_registration = models.BooleanField(_("Answered Registration"), default=False)
+    answered_optional = models.BooleanField(_("Answered Optional"), default=False)
     created_at = models.DateTimeField(_("Created At"), default=timezone.now)
 
     def __str__(self):
