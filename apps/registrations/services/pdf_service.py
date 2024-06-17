@@ -59,6 +59,8 @@ def generate_pdf(registration):
 
     c.setFont("Helvetica", 10)
 
+    lr_data = f"{registration.lr_name} | {registration.lr_email} | {registration.lr_phone} | {registration.lr_document}"
+
     details = [
         f"Número do processo: {escape(registration.process_number)}",
         f"CNPJ de faturamento: {escape(registration.billing_cnpj)}",
@@ -81,6 +83,7 @@ def generate_pdf(registration):
         f"Nome do responsável financeiro: {escape(registration.fr_name)}",
         f"Telefone do responsável financeiro: {escape(registration.fr_phone)}",
         f"Email do responsável financeiro: {escape(registration.fr_email)}",
+        f"Dados do responsável legal: {escape(lr_data)}",
     ]
 
     optional_fields = {
