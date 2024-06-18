@@ -21,13 +21,13 @@ class ChecklistG(models.Model):
     company = models.CharField(_("Company"), choices=COMPANIES, default="Gimi", max_length=4)
 
     responsible_name = models.CharField(_("Responsible Name"), max_length=50)
-    responsible_phone = models.CharField(_("Responsible Phone"), max_length=13)
+    responsible_phone = models.CharField(_("Responsible Phone"), max_length=15)
     responsible_email = models.EmailField(_("Responsible Email"), max_length=254)
 
     contractor_name = models.CharField(_("Contractor Name"), max_length=50)
     contractor_document = models.CharField(_("Contractor Document"), max_length=18)
     contractor_contact = models.CharField(_("Contractor Contact"), max_length=50)
-    contractor_phone = models.CharField(_("Contractor Phone"), max_length=13)
+    contractor_phone = models.CharField(_("Contractor Phone"), max_length=15)
     contractor_street = models.CharField(_("Contractor Street"), max_length=255)
     contractor_number = models.CharField(_("Contractor Number"), max_length=20)
     contractor_complement = models.CharField(
@@ -41,7 +41,7 @@ class ChecklistG(models.Model):
     owner_name = models.CharField(_("Owner Name"), max_length=50)
     owner_document = models.CharField(_("Owner Document"), max_length=18)
     owner_contact = models.CharField(_("Owner Contact"), max_length=50)
-    owner_phone = models.CharField(_("Owner Phone"), max_length=13)
+    owner_phone = models.CharField(_("Owner Phone"), max_length=15)
     work_street = models.CharField(_("Work Street"), max_length=255)
     work_number = models.CharField(_("Work Number"), max_length=20)
     work_complement = models.CharField(_("Work Complement"), max_length=255, blank=True, null=True)
