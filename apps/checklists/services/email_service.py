@@ -43,7 +43,7 @@ def send_new_checklist_email(checklist):
     </html>
     """
     email_from = settings.EMAIL_HOST_USER
-    recipient_list = [checklist.client_email]
+    recipient_list = [checklist.client_email, checklist.user.email]
 
     send_mail(
         subject=subject,

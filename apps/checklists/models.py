@@ -4,6 +4,8 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from apps.users.models import User
+
 COMPANIES = [
     ("Gimi", "Gimi"),
     ("GBL", "GBL"),
@@ -23,6 +25,9 @@ class Product(models.Model):
 
 class Checklist(models.Model):
     id = models.UUIDField(primary_key=True, unique=True, default=uuid4, editable=False)
+    user = models.ForeignKey(
+        User, verbose_name=_("User"), on_delete=models.CASCADE, null=True, blank=True
+    )
     company = models.CharField(_("Company"), choices=COMPANIES, default="Gimi", max_length=4)
     budget_number = models.CharField(_("Budget Number"), max_length=10)
     client_name = models.CharField(_("Client Name"), max_length=120)

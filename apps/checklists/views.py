@@ -10,7 +10,14 @@ class ChecklistViewSet(ProductActionsMixin, viewsets.ModelViewSet):
     queryset = Checklist.objects.all()
     serializer_class = ChecklistSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
-    search_fields = ["company", "budget_number", "client_name", "client_email", "products__id"]
+    search_fields = [
+        "company",
+        "budget_number",
+        "client_name",
+        "client_email",
+        "products__id",
+        "user",
+    ]
     ordering_fields = ["created_at"]
     filterset_fields = ["company", "budget_number"]
 

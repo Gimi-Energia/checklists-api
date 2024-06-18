@@ -11,10 +11,14 @@ class ChecklistProductInline(admin.TabularInline):
 class ChecklistAdmin(admin.ModelAdmin):
     list_display = (
         "id",
+        "user",
         "company",
         "budget_number",
         "client_name",
         "client_email",
+        "answered_registration",
+        "answered_optional",
+        "created_at",
     )
     inlines = [ChecklistProductInline]
 
