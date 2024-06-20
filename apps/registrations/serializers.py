@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework import serializers
 
 from utils.validators.custom_validators import valid_cnpj, valid_cpf
@@ -20,8 +21,9 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        registration = super().create(validated_data)
+        with transaction.atomic():
+            registration = super().create(validated_data)
 
-        send_registration_email(registration)
+            send_registration_email(registration)
 
         return registration

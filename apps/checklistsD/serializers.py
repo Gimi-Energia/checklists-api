@@ -1,7 +1,8 @@
+from django.db import transaction
 from rest_framework import serializers
 
 from .models import ChecklistD, Transformer
-from .services.email_service import send_registration_email
+from .services.email_service import send_checklist_email
 
 
 class TransformerSerializer(serializers.ModelSerializer):
@@ -20,11 +21,13 @@ class ChecklistDSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         transformers_data = validated_data.pop("transformers")
-        checklist = ChecklistD.objects.create(**validated_data)
 
-        for transformer_data in transformers_data:
-            Transformer.objects.create(checklist=checklist, **transformer_data)
+        with transaction.atomic():
+            checklist = ChecklistD.objects.create(**validated_data)
 
-        send_registration_email(checklist)
+            for transformer_data in transformers_data:
+                Transformer.objects.create(checklist=checklist, **transformer_data)
+
+            send_checklist_email(checklist)
 
         return checklist

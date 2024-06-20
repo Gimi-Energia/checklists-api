@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework import serializers
 
 from .models import Optional
@@ -10,8 +11,9 @@ class OptionalSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def create(self, validated_data):
-        instance = super().create(validated_data)
+        with transaction.atomic():
+            instance = super().create(validated_data)
 
-        send_optionals_email(instance)
+            send_optionals_email(instance)
 
         return instance

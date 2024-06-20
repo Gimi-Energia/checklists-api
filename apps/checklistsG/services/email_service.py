@@ -5,7 +5,7 @@ from apps.checklistsG.services.pdf_service import generate_pdf
 from apps.users.models import User
 
 
-def send_registration_email(instance):
+def send_checklist_email(instance):
     subject = f"Checklist para Emissão de ART - {instance.process_number}-{instance.item}"
     users = User.objects.all()
     recipient_list = [user.email for user in users]

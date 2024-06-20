@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework import serializers
 
 from .models import Checklist, ChecklistProduct, Product
@@ -27,21 +28,24 @@ class ChecklistSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         products_data = validated_data.pop("checklistproduct_set", [])
-        checklist = Checklist.objects.create(**validated_data)
 
-        for product_data in products_data:
-            product = Product.objects.get(id=product_data["product"]["id"])
-            item = product_data.get("item")
-            is_answered = product_data.get("is_answered")
+        with transaction.atomic():
+            checklist = Checklist.objects.create(**validated_data)
 
-            ChecklistProduct.objects.create(
-                checklist=checklist,
-                product=product,
-                item=item,
-                is_answered=is_answered,
-            )
+            for product_data in products_data:
+                product = Product.objects.get(id=product_data["product"]["id"])
+                item = product_data.get("item")
+                is_answered = product_data.get("is_answered")
 
-        send_new_checklist_email(checklist)
+                ChecklistProduct.objects.create(
+                    checklist=checklist,
+                    product=product,
+                    item=item,
+                    is_answered=is_answered,
+                )
+
+            send_new_checklist_email(checklist)
+            
         return checklist
 
     def update(self, instance, validated_data):

@@ -1,7 +1,8 @@
+from django.db import transaction
 from rest_framework import serializers
 
 from .models import ChecklistB
-from .services.email_service import send_registration_email
+from .services.email_service import send_checklist_email
 
 
 class ChecklistBSerializer(serializers.ModelSerializer):
@@ -10,8 +11,9 @@ class ChecklistBSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def create(self, validated_data):
-        checklist = ChecklistB.objects.create(**validated_data)
+        with transaction.atomic():
+            checklist = ChecklistB.objects.create(**validated_data)
 
-        send_registration_email(checklist)
+            send_checklist_email(checklist)
 
         return checklist
