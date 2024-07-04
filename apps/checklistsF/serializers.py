@@ -46,6 +46,9 @@ class ChecklistFSerializer(serializers.ModelSerializer):
         substations_data = validated_data.pop("substations")
         current_transformers_data = validated_data.pop("current_transformers", None)
 
+        if "substations_quantity" not in validated_data:
+            validated_data["substations_quantity"] = 1
+
         with transaction.atomic():
             checklist = ChecklistF.objects.create(**validated_data)
 
