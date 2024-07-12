@@ -69,10 +69,10 @@ class Registration(models.Model):
     fr_phone_2 = models.CharField(_("FR Phone"), max_length=15, blank=True, null=True)
     fr_email_2 = models.EmailField(_("FR Email"), max_length=254, blank=True, null=True)
 
-    lr_name = models.CharField(_(""), max_length=50, blank=True, null=True)
+    lr_name = models.CharField(_("LR Name"), max_length=50, blank=True, null=True)
     lr_email = models.EmailField(_("LR Email"), max_length=254, blank=True, null=True)
     lr_phone = models.CharField(_("LR Phone"), max_length=15, blank=True, null=True)
-    lr_document = models.CharField(_(""), max_length=14, blank=True, null=True)
+    lr_document = models.CharField(_("LR Document"), max_length=14, blank=True, null=True)
 
     def __str__(self):
         return self.process_number
