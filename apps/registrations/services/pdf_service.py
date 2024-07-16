@@ -1,118 +1,235 @@
 import tempfile
 
-from django.utils.html import escape
 from reportlab.lib.pagesizes import letter
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import inch
-from reportlab.pdfgen import canvas
+from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
-from apps.registrations.models import MATERIAL_CHOICES
-
-
-def draw_header(c, image_path, width, height, margin):
-    image_width = 1.6 * inch
-    image_height = inch
-    image_x = width - margin - image_width
-    image_y = height - margin - image_height + 50
-    c.drawImage(image_path, image_x, image_y, width=image_width, height=image_height)
+from setup.pdf.pdf_utils import generate_header
 
 
-def draw_footer(c, page_number, width):
-    c.setFont("Helvetica", 8)
-    footer_text = f"Página {page_number}"
-    text_width = c.stringWidth(footer_text, "Helvetica", 8)
-    c.drawString((width - text_width) / 2, 0.5 * inch, footer_text)
-
-
-def add_page(c, width, height, page_number, margin, company):
-    c.showPage()
-    page_number += 1
-    draw_header(c, f"setup/images/logo_{company}.png", width, height, margin)
-    draw_footer(c, page_number, width)
-    return page_number, height - margin - 1.3 * inch
-
-
-def generate_pdf(registration):
+def generate_pdf(instance):
     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
         filename = tmpfile.name
 
-    c = canvas.Canvas(filename, pagesize=letter)
-    width, height = letter
+    document = SimpleDocTemplate(filename, pagesize=letter)
+    styles = getSampleStyleSheet()
 
-    margin = inch
-    line_height = 14
-    page_number = 1
+    header_table = generate_header(instance.company, styles)
+    elements = [header_table, Spacer(1, 0.25 * inch)]
 
-    company = registration.company.lower()
-    draw_header(c, f"setup/images/logo_{company}.png", width, height, margin)
-    draw_footer(c, page_number, width)
+    elements.append(Spacer(1, 0.25 * inch))
 
-    current_height = height - margin - inch
+    title = f"Checklist Dados Cadastrais ({instance.process_number})"
+    title_para = Paragraph(title, styles["Title"])
+    elements.append(title_para)
+    elements.append(Spacer(1, 0.2 * inch))
 
-    c.setFont("Helvetica", 14)
-    title = "Checklist Dados Cadastrais"
-    text_width = c.stringWidth(title, "Helvetica", 14)
-    c.drawString((width - text_width) / 2, current_height, title)
-    current_height -= line_height * 2
+    lr_data = (
+        f"{instance.lr_name} | {instance.lr_email} | {instance.lr_phone} | {instance.lr_document}"
+    )
 
-    c.line(margin, current_height, width - margin, current_height)
-    current_height -= line_height * 2
-
-    c.setFont("Helvetica", 10)
-
-    lr_data = f"{registration.lr_name} | {registration.lr_email} | {registration.lr_phone} | {registration.lr_document}"
-
-    details = [
-        f"Número do processo: {escape(registration.process_number)}",
-        f"CNPJ de faturamento: {escape(registration.billing_cnpj)}",
-        f"Contribuinte de ICMS: {'Sim' if registration.is_taxpayer else 'Não'}",
-        f"Destino do material: {dict(MATERIAL_CHOICES).get(registration.material_destination, '')}",
-        f"Emails NF: {escape(registration.nf_email)}",
-        f"Rua: {escape(registration.street)}",
-        f"Número: {escape(registration.number)}",
-        f"Bairro: {escape(registration.neighborhood)}",
-        f"Cidade: {escape(registration.city)}",
-        f"Estado: {escape(registration.state)}",
-        f"CEP: {escape(registration.zip_code)}",
-        f"Condição de Pagamento: {escape(registration.payment_condition)}",
-        f"Nome do responsável tecnico: {escape(registration.tr_name)}",
-        f"Telefone do responsável tecnico: {escape(registration.tr_phone)}",
-        f"Email do responsável tecnico: {escape(registration.tr_email)}",
-        f"Nome do responsável pelo material: {escape(registration.mr_name)}",
-        f"Telefone do responsável pelo material: {escape(registration.mr_phone)}",
-        f"Email do responsável pelo material: {escape(registration.mr_email)}",
-        f"Nome do responsável financeiro: {escape(registration.fr_name)}",
-        f"Telefone do responsável financeiro: {escape(registration.fr_phone)}",
-        f"Email do responsável financeiro: {escape(registration.fr_email)}",
-        f"Dados do responsável legal: {escape(lr_data)}",
+    details_fat = [
+        Paragraph(f"<b>CNPJ de faturamento:</b> {instance.billing_cnpj}", styles["Normal"]),
+        Paragraph(
+            f"<b>Contribuinte de ICMS:</b> {'Sim' if instance.is_taxpayer else 'Não'}",
+            styles["Normal"],
+        ),
+        Paragraph(
+            f"<b>Destino do material:</b> {instance.material_destination}",
+            styles["Normal"],
+        ),
+        Paragraph(f"<b>Emails NF:</b> {instance.nf_email}", styles["Normal"]),
+        Paragraph(f"<b>Condição de Pagamento:</b> {instance.payment_condition}", styles["Normal"]),
+        Paragraph(f"<b>Dados do responsável legal:</b> {lr_data}", styles["Normal"]),
     ]
 
-    optional_fields = {
-        "Data limite NF": registration.deadline,
-        "Valor mínimo de faturamento": registration.minimum_value,
-        "Dados adicionais OBS NF": registration.additional_data,
-        "Complemento": registration.complement,
-        "Restrição de acesso": registration.access_restriction,
-        "Data sinal": registration.down_payment_date,
-        "Nome do responsável tecnico 2": registration.tr_name_2,
-        "Telefone do responsável tecnico 2": registration.tr_phone_2,
-        "Email do responsável tecnico 2": registration.tr_email_2,
-        "Nome do responsável pelo material 2": registration.mr_name_2,
-        "Telefone do responsável pelo material 2": registration.mr_phone_2,
-        "Email do responsável pelo material 2": registration.mr_email_2,
-        "Nome do responsável financeiro 2": registration.fr_name_2,
-        "Telefone do responsável financeiro 2": registration.fr_phone_2,
-        "Email do responsável financeiro 2": registration.fr_email_2,
-    }
+    if instance.deadline:
+        details_fat.append(
+            Paragraph(f"<b>Data limite NF:</b> {instance.deadline}", styles["Normal"])
+        )
+    if instance.minimum_value:
+        details_fat.append(
+            Paragraph(
+                f"<b>Valor mínimo de faturamento:</b> {instance.minimum_value}", styles["Normal"]
+            )
+        )
+    if instance.additional_data:
+        details_fat.append(
+            Paragraph(
+                f"<b>Dados adicionais OBS NF:</b> {instance.additional_data}", styles["Normal"]
+            )
+        )
+    if instance.down_payment_date:
+        formatted_down_payment_date = instance.down_payment_date.strftime("%d/%m/%Y")
+        details_fat.append(
+            Paragraph(
+                f"<b>Data pagamento sinal:</b> {formatted_down_payment_date}", styles["Normal"]
+            )
+        )
 
-    for label, value in optional_fields.items():
-        if value:
-            details.append(f"{label}: {escape(str(value))}")
+    details_adress = [
+        Paragraph(f"<b>Rua:</b> {instance.street}", styles["Normal"]),
+        Paragraph(f"<b>Número:</b> {instance.number}", styles["Normal"]),
+        Paragraph(f"<b>Bairro:</b> {instance.neighborhood}", styles["Normal"]),
+        Paragraph(f"<b>Cidade:</b> {instance.city}", styles["Normal"]),
+        Paragraph(f"<b>Estado:</b> {instance.state}", styles["Normal"]),
+        Paragraph(f"<b>CEP:</b> {instance.zip_code}", styles["Normal"]),
+    ]
 
-    for detail in details:
-        if current_height <= margin + (2 * line_height):
-            page_number, current_height = add_page(c, width, height, page_number, margin, company)
-        c.drawString(margin, current_height, detail)
-        current_height -= line_height
+    if instance.complement:
+        details_adress.append(
+            Paragraph(f"<b>Complemento:</b> {instance.complement}", styles["Normal"])
+        )
+    if instance.access_restriction:
+        details_adress.append(
+            Paragraph(
+                f"<b>Restrição de acesso:</b> {instance.access_restriction}", styles["Normal"]
+            )
+        )
 
-    c.save()
+    details_tr = [
+        Paragraph(f"<b>Nome do responsável tecnico:</b> {instance.tr_name}", styles["Normal"]),
+        Paragraph(f"<b>Telefone do responsável tecnico:</b> {instance.tr_phone}", styles["Normal"]),
+        Paragraph(f"<b>Email do responsável tecnico:</b> {instance.tr_email}", styles["Normal"]),
+    ]
+
+    if instance.tr_name_2:
+        details_tr.append(
+            Paragraph(
+                f"<b>Nome do responsável tecnico 2:</b> {instance.tr_name_2}", styles["Normal"]
+            )
+        )
+    if instance.tr_phone_2:
+        details_tr.append(
+            Paragraph(
+                f"<b>Telefone do responsável tecnico 2:</b> {instance.tr_phone_2}", styles["Normal"]
+            )
+        )
+    if instance.tr_email_2:
+        details_tr.append(
+            Paragraph(
+                f"<b>Email do responsável tecnico 2:</b> {instance.tr_email_2}", styles["Normal"]
+            )
+        )
+
+    details_mr = [
+        Paragraph(
+            f"<b>Nome do responsável pelo material:</b> {instance.mr_name}", styles["Normal"]
+        ),
+        Paragraph(
+            f"<b>Telefone do responsável pelo material:</b> {instance.mr_phone}", styles["Normal"]
+        ),
+        Paragraph(
+            f"<b>Email do responsável pelo material:</b> {instance.mr_email}", styles["Normal"]
+        ),
+    ]
+
+    if instance.mr_name_2:
+        details_mr.append(
+            Paragraph(
+                f"<b>Nome do responsável pelo material 2:</b> {instance.mr_name_2}",
+                styles["Normal"],
+            )
+        )
+    if instance.mr_phone_2:
+        details_mr.append(
+            Paragraph(
+                f"<b>Telefone do responsável pelo material 2:</b> {instance.mr_phone_2}",
+                styles["Normal"],
+            )
+        )
+    if instance.mr_email_2:
+        details_mr.append(
+            Paragraph(
+                f"<b>Email do responsável pelo material 2:</b> {instance.mr_email_2}",
+                styles["Normal"],
+            )
+        )
+
+    details_fr = [
+        Paragraph(f"<b>Nome do responsável financeiro:</b> {instance.fr_name}", styles["Normal"]),
+        Paragraph(
+            f"<b>Telefone do responsável financeiro:</b> {instance.fr_phone}", styles["Normal"]
+        ),
+        Paragraph(f"<b>Email do responsável financeiro:</b> {instance.fr_email}", styles["Normal"]),
+    ]
+
+    if instance.fr_name_2:
+        details_fr.append(
+            Paragraph(
+                f"<b>Nome do responsável financeiro 2:</b> {instance.fr_name_2}", styles["Normal"]
+            )
+        )
+    if instance.fr_phone_2:
+        details_fr.append(
+            Paragraph(
+                f"<b>Telefone do responsável financeiro 2:</b> {instance.fr_phone_2}",
+                styles["Normal"],
+            )
+        )
+    if instance.fr_email_2:
+        details_fr.append(
+            Paragraph(
+                f"<b>Email do responsável financeiro 2:</b> {instance.fr_email_2}", styles["Normal"]
+            )
+        )
+
+    subtitle_style = ParagraphStyle(
+        name="Subtitle",
+        fontSize=14,
+        leading=16,
+    )
+
+    subtitle_fat = "Dados de Faturamento"
+    subtitle_fat_para = Paragraph(subtitle_fat, subtitle_style)
+    elements.append(subtitle_fat_para)
+    elements.append(Spacer(1, 0.2 * inch))
+
+    for detail in details_fat:
+        elements.append(detail)
+        elements.append(Spacer(1, 0.1 * inch))
+
+    elements.append(Spacer(1, 0.2 * inch))
+    subtitle_adress = "Endereço da Obra"
+    subtitle_adress_para = Paragraph(subtitle_adress, subtitle_style)
+    elements.append(subtitle_adress_para)
+    elements.append(Spacer(1, 0.2 * inch))
+
+    for detail in details_adress:
+        elements.append(detail)
+        elements.append(Spacer(1, 0.1 * inch))
+
+    elements.append(Spacer(1, 0.2 * inch))
+    subtitle_tr = "Responsável Técnico"
+    subtitle_tr_para = Paragraph(subtitle_tr, subtitle_style)
+    elements.append(subtitle_tr_para)
+    elements.append(Spacer(1, 0.2 * inch))
+
+    for detail in details_tr:
+        elements.append(detail)
+        elements.append(Spacer(1, 0.1 * inch))
+
+    elements.append(Spacer(1, 0.2 * inch))
+    subtitle_mr = "Responsável por Coletar ou Receber o Material"
+    subtitle_mr_para = Paragraph(subtitle_mr, subtitle_style)
+    elements.append(subtitle_mr_para)
+    elements.append(Spacer(1, 0.2 * inch))
+
+    for detail in details_mr:
+        elements.append(detail)
+        elements.append(Spacer(1, 0.1 * inch))
+
+    elements.append(Spacer(1, 0.2 * inch))
+    subtitle_fr = "Responsável Financeiro"
+    subtitle_fr_para = Paragraph(subtitle_fr, subtitle_style)
+    elements.append(subtitle_fr_para)
+    elements.append(Spacer(1, 0.2 * inch))
+
+    for detail in details_fr:
+        elements.append(detail)
+        elements.append(Spacer(1, 0.1 * inch))
+
+    document.build(elements)
+
     return filename
