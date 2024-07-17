@@ -4,6 +4,19 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.platypus import Image, Paragraph, Spacer, Table, TableStyle
 
+translations = {
+    "Sheltered": "Abrigado",
+    "Unsheltered": "Ao tempo",
+    "Left": "Esquerda",
+    "Right": "Direita",
+    "Dried": "Seco",
+    "Mineral Oil": "Óleo Mineral",
+    "Vegetable Oil": "Óleo Vegetal",
+    "Cables (Not Coupled)": "Cabos (Não Acoplados)",
+    "Coupled Transformer": "Transformador Acoplado",
+    "Flanged Transformer": "Transformador Flangeado",
+}
+
 
 def generate_header(company, styles):
     small_style = ParagraphStyle("SmallStyle", parent=styles["Normal"], fontSize=8, leading=10)
