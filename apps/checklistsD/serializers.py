@@ -28,6 +28,6 @@ class ChecklistDSerializer(serializers.ModelSerializer):
             for transformer_data in transformers_data:
                 Transformer.objects.create(checklist=checklist, **transformer_data)
 
-            send_checklist_email(checklist)
+            send_checklist_email(checklist, transformers_data)
 
         return checklist
