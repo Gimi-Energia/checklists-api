@@ -10,12 +10,30 @@ translations = {
     "Left": "Esquerda",
     "Right": "Direita",
     "Dried": "Seco",
+    "Air": "Ar",
+    "Oil": "Óleo",
     "Mineral Oil": "Óleo Mineral",
     "Vegetable Oil": "Óleo Vegetal",
     "Cables (Not Coupled)": "Cabos (Não Acoplados)",
     "Coupled Transformer": "Transformador Acoplado",
     "Flanged Transformer": "Transformador Flangeado",
+    "Power": "Potência",
+    "Impedance": "Impendância",
+    "Demand": "Demanda",
+    "Type": "Tipo",
 }
+
+subtitle_style = ParagraphStyle(
+    name="Subtitle",
+    fontSize=14,
+    leading=16,
+)
+
+thirdtitle_style = ParagraphStyle(
+    name="Thirdtitle",
+    fontSize=12,
+    leading=14,
+)
 
 
 def generate_header(company, styles):

@@ -1,11 +1,11 @@
 import tempfile
 
 from reportlab.lib.pagesizes import letter
-from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
-from setup.pdf.pdf_utils import generate_header
+from setup.pdf.pdf_utils import generate_header, subtitle_style
 
 
 def generate_pdf(instance):
@@ -80,12 +80,6 @@ def generate_pdf(instance):
                 styles["Normal"],
             )
         )
-
-    subtitle_style = ParagraphStyle(
-        name="Subtitle",
-        fontSize=14,
-        leading=16,
-    )
 
     subtitle_responsible = "Dados Responsável"
     subtitle_responsible_para = Paragraph(subtitle_responsible, subtitle_style)

@@ -1,11 +1,11 @@
 import tempfile
 
 from reportlab.lib.pagesizes import letter
-from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
-from setup.pdf.pdf_utils import generate_header
+from setup.pdf.pdf_utils import generate_header, subtitle_style
 
 
 def generate_pdf(instance):
@@ -174,12 +174,6 @@ def generate_pdf(instance):
                 f"<b>Email do responsável financeiro 2:</b> {instance.fr_email_2}", styles["Normal"]
             )
         )
-
-    subtitle_style = ParagraphStyle(
-        name="Subtitle",
-        fontSize=14,
-        leading=16,
-    )
 
     subtitle_fat = "Dados de Faturamento"
     subtitle_fat_para = Paragraph(subtitle_fat, subtitle_style)
