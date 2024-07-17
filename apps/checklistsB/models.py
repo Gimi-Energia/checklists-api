@@ -7,8 +7,8 @@ from apps.checklists.models import COMPANIES, Checklist
 
 CONCESSIONAIRE_CHOICES = [
     ("CPFL", "CPFL"),
-    ("EDP_SP", "EDP-SP"),
-    ("EDP_ES", "EDP-ES"),
+    ("EDP-SP", "EDP-SP"),
+    ("EDP-ES", "EDP-ES"),
     ("ELEKTRO", "ELEKTRO"),
 ]
 
