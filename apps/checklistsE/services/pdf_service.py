@@ -1,104 +1,139 @@
 import tempfile
 
-from django.utils.html import escape
 from reportlab.lib.pagesizes import letter
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import inch
-from reportlab.pdfgen import canvas
+from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
-from apps.checklistsB.models import ChecklistB
-
-
-def draw_header(c, image_path, width, height, margin):
-    image_width = 1.6 * inch
-    image_height = inch
-    image_x = width - margin - image_width
-    image_y = height - margin - image_height + 50
-    c.drawImage(image_path, image_x, image_y, width=image_width, height=image_height)
-
-
-def draw_footer(c, page_number, width):
-    c.setFont("Helvetica", 8)
-    footer_text = f"Página {page_number}"
-    text_width = c.stringWidth(footer_text, "Helvetica", 8)
-    c.drawString((width - text_width) / 2, 0.5 * inch, footer_text)
-
-
-def add_page(c, width, height, page_number, margin, company):
-    c.showPage()
-    page_number += 1
-    draw_header(c, f"setup/images/logo_{company}.png", width, height, margin)
-    draw_footer(c, page_number, width)
-    return page_number, height - margin - 1.3 * inch
+from setup.pdf.pdf_utils import generate_header, translations
 
 
 def generate_pdf(instance):
     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
         filename = tmpfile.name
 
-    checklist = ChecklistB.objects.get(id=instance.id)
+    document = SimpleDocTemplate(filename, pagesize=letter)
+    styles = getSampleStyleSheet()
 
-    c = canvas.Canvas(filename, pagesize=letter)
-    width, height = letter
+    header_table = generate_header(instance.company, styles)
+    elements = [header_table, Spacer(1, 0.25 * inch)]
 
-    margin = inch
-    line_height = 14
-    page_number = 1
+    elements.append(Spacer(1, 0.25 * inch))
 
-    company = checklist.company.lower()
-    draw_header(c, f"setup/images/logo_{company}.png", width, height, margin)
-    draw_footer(c, page_number, width)
+    title = f"Checklist Cabine Primária Simplificada Medição MT (Enel) ({instance.process_number} - {instance.item})"
+    title_para = Paragraph(title, styles["Title"])
+    elements.append(title_para)
+    elements.append(Spacer(1, 0.2 * inch))
 
-    current_height = height - margin - inch
-
-    c.setFont("Helvetica", 14)
-    title = "Checklist Cabine Primária Convencional Medição BT"
-    text_width = c.stringWidth(title, "Helvetica", 14)
-    c.drawString((width - text_width) / 2, current_height, title)
-    current_height -= line_height * 2
-
-    c.line(margin, current_height, width - margin, current_height)
-    current_height -= line_height * 2
-
-    c.setFont("Helvetica", 10)
-
-    main_details = [
-        f"Número do processo: {escape(checklist.process_number)}",
-        f"Item: {escape(checklist.item)}",
-        f"Concessionária: {escape(checklist.concessionaire)}",
-        f"Outra Concessionária: {escape(checklist.other_concessionaire)}",
-        f"Tensão Primária: {checklist.primary_voltage} kV",
-        f"Uso do painel: {checklist.panel_usage}",
-        f"Lado da Entrada dos Cabos: {checklist.cable_side}",
-        f"Potência do Transformador: {checklist.transformer_power}",
-        f"Tipo do Transformador: {checklist.transformer_type}",
-        f"Conexão do Transformador: {checklist.tranformer_connection}",
-        f"Nome do Contratante: {escape(checklist.contractor_name)}",
-        f"Documento do Contratante: {escape(checklist.contractor_document)}",
-        f"Contato do Contratante: {escape(checklist.contractor_contact)}",
-        f"Telefone do Contratante: {escape(checklist.contractor_phone)}",
-        f"Rua do Contratante: {escape(checklist.contractor_street)}",
-        f"Número do Contratante: {escape(checklist.contractor_number)}",
-        f"Bairro do Contratante: {escape(checklist.contractor_neighborhood)}",
-        f"Cidade do Contratante: {escape(checklist.contractor_city)}",
-        f"Estado do Contratante: {escape(checklist.contractor_state)}",
-        f"CEP do Contratante: {escape(checklist.contractor_zip_code)}",
-        f"Nome do Proprietário: {escape(checklist.owner_name)}",
-        f"Documento do Proprietário: {escape(checklist.owner_document)}",
-        f"Contato do Proprietário: {escape(checklist.owner_contact)}",
-        f"Telefone do Proprietário: {escape(checklist.owner_phone)}",
-        f"Rua da Obra: {escape(checklist.contractor_street)}",
-        f"Número da Obra: {escape(checklist.contractor_number)}",
-        f"Bairro da Obra: {escape(checklist.contractor_neighborhood)}",
-        f"Cidade da Obra: {escape(checklist.contractor_city)}",
-        f"Estado da Obra: {escape(checklist.contractor_state)}",
-        f"CEP da Obra: {escape(checklist.contractor_zip_code)}",
+    details_cabin = [
+        Paragraph(
+            f"<b>Concessionária:</b> {instance.concessionaire if instance.concessionaire else instance.other_concessionarie}",
+            styles["Normal"],
+        ),
+        Paragraph(f"<b>Tensão Primária:</b> {instance.primary_voltage} kV", styles["Normal"]),
+        Paragraph(
+            f"<b>Uso do painel:</b> {translations.get(instance.panel_usage)}", styles["Normal"]
+        ),
+        Paragraph(
+            f"<b>Lado da Entrada dos Cabos:</b> {translations.get(instance.cable_side)}",
+            styles["Normal"],
+        ),
+        Paragraph(
+            f"<b>Potência do Transformador:</b> {instance.transformer_power} kVA", styles["Normal"]
+        ),
+        Paragraph(
+            f"<b>Tipo do Transformador:</b> {translations.get(instance.transformer_type)}",
+            styles["Normal"],
+        ),
+        Paragraph(
+            f"<b>Conexão do Transformador:</b> {translations.get(instance.tranformer_connection)}",
+            styles["Normal"],
+        ),
     ]
 
-    for detail in main_details:
-        if current_height <= margin + (2 * line_height):
-            page_number, current_height = add_page(c, width, height, page_number, margin, company)
-        c.drawString(margin, current_height, detail)
-        current_height -= line_height
+    details_contractor = [
+        Paragraph(f"<b>Nome do Contratante:</b> {instance.contractor_name}", styles["Normal"]),
+        Paragraph(
+            f"<b>Documento do Contratante:</b> {instance.contractor_document}", styles["Normal"]
+        ),
+        Paragraph(
+            f"<b>Contato do Contratante:</b> {instance.contractor_contact}", styles["Normal"]
+        ),
+        Paragraph(f"<b>Telefone do Contratante:</b> {instance.contractor_phone}", styles["Normal"]),
+        Paragraph(f"<b>Rua do Contratante:</b> {instance.contractor_street}", styles["Normal"]),
+        Paragraph(f"<b>Número do Contratante:</b> {instance.contractor_number}", styles["Normal"]),
+        Paragraph(
+            f"<b>Bairro do Contratante:</b> {instance.contractor_neighborhood}", styles["Normal"]
+        ),
+        Paragraph(f"<b>Cidade do Contratante:</b> {instance.contractor_city}", styles["Normal"]),
+        Paragraph(f"<b>Estado do Contratante:</b> {instance.contractor_state}", styles["Normal"]),
+        Paragraph(f"<b>CEP do Contratante:</b> {instance.contractor_zip_code}", styles["Normal"]),
+    ]
 
-    c.save()
+    if instance.contractor_complement:
+        details_contractor.append(
+            Paragraph(
+                f"<b>Complemento do Contratante:</b> {instance.contractor_complement}",
+                styles["Normal"],
+            )
+        )
+
+    details_owner_work = [
+        Paragraph(f"<b>Nome do Proprietário:</b> {instance.owner_name}", styles["Normal"]),
+        Paragraph(f"<b>Documento do Proprietário:</b> {instance.owner_document}", styles["Normal"]),
+        Paragraph(f"<b>Contato do Proprietário:</b> {instance.owner_contact}", styles["Normal"]),
+        Paragraph(f"<b>Telefone do Proprietário:</b> {instance.owner_phone}", styles["Normal"]),
+        Paragraph(f"<b>Rua da Obra:</b> {instance.work_street}", styles["Normal"]),
+        Paragraph(f"<b>Número da Obra:</b> {instance.work_number}", styles["Normal"]),
+        Paragraph(f"<b>Bairro da Obra:</b> {instance.work_neighborhood}", styles["Normal"]),
+        Paragraph(f"<b>Cidade da Obra:</b> {instance.work_city}", styles["Normal"]),
+        Paragraph(f"<b>Estado da Obra:</b> {instance.work_state}", styles["Normal"]),
+        Paragraph(f"<b>CEP da Obra:</b> {instance.work_zip_code}", styles["Normal"]),
+    ]
+
+    if instance.work_complement:
+        details_owner_work.append(
+            Paragraph(
+                f"<b>Complemento da Obra:</b> {instance.work_complement}",
+                styles["Normal"],
+            )
+        )
+
+    subtitle_style = ParagraphStyle(
+        name="Subtitle",
+        fontSize=14,
+        leading=16,
+    )
+
+    subtitle_cabin = "Dados da Cabine Primária"
+    subtitle_cabin_para = Paragraph(subtitle_cabin, subtitle_style)
+    elements.append(subtitle_cabin_para)
+    elements.append(Spacer(1, 0.2 * inch))
+
+    for detail in details_cabin:
+        elements.append(detail)
+        elements.append(Spacer(1, 0.1 * inch))
+
+    elements.append(Spacer(1, 0.2 * inch))
+    subtitle_contractor = "Dados Contrato"
+    subtitle_contractor_para = Paragraph(subtitle_contractor, subtitle_style)
+    elements.append(subtitle_contractor_para)
+    elements.append(Spacer(1, 0.2 * inch))
+
+    for detail in details_contractor:
+        elements.append(detail)
+        elements.append(Spacer(1, 0.1 * inch))
+
+    elements.append(Spacer(1, 0.2 * inch))
+    subtitle_owner_work_ = "Dados Obra / Serviço"
+    subtitle_owner_work__para = Paragraph(subtitle_owner_work_, subtitle_style)
+    elements.append(subtitle_owner_work__para)
+    elements.append(Spacer(1, 0.2 * inch))
+
+    for detail in details_owner_work:
+        elements.append(detail)
+        elements.append(Spacer(1, 0.1 * inch))
+
+    document.build(elements)
+
     return filename
