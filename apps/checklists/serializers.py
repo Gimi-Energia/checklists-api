@@ -32,9 +32,21 @@ class ChecklistSerializer(serializers.ModelSerializer):
         with transaction.atomic():
             checklist = Checklist.objects.create(**validated_data)
 
+            existing_products = set()
             for product_data in products_data:
-                product = Product.objects.get(id=product_data["product"]["id"])
+                product_id = product_data["product"]["id"]
                 item = product_data.get("item")
+
+                if (product_id, item) in existing_products:
+                    raise serializers.ValidationError(
+                        {
+                            "Error": f"Duplicate product {product_id} with item {item} in the same request."
+                        }
+                    )
+
+                existing_products.add((product_id, item))
+
+                product = Product.objects.get(id=product_id)
                 is_answered = product_data.get("is_answered")
 
                 ChecklistProduct.objects.create(
@@ -45,7 +57,7 @@ class ChecklistSerializer(serializers.ModelSerializer):
                 )
 
             send_new_checklist_email(checklist)
-            
+
         return checklist
 
     def update(self, instance, validated_data):
