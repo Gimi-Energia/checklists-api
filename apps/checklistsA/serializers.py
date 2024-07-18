@@ -41,6 +41,6 @@ class ChecklistASerializer(serializers.ModelSerializer):
                 for ct_data in current_transformers_data:
                     CurrentTransformer.objects.create(checklist=checklist, **ct_data)
 
-            send_checklist_email(checklist)
+            send_checklist_email(checklist, transformers_data, current_transformers_data)
 
         return checklist

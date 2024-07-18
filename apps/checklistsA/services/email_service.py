@@ -5,7 +5,7 @@ from apps.checklistsA.services.pdf_service import generate_pdf
 from apps.users.models import User
 
 
-def send_checklist_email(instance):
+def send_checklist_email(instance, transformers_data, current_transformers_data):
     subject = f"Checklist Cabine Primária Convencional - {instance.process_number}-{instance.item}"
     users = User.objects.all()
     recipient_list = [user.email for user in users]
@@ -18,7 +18,7 @@ def send_checklist_email(instance):
         to=recipient_list,
     )
 
-    pdf_file = generate_pdf(instance)
+    pdf_file = generate_pdf(instance, transformers_data, current_transformers_data)
     with open(pdf_file, "rb") as pdf_file:
         email.attach(
             f"Checklist_Cabine_Primaria_Convencional_{instance.process_number}-{instance.item}.pdf",

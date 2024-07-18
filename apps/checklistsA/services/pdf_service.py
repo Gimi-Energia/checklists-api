@@ -1,141 +1,274 @@
 import tempfile
 
-from django.utils.html import escape
 from reportlab.lib.pagesizes import letter
+from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
-from reportlab.pdfgen import canvas
+from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
-from apps.checklistsA.models import ChecklistA
-
-
-def draw_header(c, image_path, width, height, margin):
-    image_width = 1.6 * inch
-    image_height = inch
-    image_x = width - margin - image_width
-    image_y = height - margin - image_height + 50
-    c.drawImage(image_path, image_x, image_y, width=image_width, height=image_height)
+from setup.pdf.pdf_utils import generate_header, subtitle_style, thirdtitle_style, translations
 
 
-def draw_footer(c, page_number, width):
-    c.setFont("Helvetica", 8)
-    footer_text = f"Página {page_number}"
-    text_width = c.stringWidth(footer_text, "Helvetica", 8)
-    c.drawString((width - text_width) / 2, 0.5 * inch, footer_text)
-
-
-def add_page(c, width, height, page_number, margin, company):
-    c.showPage()
-    page_number += 1
-    draw_header(c, f"setup/images/logo_{company}.png", width, height, margin)
-    draw_footer(c, page_number, width)
-    return page_number, height - margin - 1.3 * inch
-
-
-def generate_pdf(instance):
+def generate_pdf(instance, transformers_data, current_transformers_data):
     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
         filename = tmpfile.name
 
-    checklist = ChecklistA.objects.get(id=instance.id)
-    transformers = checklist.transformers.all()
-    current_transformers = checklist.current_transformers.all()
+    document = SimpleDocTemplate(filename, pagesize=letter)
+    styles = getSampleStyleSheet()
 
-    c = canvas.Canvas(filename, pagesize=letter)
-    width, height = letter
+    header_table = generate_header(instance.company, styles)
+    elements = [header_table, Spacer(1, 0.25 * inch)]
 
-    margin = inch
-    line_height = 14
-    page_number = 1
+    elements.append(Spacer(1, 0.25 * inch))
 
-    company = checklist.company.lower()
-    draw_header(c, f"setup/images/logo_{company}.png", width, height, margin)
-    draw_footer(c, page_number, width)
+    title = f"Checklist Cabine Primária Convencional ({instance.process_number} - {instance.item})"
+    title_para = Paragraph(title, styles["Title"])
+    elements.append(title_para)
+    elements.append(Spacer(1, 0.2 * inch))
 
-    current_height = height - margin - inch
-
-    c.setFont("Helvetica", 14)
-    title = "Checklist Cabine Primária Convencional"
-    text_width = c.stringWidth(title, "Helvetica", 14)
-    c.drawString((width - text_width) / 2, current_height, title)
-    current_height -= line_height * 2
-
-    c.line(margin, current_height, width - margin, current_height)
-    current_height -= line_height * 2
-
-    c.setFont("Helvetica", 10)
-
-    main_details = [
-        f"Número do processo: {escape(checklist.process_number)}",
-        f"Item: {escape(checklist.item)}",
-        f"Concessionária: {escape(checklist.concessionaire)}",
-        f"Outra Concessionária: {escape(checklist.other_concessionaire)}",
-        f"Tensão Primária: {checklist.primary_voltage} kV",
-        f"Uso do Painel: {checklist.panel_usage}",
-        f"Lado da Entrada dos Cabos: {checklist.cable_side}",
-        f"Demanda Contratada: {checklist.contracted_demand}",
-        f"Saída Exclusiva para Transformador de Incêndio: {'Sim' if checklist.fire_exit else 'Não'}",
-        f"Potência do Transformador de Incêndio: {checklist.fire_transformer_power}",
-        f"Impendância do Transformador de Incêndio: {checklist.fire_transformer_impedance}",
-        f"Demanda do Transformador de Incêndio: {checklist.fire_transformer_demand}",
-        f"Tipo do Transformador de Incêndio: {checklist.fire_transformer_type}",
-        f"Quantidade de Transformadores: {checklist.transformers_quantity}",
-        f"Nome do Contratante: {escape(checklist.contractor_name)}",
-        f"Documento do Contratante: {escape(checklist.contractor_document)}",
-        f"Contato do Contratante: {escape(checklist.contractor_contact)}",
-        f"Telefone do Contratante: {escape(checklist.contractor_phone)}",
-        f"Rua do Contratante: {escape(checklist.contractor_street)}",
-        f"Número do Contratante: {escape(checklist.contractor_number)}",
-        f"Bairro do Contratante: {escape(checklist.contractor_neighborhood)}",
-        f"Cidade do Contratante: {escape(checklist.contractor_city)}",
-        f"Estado do Contratante: {escape(checklist.contractor_state)}",
-        f"CEP do Contratante: {escape(checklist.contractor_zip_code)}",
-        f"Nome do Proprietário: {escape(checklist.owner_name)}",
-        f"Documento do Proprietário: {escape(checklist.owner_document)}",
-        f"Contato do Proprietário: {escape(checklist.owner_contact)}",
-        f"Telefone do Proprietário: {escape(checklist.owner_phone)}",
-        f"Rua da Obra: {escape(checklist.contractor_street)}",
-        f"Número da Obra: {escape(checklist.contractor_number)}",
-        f"Bairro da Obra: {escape(checklist.contractor_neighborhood)}",
-        f"Cidade da Obra: {escape(checklist.contractor_city)}",
-        f"Estado da Obra: {escape(checklist.contractor_state)}",
-        f"CEP da Obra: {escape(checklist.contractor_zip_code)}",
-        f"Fornecimento do estudo: {'Gimi' if checklist.gimi_study else 'Cliente'}",
-        f"Trifásico (Icc3f): {escape(checklist.icc3f)}",
-        f"Bifásico (Icc2f): {escape(checklist.icc2f)}",
-        f"Fase e Terra Máximo (IccfTmáx): {escape(checklist.iccftmax)}",
-        f"Fase e Terra Mínimo (IccfTmín): {escape(checklist.iccftmin)}",
-        f"Possui o estudo: {'Sim' if checklist.gimi_study else 'Não'}",
-        f"Quantidade de Disjuntores: {checklist.breakers_quantity}",
+    details_cabin = [
+        Paragraph(
+            f"<b>Concessionária:</b> {instance.concessionaire if instance.concessionaire else instance.other_concessionarie}",
+            styles["Normal"],
+        ),
+        Paragraph(f"<b>Tensão Primária:</b> {instance.primary_voltage} kV", styles["Normal"]),
+        Paragraph(
+            f"<b>Uso do painel:</b> {translations.get(instance.panel_usage)}", styles["Normal"]
+        ),
+        Paragraph(
+            f"<b>Lado da Entrada dos Cabos:</b> {translations.get(instance.cable_side)}",
+            styles["Normal"],
+        ),
+        Paragraph(f"<b>Demanda Contratada:</b> {instance.contracted_demand} kW", styles["Normal"]),
+        Paragraph(
+            f"<b>Quantidade de Transformadores:</b> {instance.transformers_quantity}",
+            styles["Normal"],
+        ),
     ]
 
-    for detail in main_details:
-        if current_height <= margin + (2 * line_height):
-            page_number, current_height = add_page(c, width, height, page_number, margin, company)
-        c.drawString(margin, current_height, detail)
-        current_height -= line_height
+    details_contractor = [
+        Paragraph(f"<b>Nome do Contratante:</b> {instance.contractor_name}", styles["Normal"]),
+        Paragraph(
+            f"<b>Documento do Contratante:</b> {instance.contractor_document}", styles["Normal"]
+        ),
+        Paragraph(
+            f"<b>Contato do Contratante:</b> {instance.contractor_contact}", styles["Normal"]
+        ),
+        Paragraph(f"<b>Telefone do Contratante:</b> {instance.contractor_phone}", styles["Normal"]),
+        Paragraph(f"<b>Rua do Contratante:</b> {instance.contractor_street}", styles["Normal"]),
+        Paragraph(f"<b>Número do Contratante:</b> {instance.contractor_number}", styles["Normal"]),
+        Paragraph(
+            f"<b>Bairro do Contratante:</b> {instance.contractor_neighborhood}", styles["Normal"]
+        ),
+        Paragraph(f"<b>Cidade do Contratante:</b> {instance.contractor_city}", styles["Normal"]),
+        Paragraph(f"<b>Estado do Contratante:</b> {instance.contractor_state}", styles["Normal"]),
+        Paragraph(f"<b>CEP do Contratante:</b> {instance.contractor_zip_code}", styles["Normal"]),
+    ]
 
-    c.setFont("Helvetica", 14)
-    transformer_title = "Transformadores"
-    c.drawString(margin, current_height, transformer_title)
-    current_height -= line_height
+    if instance.contractor_complement:
+        details_contractor.append(
+            Paragraph(
+                f"<b>Complemento do Contratante:</b> {instance.contractor_complement}",
+                styles["Normal"],
+            )
+        )
 
-    for transformer in transformers:
-        transformer_details = f"Potência: {transformer.power}, Impedância: {transformer.impedance}, Demanda: {transformer.demand}, Tipo: {transformer.type}"
-        if current_height <= margin + (2 * line_height):
-            page_number, current_height = add_page(c, width, height, page_number, margin, company)
-        c.drawString(margin, current_height, transformer_details)
-        current_height -= line_height
+    details_owner_work = [
+        Paragraph(f"<b>Nome do Proprietário:</b> {instance.owner_name}", styles["Normal"]),
+        Paragraph(f"<b>Documento do Proprietário:</b> {instance.owner_document}", styles["Normal"]),
+        Paragraph(f"<b>Contato do Proprietário:</b> {instance.owner_contact}", styles["Normal"]),
+        Paragraph(f"<b>Telefone do Proprietário:</b> {instance.owner_phone}", styles["Normal"]),
+        Paragraph(f"<b>Rua da Obra:</b> {instance.work_street}", styles["Normal"]),
+        Paragraph(f"<b>Número da Obra:</b> {instance.work_number}", styles["Normal"]),
+        Paragraph(f"<b>Bairro da Obra:</b> {instance.work_neighborhood}", styles["Normal"]),
+        Paragraph(f"<b>Cidade da Obra:</b> {instance.work_city}", styles["Normal"]),
+        Paragraph(f"<b>Estado da Obra:</b> {instance.work_state}", styles["Normal"]),
+        Paragraph(f"<b>CEP da Obra:</b> {instance.work_zip_code}", styles["Normal"]),
+    ]
 
-    c.setFont("Helvetica", 14)
-    ct_title = "Definição dos TCs de Proteção"
-    c.drawString(margin, current_height, ct_title)
-    current_height -= line_height
+    if instance.work_complement:
+        details_owner_work.append(
+            Paragraph(
+                f"<b>Complemento da Obra:</b> {instance.work_complement}",
+                styles["Normal"],
+            )
+        )
 
-    for ct in current_transformers:
-        ct_details = f"Relação: {ct.ratio}, Exatidão: {ct.accuracy}"
-        if current_height <= margin + (2 * line_height):
-            page_number, current_height = add_page(c, width, height, page_number, margin, company)
-        c.drawString(margin, current_height, ct_details)
-        current_height -= line_height
+    details_fire_exit = [
+        Paragraph(
+            f"<b>Saída Exclusiva para Transformador de Incêndio:</b> {'Sim' if instance.fire_exit else 'Não'}",
+            styles["Normal"],
+        ),
+    ]
 
-    c.save()
+    if instance.fire_exit:
+        details_fire_exit.append(
+            Paragraph(
+                f"<b>Potência:</b> {instance.fire_transformer_power} kVA",
+                styles["Normal"],
+            )
+        )
+        details_fire_exit.append(
+            Paragraph(
+                f"<b>Demanda:</b> {instance.fire_transformer_demand}",
+                styles["Normal"],
+            )
+        )
+        details_fire_exit.append(
+            Paragraph(
+                f"<b>Impedância:</b> {instance.fire_transformer_impedance}",
+                styles["Normal"],
+            )
+        )
+        details_fire_exit.append(
+            Paragraph(
+                f"<b>Tipo:</b> {translations.get(instance.fire_transformer_type)}",
+                styles["Normal"],
+            )
+        )
+
+    details_study = [
+        Paragraph(
+            f"<b>Estudo de fornecimento Gimi:</b> {'Sim' if instance.gimi_study else 'Não'}",
+            styles["Normal"],
+        ),
+    ]
+
+    if instance.gimi_study:
+        details_study.append(
+            Paragraph(
+                f"<b>Trifásico (Icc3f):</b> {instance.icc3f}",
+                styles["Normal"],
+            ),
+        )
+        details_study.append(
+            Paragraph(
+                f"<b>Bifásico (Icc2f):</b> {instance.icc2f}",
+                styles["Normal"],
+            ),
+        )
+        details_study.append(
+            Paragraph(
+                f"<b>Fase e Terra Máximo (IccfTmáx):</b> {instance.iccftmax}",
+                styles["Normal"],
+            ),
+        )
+        details_study.append(
+            Paragraph(
+                f"<b>Fase e Terra Mínimo (IccfTmín):</b> {instance.iccftmin}",
+                styles["Normal"],
+            ),
+        )
+    else:
+        details_study.append(
+            Paragraph(
+                f"<b>Já possui o estudo:</b> {'Sim' if instance.have_study else 'Não'}",
+                styles["Normal"],
+            ),
+        )
+
+        if not instance.have_study:
+            formatted_study_prediction = instance.study_prediction.strftime("%d/%m/%Y")
+            details_study.append(
+                Paragraph(
+                    f"<b>Previsão do envio do estudo:</b> {formatted_study_prediction}",
+                    styles["Normal"],
+                )
+            )
+        else:
+            details_study.append(
+                Paragraph(
+                    f"<b>Quantidade de Disjuntores:</b> {instance.breakers_quantity}",
+                    styles["Normal"],
+                )
+            )
+
+    subtitle_cabin = "Dados da Cabine de Barramentos"
+    subtitle_cabin_para = Paragraph(subtitle_cabin, subtitle_style)
+    elements.append(subtitle_cabin_para)
+    elements.append(Spacer(1, 0.2 * inch))
+
+    for detail in details_cabin:
+        elements.append(detail)
+        elements.append(Spacer(1, 0.1 * inch))
+
+    elements.append(Spacer(1, 0.2 * inch))
+    subtitle_cabin = "Dados dos Transformadores"
+    subtitle_cabin_para = Paragraph(subtitle_cabin, subtitle_style)
+    elements.append(subtitle_cabin_para)
+    elements.append(Spacer(1, 0.2 * inch))
+
+    for index, transformer_data in enumerate(transformers_data, start=1):
+        subtitle_transformer = f"Transformador {index}"
+        subtitle_transformer_para = Paragraph(subtitle_transformer, thirdtitle_style)
+        elements.append(subtitle_transformer_para)
+        elements.append(Spacer(1, 0.15 * inch))
+
+        for key, value in transformer_data.items():
+            paragraph = Paragraph(
+                f"<b>{translations.get(key.capitalize())}:</b> {translations.get(value, value)}",
+                styles["Normal"],
+            )
+            elements.append(paragraph)
+            elements.append(Spacer(1, 0.1 * inch))
+
+    elements.append(Spacer(1, 0.2 * inch))
+    subtitle_fire_exit = "Dados Transformador de Incêndio"
+    subtitle_fire_exit_para = Paragraph(subtitle_fire_exit, subtitle_style)
+    elements.append(subtitle_fire_exit_para)
+    elements.append(Spacer(1, 0.2 * inch))
+
+    for detail in details_fire_exit:
+        elements.append(detail)
+        elements.append(Spacer(1, 0.1 * inch))
+
+    elements.append(Spacer(1, 0.2 * inch))
+    subtitle_study = "Dados do Estudo"
+    subtitle_study_para = Paragraph(subtitle_study, subtitle_style)
+    elements.append(subtitle_study_para)
+    elements.append(Spacer(1, 0.2 * inch))
+
+    for detail in details_study:
+        elements.append(detail)
+        elements.append(Spacer(1, 0.1 * inch))
+
+    if not instance.gimi_study and instance.have_study:
+        for index, current_transformer_data in enumerate(current_transformers_data, start=1):
+            elements.append(Spacer(1, 0.2 * inch))
+            subtitle_current_transformer = f"Definição do grupo {index} de TCs de proteção"
+            subtitle_current_transformer_para = Paragraph(
+                subtitle_current_transformer, thirdtitle_style
+            )
+            elements.append(subtitle_current_transformer_para)
+            elements.append(Spacer(1, 0.15 * inch))
+
+            for key, value in current_transformer_data.items():
+                paragraph = Paragraph(
+                    f"<b>{translations.get(key.capitalize())}:</b> {value}",
+                    styles["Normal"],
+                )
+                elements.append(paragraph)
+                elements.append(Spacer(1, 0.1 * inch))
+
+    elements.append(Spacer(1, 0.2 * inch))
+    subtitle_contractor = "Dados Contrato"
+    subtitle_contractor_para = Paragraph(subtitle_contractor, subtitle_style)
+    elements.append(subtitle_contractor_para)
+    elements.append(Spacer(1, 0.2 * inch))
+
+    for detail in details_contractor:
+        elements.append(detail)
+        elements.append(Spacer(1, 0.1 * inch))
+
+    elements.append(Spacer(1, 0.2 * inch))
+    subtitle_owner_work_ = "Dados Obra / Serviço"
+    subtitle_owner_work__para = Paragraph(subtitle_owner_work_, subtitle_style)
+    elements.append(subtitle_owner_work__para)
+    elements.append(Spacer(1, 0.2 * inch))
+
+    for detail in details_owner_work:
+        elements.append(detail)
+        elements.append(Spacer(1, 0.1 * inch))
+
+    document.build(elements)
+
     return filename
