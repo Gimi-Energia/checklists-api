@@ -8,7 +8,7 @@ from .services.email_service import send_checklist_email
 class TransformerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transformer
-        fields = ["power", "impedance", "demand", "type"]
+        fields = ["power"]
         ref_name = "TransformerChecklistD"
 
 

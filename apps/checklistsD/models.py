@@ -11,6 +11,7 @@ CONCESSIONAIRE_CHOICES = [
 
 TYPE_CHOICES = [("Air", "Air"), ("Oil", "Oil")]
 
+
 class ChecklistD(models.Model):
     id = models.UUIDField(primary_key=True, unique=True, default=uuid4, editable=False)
     parent_checklist = models.ForeignKey(
@@ -61,6 +62,3 @@ class ChecklistD(models.Model):
 class Transformer(models.Model):
     checklist = models.ForeignKey(ChecklistD, on_delete=models.CASCADE, related_name="transformers")
     power = models.FloatField(_("Transformer Power"))
-    impedance = models.FloatField(_("Impedance"), blank=True, null=True)
-    demand = models.FloatField(_("Demand"), blank=True, null=True)
-    type = models.CharField(_("Type"), choices=TYPE_CHOICES, max_length=3, blank=True, null=True)
