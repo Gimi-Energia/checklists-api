@@ -45,6 +45,25 @@ class ChecklistFViewSet(viewsets.ModelViewSet):
                     },
                     status=status.HTTP_400_BAD_REQUEST,
                 )
+            if serializer.validated_data["gimi_study"] and not (
+                serializer.validated_data["icc3f"]
+                or serializer.validated_data["icc2f"]
+                or serializer.validated_data["iccftmax"]
+                or serializer.validated_data["iccftmin"]
+            ):
+                return Response(
+                    {"error": "If study is Gimi, send the needed fields."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            if not serializer.validated_data["gimi_study"] and not (
+                serializer.validated_data["have_study"]
+                and serializer.validated_data["study_prediction"]
+                and current_transformers_count == 0
+            ):
+                return Response(
+                    {"error": "If study is Client, send the study fields."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
             serializer.save()
             headers = self.get_success_headers(serializer.data)
