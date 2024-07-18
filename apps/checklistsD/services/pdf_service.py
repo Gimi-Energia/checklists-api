@@ -108,7 +108,7 @@ def generate_pdf(instance, transformers_data):
 
         for key, value in transformer_data.items():
             paragraph = Paragraph(
-                f"<b>{translations.get(key.capitalize())}:</b> {translations.get(value, value)}",
+                f"<b>{translations.get(key.capitalize())}:</b> {translations.get(value, value)} kVA",
                 styles["Normal"],
             )
             elements.append(paragraph)

@@ -5,7 +5,13 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
-from setup.pdf.pdf_utils import generate_header, subtitle_style, thirdtitle_style, translations
+from setup.pdf.pdf_utils import (
+    generate_header,
+    subtitle_style,
+    thirdtitle_style,
+    translations,
+    units,
+)
 
 
 def generate_pdf(instance, transformers_data, current_transformers_data):
@@ -109,13 +115,13 @@ def generate_pdf(instance, transformers_data, current_transformers_data):
         )
         details_fire_exit.append(
             Paragraph(
-                f"<b>Demanda:</b> {instance.fire_transformer_demand}",
+                f"<b>Demanda:</b> {instance.fire_transformer_demand} kW",
                 styles["Normal"],
             )
         )
         details_fire_exit.append(
             Paragraph(
-                f"<b>Impedância:</b> {instance.fire_transformer_impedance}",
+                f"<b>Impedância:</b> {instance.fire_transformer_impedance} %",
                 styles["Normal"],
             )
         )
@@ -205,7 +211,7 @@ def generate_pdf(instance, transformers_data, current_transformers_data):
 
         for key, value in transformer_data.items():
             paragraph = Paragraph(
-                f"<b>{translations.get(key.capitalize())}:</b> {translations.get(value, value)}",
+                f"<b>{translations.get(key.capitalize())}:</b> {translations.get(value, value)} {units.get(key.capitalize(), '')}",
                 styles["Normal"],
             )
             elements.append(paragraph)

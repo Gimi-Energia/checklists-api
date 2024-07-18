@@ -25,6 +25,8 @@ translations = {
     "Accuracy": "Exatidão",
 }
 
+units = {"Power": "kVA", "Impedance": "%", "Demand": "kW"}
+
 subtitle_style = ParagraphStyle(
     name="Subtitle",
     fontSize=14,
