@@ -35,6 +35,7 @@ class Checklist(models.Model):
     products = models.ManyToManyField(Product, through="ChecklistProduct", null=True, blank=True)
     answered_registration = models.BooleanField(_("Answered Registration"), default=False)
     answered_optional = models.BooleanField(_("Answered Optional"), default=False)
+    answered_art = models.BooleanField(_("Answered ART"), default=False)
     created_at = models.DateTimeField(_("Created At"), default=timezone.now)
 
     def __str__(self):
