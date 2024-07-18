@@ -2,8 +2,8 @@ from django.conf import settings
 from django.core.mail import send_mail
 
 
-def send_new_checklist_email(checklist):
-    subject = "Grupo Gimi - Novo Checklist para preenchimento"
+def send_new_checklist_email(instance):
+    subject = f"Grupo Gimi - Novo Checklist para preenchimento ({instance.budget_number})"
     message = f"""
     <!DOCTYPE html>
     <html>
@@ -35,19 +35,19 @@ def send_new_checklist_email(checklist):
         </style>
     </head>
     <body>
-        <p>Olá <strong>{checklist.client_name}</strong>!</p>
-        <p>Um novo checklist do Grupo Gimi foi enviado. 🎉</p>
-        <p>Insira o ID <span class="code">{checklist.id}</span> em nosso webapp para prosseguir.</p>
+        <p>Olá <strong>{instance.client_name}</strong>!</p>
+        <p>Um novo checklist do pedido {instance.budget_number} do Grupo Gimi foi enviado. 🎉</p>
+        <p>Insira o ID <span class="code">{instance.id}</span> em nosso webapp para prosseguir.</p>
         <a href="https://checklist-web-psi.vercel.app/checklist" target="_blank" class="btn">Acessar Webapp</a>
     </body>
     </html>
     """
     email_from = settings.EMAIL_HOST_USER
-    recipient_list = [checklist.client_email, checklist.user.email]
+    recipient_list = [instance.client_email, instance.user.email]
 
     send_mail(
         subject=subject,
-        message=f"Cole o ID: {checklist.id} em nosso webapp",
+        message=f"Cole o ID: {instance.id} em nosso webapp",
         from_email=email_from,
         recipient_list=recipient_list,
         html_message=message,
