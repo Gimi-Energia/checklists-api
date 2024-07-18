@@ -21,6 +21,8 @@ translations = {
     "Impedance": "Impendância",
     "Demand": "Demanda",
     "Type": "Tipo",
+    "Ratio": "Relação",
+    "Accuracy": "Exatidão",
 }
 
 subtitle_style = ParagraphStyle(
