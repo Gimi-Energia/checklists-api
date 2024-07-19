@@ -49,7 +49,7 @@ def generate_pdf(instance):
         ),
         Paragraph(f"<b>Cidade do Contratante:</b> {instance.contractor_city}", styles["Normal"]),
         Paragraph(f"<b>Estado do Contratante:</b> {instance.contractor_state}", styles["Normal"]),
-        Paragraph(f"<b>CEP do Contratante:</b> {instance.contractor_zip_code}", styles["Normal"]),
+        Paragraph(f"<b>CEP/Coordenadas do Contratante:</b> {instance.contractor_zip_code}", styles["Normal"]),
     ]
 
     if instance.contractor_complement:
@@ -70,7 +70,7 @@ def generate_pdf(instance):
         Paragraph(f"<b>Bairro da Obra:</b> {instance.work_neighborhood}", styles["Normal"]),
         Paragraph(f"<b>Cidade da Obra:</b> {instance.work_city}", styles["Normal"]),
         Paragraph(f"<b>Estado da Obra:</b> {instance.work_state}", styles["Normal"]),
-        Paragraph(f"<b>CEP da Obra:</b> {instance.work_zip_code}", styles["Normal"]),
+        Paragraph(f"<b>CEP/Coordenadas da Obra:</b> {instance.work_zip_code}", styles["Normal"]),
     ]
 
     if instance.work_complement:
