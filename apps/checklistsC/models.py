@@ -37,7 +37,6 @@ class ChecklistC(models.Model):
         blank=True,
         null=True,
     )
-
     process_number = models.CharField(_("Process Number"), max_length=10)
     item = models.CharField(_("Item"), max_length=3, default="1")
     company = models.CharField(_("Company"), choices=COMPANIES, default="Gimi", max_length=4)
@@ -65,7 +64,6 @@ class ChecklistC(models.Model):
         _("Fire Transformer Type"), choices=TYPE_CHOICES, max_length=3, blank=True, null=True
     )
     measurements_consumers_quantity = models.PositiveIntegerField(_("Measurements/Consumers"))
-
     contractor_name = models.CharField(_("Contractor Name"), max_length=50)
     contractor_document = models.CharField(_("Contractor Document"), max_length=18)
     contractor_contact = models.CharField(_("Contractor Contact"), max_length=50)
@@ -79,7 +77,6 @@ class ChecklistC(models.Model):
     contractor_city = models.CharField(_("Contractor City"), max_length=100)
     contractor_state = models.CharField(_("Contractor State"), max_length=50)
     contractor_zip_code = models.CharField(_("Contractor Zip Code"), max_length=20)
-
     owner_name = models.CharField(_("Owner Name"), max_length=50)
     owner_document = models.CharField(_("Owner Document"), max_length=18)
     owner_contact = models.CharField(_("Owner Contact"), max_length=50)
@@ -91,7 +88,6 @@ class ChecklistC(models.Model):
     work_city = models.CharField(_("Work City"), max_length=100)
     work_state = models.CharField(_("Work State"), max_length=50)
     work_zip_code = models.CharField(_("Work Zip Code"), max_length=20)
-
     gimi_study = models.BooleanField(_("Gimi Study?"), default=False)
     icc3f = models.FloatField(_("Icc3f"), blank=True, null=True)
     icc2f = models.FloatField(_("Icc2f"), blank=True, null=True)
@@ -101,12 +97,18 @@ class ChecklistC(models.Model):
     study_prediction = models.DateField(
         _("Study Prediction"), auto_now=False, auto_now_add=False, blank=True, null=True
     )
-
     breakers_quantity = models.PositiveIntegerField(_("Breakers Quantity"))
 
 
+class Consumer(models.Model):
+    checklist = models.ForeignKey(ChecklistC, on_delete=models.CASCADE, related_name="consumers")
+    transformers_quantity = models.PositiveIntegerField(_("Transformers"))
+
+
 class Transformer(models.Model):
-    checklist = models.ForeignKey(ChecklistC, on_delete=models.CASCADE, related_name="transformers")
+    consumer = models.ForeignKey(
+        Consumer, on_delete=models.CASCADE, related_name="transformers", null=True, blank=True
+    )
     power = models.FloatField(_("Transformer Power"))
     impedance = models.FloatField(_("Impedance"), blank=True, null=True)
     demand = models.FloatField(_("Demand"), blank=True, null=True)

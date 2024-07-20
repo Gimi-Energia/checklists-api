@@ -1,7 +1,7 @@
 from django.db import transaction
 from rest_framework import serializers
 
-from .models import ChecklistC, CurrentTransformer, Transformer
+from .models import ChecklistC, Consumer, CurrentTransformer, Transformer
 from .services.email_service import send_checklist_email
 
 
@@ -19,8 +19,16 @@ class CurrentTransformerSerializer(serializers.ModelSerializer):
         ref_name = "CurrentTransformerChecklistC"
 
 
-class ChecklistCSerializer(serializers.ModelSerializer):
+class ConsumerSerializer(serializers.ModelSerializer):
     transformers = TransformerSerializer(many=True)
+
+    class Meta:
+        model = Consumer
+        fields = ["transformers_quantity", "transformers"]
+
+
+class ChecklistCSerializer(serializers.ModelSerializer):
+    consumers = ConsumerSerializer(many=True)
     current_transformers = CurrentTransformerSerializer(many=True, required=False)
 
     class Meta:
@@ -28,19 +36,26 @@ class ChecklistCSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def create(self, validated_data):
-        transformers_data = validated_data.pop("transformers")
+        consumers_data = validated_data.pop("consumers")
         current_transformers_data = validated_data.pop("current_transformers", None)
+
+        if "measurements_consumers_quantity" not in validated_data:
+            validated_data["measurements_consumers_quantity"] = 1
 
         with transaction.atomic():
             checklist = ChecklistC.objects.create(**validated_data)
 
-            for transformer_data in transformers_data:
-                Transformer.objects.create(checklist=checklist, **transformer_data)
+            for consumer_data in consumers_data:
+                transformers_data = consumer_data.pop("transformers")
+                consumer = Consumer.objects.create(checklist=checklist, **consumer_data)
+
+                for transformer_data in transformers_data:
+                    Transformer.objects.create(consumer=consumer, **transformer_data)
 
             if current_transformers_data:
                 for ct_data in current_transformers_data:
                     CurrentTransformer.objects.create(checklist=checklist, **ct_data)
 
-        send_checklist_email(checklist)
+            send_checklist_email(checklist)
 
         return checklist
