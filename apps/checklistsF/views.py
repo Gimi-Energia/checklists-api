@@ -12,37 +12,20 @@ class ChecklistFViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            substations_quantity = serializer.validated_data.get("substations_quantity")
-            substations = request.data.get("substations", [])
-
-            if substations_quantity != len(substations):
-                return Response(
-                    {
-                        "error": f"Substations quantity ({substations_quantity}) does not match the count ({len(substations)})."
-                    },
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
-
-            for index, substation in enumerate(substations):
-                expected_transformers = substation.get("transformers_quantity", 0)
-                actual_transformers = len(substation.get("transformers", []))
-
-                if expected_transformers != actual_transformers:
-                    return Response(
-                        {
-                            "error": f"Substation {index + 1}: transformers quantity ({expected_transformers}) does not match the count ({actual_transformers})."
-                        },
-                        status=status.HTTP_400_BAD_REQUEST,
-                    )
-
-            breakers_quantity = serializer.validated_data.get("breakers_quantity")
+            transformers_count = len(request.data.get("transformers", []))
             current_transformers_count = len(request.data.get("current_transformers", []))
 
-            if current_transformers_count > 0 and breakers_quantity != current_transformers_count:
+            if serializer.validated_data["transformers_quantity"] != transformers_count:
                 return Response(
-                    {
-                        "error": f"Breakers quantity ({breakers_quantity}) does not match the count ({current_transformers_count})."
-                    },
+                    {"error": "Transformers quantity do not match their respective count."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            if (
+                current_transformers_count > 0
+                and serializer.validated_data["breakers_quantity"] != current_transformers_count
+            ):
+                return Response(
+                    {"error": "Breakers quantity do not match their respective count."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
             if serializer.validated_data["gimi_study"] and not (

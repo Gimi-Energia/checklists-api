@@ -25,8 +25,14 @@ class ChecklistF(models.Model):
     process_number = models.CharField(_("Process Number"), max_length=10)
     item = models.CharField(_("Item"), max_length=3, default="1")
     company = models.CharField(_("Company"), choices=COMPANIES, default="Gimi", max_length=4)
-
-    substations_quantity = models.PositiveIntegerField(_("Substations Quantity"))
+    primary_voltage = models.FloatField(_("Primary Voltage (kV)"))
+    panel_usage = models.CharField(
+        _("Panel Usage"), max_length=20, choices=PANEL_USAGE_CHOICES, default="Sheltered"
+    )
+    cable_side = models.CharField(
+        _("Cable Side"), max_length=20, choices=CABLE_SIDE_CHOICES, default="Left"
+    )
+    transformers_quantity = models.PositiveIntegerField(_("Transformers Quantity"))
 
     breakers_protection = models.BooleanField(_("Breakers Protection?"), default=True)
     gimi_study = models.BooleanField(_("Gimi Study?"), default=False)
@@ -42,17 +48,12 @@ class ChecklistF(models.Model):
     breakers_quantity = models.PositiveIntegerField(_("Breakers Quantity"))
 
 
-class Substation(models.Model):
-    checklist = models.ForeignKey(ChecklistF, on_delete=models.CASCADE, related_name="substations")
-    name = models.CharField(_("Substation Name"), max_length=50)
-    primary_voltage = models.FloatField(_("Primary Voltage (kV)"))
-    panel_usage = models.CharField(
-        _("Panel Usage"), max_length=20, choices=PANEL_USAGE_CHOICES, default="Sheltered"
-    )
-    cable_side = models.CharField(
-        _("Cable Side"), max_length=20, choices=CABLE_SIDE_CHOICES, default="Left"
-    )
-    transformers_quantity = models.PositiveIntegerField(_("Transformers Quantity"))
+class Transformer(models.Model):
+    checklist = models.ForeignKey(ChecklistF, on_delete=models.CASCADE, related_name="transformers")
+    power = models.FloatField(_("Transformer Power"))
+    impedance = models.FloatField(_("Impedance"), blank=True, null=True)
+    demand = models.FloatField(_("Demand"), blank=True, null=True)
+    type = models.CharField(_("Type"), choices=TYPE_CHOICES, max_length=3, blank=True, null=True)
 
 
 class CurrentTransformer(models.Model):
@@ -61,13 +62,3 @@ class CurrentTransformer(models.Model):
     )
     ratio = models.CharField(_("CT Ratio"), max_length=10)
     accuracy = models.CharField(_("CT Accuracy"), max_length=30)
-
-
-class Transformer(models.Model):
-    substation = models.ForeignKey(
-        Substation, on_delete=models.CASCADE, related_name="transformers"
-    )
-    power = models.FloatField(_("Transformer Power"))
-    impedance = models.FloatField(_("Impedance"), blank=True, null=True)
-    demand = models.FloatField(_("Demand"), blank=True, null=True)
-    type = models.CharField(_("Type"), choices=TYPE_CHOICES, max_length=3, blank=True, null=True)
