@@ -20,7 +20,7 @@ def generate_pdf(instance):
 
     elements.append(Spacer(1, 0.25 * inch))
 
-    title = f"Checklist Cabine Primária Simplificada Medição MT (Enel) ({instance.process_number} - {instance.item})"
+    title = f"Checklist Cabine Primária Simplificada Medição BT ({instance.process_number} - {instance.item})"
     title_para = Paragraph(title, styles["Title"])
     elements.append(title_para)
     elements.append(Spacer(1, 0.2 * inch))

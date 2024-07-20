@@ -195,7 +195,7 @@ def generate_pdf(instance):
                 )
             )
 
-    subtitle_cabin = "Dados da Cabine de Barramentos"
+    subtitle_cabin = "Dados da Cabine Primária"
     subtitle_cabin_para = Paragraph(subtitle_cabin, subtitle_style)
     elements.append(subtitle_cabin_para)
     elements.append(Spacer(1, 0.2 * inch))
