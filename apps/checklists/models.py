@@ -14,6 +14,16 @@ COMPANIES = [
     ("GIR", "GIR"),
 ]
 
+NOT_SENT = 1
+SENT = 2
+ANSWERED = 3
+
+STATUS_CHOICES = [
+    (NOT_SENT, "NOT SENT"),
+    (SENT, "SENT"),
+    (ANSWERED, "ANSWERED"),
+]
+
 
 class Product(models.Model):
     id = models.CharField(primary_key=True, max_length=4, unique=True)
@@ -35,7 +45,7 @@ class Checklist(models.Model):
     products = models.ManyToManyField(Product, through="ChecklistProduct", null=True, blank=True)
     answered_registration = models.BooleanField(_("Answered Registration"), default=False)
     answered_optional = models.BooleanField(_("Answered Optional"), default=False)
-    answered_art = models.BooleanField(_("Answered ART"), default=False)
+    art_status = models.IntegerField(choices=STATUS_CHOICES, default=NOT_SENT)
     created_at = models.DateTimeField(_("Created At"), default=timezone.now)
 
     def __str__(self):
