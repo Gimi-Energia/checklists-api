@@ -44,10 +44,9 @@ def generate_pdf(instance):
         Paragraph(f"<b>Dados do responsável legal:</b> {lr_data}", styles["Normal"]),
     ]
 
-    if instance.deadline:
-        formatted_deadline = instance.deadline.strftime("%d/%m/%Y")
+    if instance.deadline_day:
         details_fat.append(
-            Paragraph(f"<b>Data limite NF:</b> {formatted_deadline}", styles["Normal"])
+            Paragraph(f"<b>Data limite NF:</b> Dia {instance.deadline_day}", styles["Normal"])
         )
     if instance.minimum_value:
         details_fat.append(
