@@ -274,7 +274,10 @@ def generate_pdf(instance):
     if not instance.gimi_study and instance.have_study:
         for i, current_transformer_data in enumerate(current_transformers_data, start=1):
             elements.append(Spacer(1, 0.2 * inch))
-            subtitle_current_transformer = f"Definição do grupo {i} de TCs de proteção"
+            if i == 1:
+                subtitle_current_transformer = "Definição do Disjuntor Geral"
+            else:
+                subtitle_current_transformer = f"Definição do Conjunto TC Medição/Consumidor {i}"
             subtitle_current_transformer_para = Paragraph(
                 subtitle_current_transformer, thirdtitle_style
             )
