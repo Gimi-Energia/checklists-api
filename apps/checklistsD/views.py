@@ -13,10 +13,13 @@ class ChecklistDViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             transformers_count = len(request.data.get("transformers", []))
+            transformers_quantity = serializer.validated_data["transformers_quantity"]
 
-            if serializer.validated_data["transformers_quantity"] != transformers_count:
+            if transformers_quantity != transformers_count:
                 return Response(
-                    {"error": "Transformers quantity do not match their respective count."},
+                    {
+                        "error": f"Quantidade de transformadores ({transformers_quantity}) não corresponde à contagem ({transformers_count})."
+                    },
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 

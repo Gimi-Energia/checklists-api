@@ -18,7 +18,7 @@ class ChecklistCViewSet(viewsets.ModelViewSet):
             if consumers_quantity != len(consumers):
                 return Response(
                     {
-                        "error": f"Consumers quantity ({consumers_quantity}) does not match the count ({len(consumers)})."
+                        "error": f"Quantiade de Medição/Consumidores ({consumers_quantity}) não corresponde à contagem ({len(consumers)})."
                     },
                     status=status.HTTP_400_BAD_REQUEST,
                 )
@@ -30,7 +30,7 @@ class ChecklistCViewSet(viewsets.ModelViewSet):
                 if expected_transformers != actual_transformers:
                     return Response(
                         {
-                            "error": f"Consumer {index + 1}: transformers quantity ({expected_transformers}) does not match the count ({actual_transformers})."
+                            "error": f"Medição/Consumidor {index + 1}: quantidade de transformadores ({expected_transformers}) não corresponde à contagem ({actual_transformers})."
                         },
                         status=status.HTTP_400_BAD_REQUEST,
                     )
@@ -41,7 +41,7 @@ class ChecklistCViewSet(viewsets.ModelViewSet):
             if current_transformers_count > 0 and breakers_quantity != current_transformers_count:
                 return Response(
                     {
-                        "error": f"Breakers quantity ({breakers_quantity}) does not match the count ({current_transformers_count})."
+                        "error": f"Quantidade de TCs ({breakers_quantity}) não corresponde à contagem ({current_transformers_count})."
                     },
                     status=status.HTTP_400_BAD_REQUEST,
                 )
@@ -52,7 +52,7 @@ class ChecklistCViewSet(viewsets.ModelViewSet):
                 or serializer.validated_data.get("iccftmin", False)
             ):
                 return Response(
-                    {"error": "If study is Gimi, send the needed fields."},
+                    {"error": "Se o estudo for Gimi, envie os campos necessários."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
             if not serializer.validated_data["gimi_study"] and not (
@@ -61,7 +61,7 @@ class ChecklistCViewSet(viewsets.ModelViewSet):
                 or current_transformers_count == 0
             ):
                 return Response(
-                    {"error": "If study is Client, send the study fields."},
+                    {"error": "Se o estudo for Cliente, envie os campos necessários."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 

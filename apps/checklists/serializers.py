@@ -40,7 +40,7 @@ class ChecklistSerializer(serializers.ModelSerializer):
                 if (product_id, item) in existing_products:
                     raise serializers.ValidationError(
                         {
-                            "Error": f"Duplicate product {product_id} with item {item} in the same request."
+                            "Error": f"Produto {product_id} com item {item} duplicado."
                         }
                     )
 
