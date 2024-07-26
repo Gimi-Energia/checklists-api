@@ -234,16 +234,19 @@ def generate_pdf(instance):
                 styles["Normal"],
             )
             elements.append(paragraph)
+            elements.append(Spacer(1, 0.1 * inch))
             paragraph = Paragraph(
                 f"<b>Demanda:</b> {transformer_data.demand} kW",
                 styles["Normal"],
             )
             elements.append(paragraph)
+            elements.append(Spacer(1, 0.1 * inch))
             paragraph = Paragraph(
                 f"<b>Impedância:</b> {transformer_data.impedance} %",
                 styles["Normal"],
             )
             elements.append(paragraph)
+            elements.append(Spacer(1, 0.1 * inch))
             paragraph = Paragraph(
                 f"<b>Tipo:</b> {translations.get(transformer_data.type)}",
                 styles["Normal"],
@@ -272,9 +275,9 @@ def generate_pdf(instance):
         elements.append(Spacer(1, 0.1 * inch))
 
     if not instance.gimi_study and instance.have_study:
-        for i, current_transformer_data in enumerate(current_transformers_data, start=1):
+        for i, current_transformer_data in enumerate(current_transformers_data):
             elements.append(Spacer(1, 0.2 * inch))
-            if i == 1:
+            if i == 0:
                 subtitle_current_transformer = "Definição do Disjuntor Geral"
             else:
                 subtitle_current_transformer = f"Definição do Conjunto TC Medição/Consumidor {i}"
@@ -284,13 +287,18 @@ def generate_pdf(instance):
             elements.append(subtitle_current_transformer_para)
             elements.append(Spacer(1, 0.15 * inch))
 
-            for key, value in current_transformer_data.items():
-                paragraph = Paragraph(
-                    f"<b>{translations.get(key.capitalize())}:</b> {value}",
-                    styles["Normal"],
-                )
-                elements.append(paragraph)
-                elements.append(Spacer(1, 0.1 * inch))
+            paragraph = Paragraph(
+                f"<b>Relação:</b> {current_transformer_data.ratio}",
+                styles["Normal"],
+            )
+            elements.append(paragraph)
+            elements.append(Spacer(1, 0.1 * inch))
+            paragraph = Paragraph(
+                f"<b>Exatidão:</b> {current_transformer_data.accuracy}",
+                styles["Normal"],
+            )
+            elements.append(paragraph)
+            elements.append(Spacer(1, 0.1 * inch))
 
     elements.append(Spacer(1, 0.2 * inch))
     subtitle_contractor = "Dados Contrato"
