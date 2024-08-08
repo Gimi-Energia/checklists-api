@@ -1,6 +1,8 @@
 from django.db import transaction
 from rest_framework import serializers
 
+from apps.users.serializers import UserCustomSerializer
+
 from .models import Checklist, ChecklistProduct, Product
 from .services.email_service import send_new_checklist_email
 
@@ -19,7 +21,7 @@ class ChecklistProductSerializer(serializers.ModelSerializer):
         fields = ["product_id", "item", "is_answered"]
 
 
-class ChecklistSerializer(serializers.ModelSerializer):
+class ChecklistWriteSerializer(serializers.ModelSerializer):
     products = ChecklistProductSerializer(source="checklistproduct_set", many=True)
 
     class Meta:
@@ -39,9 +41,7 @@ class ChecklistSerializer(serializers.ModelSerializer):
 
                 if (product_id, item) in existing_products:
                     raise serializers.ValidationError(
-                        {
-                            "Error": f"Produto {product_id} com item {item} duplicado."
-                        }
+                        {"Error": f"Produto {product_id} com item {item} duplicado."}
                     )
 
                 existing_products.add((product_id, item))
@@ -79,3 +79,18 @@ class ChecklistSerializer(serializers.ModelSerializer):
             )
 
         return instance
+
+
+class ChecklistReadSerializer(serializers.ModelSerializer):
+    products = ChecklistProductSerializer(source="checklistproduct_set", many=True)
+    user = UserCustomSerializer()
+
+    class Meta:
+        model = Checklist
+        fields = "__all__"
+
+
+class ChecklistCustomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Checklist
+        fields = ["id", "company", "process_number"]

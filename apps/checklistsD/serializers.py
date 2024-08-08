@@ -1,6 +1,8 @@
 from django.db import transaction
 from rest_framework import serializers
 
+from apps.checklists.serializers import ChecklistCustomSerializer
+
 from .models import ChecklistD, Transformer
 from .services.email_service import send_checklist_email
 
@@ -12,7 +14,7 @@ class TransformerSerializer(serializers.ModelSerializer):
         ref_name = "TransformerChecklistD"
 
 
-class ChecklistDSerializer(serializers.ModelSerializer):
+class ChecklistDWriteSerializer(serializers.ModelSerializer):
     transformers = TransformerSerializer(many=True)
 
     class Meta:
@@ -31,3 +33,12 @@ class ChecklistDSerializer(serializers.ModelSerializer):
             send_checklist_email(checklist, transformers_data)
 
         return checklist
+
+
+class ChecklistDReadSerializer(serializers.ModelSerializer):
+    parent_checklist = ChecklistCustomSerializer()
+    transformers = TransformerSerializer(many=True)
+
+    class Meta:
+        model = ChecklistD
+        fields = "__all__"

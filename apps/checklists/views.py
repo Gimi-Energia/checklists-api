@@ -3,12 +3,11 @@ from rest_framework import filters, viewsets
 
 from .mixins import ProductActionsMixin
 from .models import Checklist, Product
-from .serializers import ChecklistSerializer, ProductSerializer
+from .serializers import ChecklistReadSerializer, ChecklistWriteSerializer, ProductSerializer
 
 
 class ChecklistViewSet(ProductActionsMixin, viewsets.ModelViewSet):
     queryset = Checklist.objects.all()
-    serializer_class = ChecklistSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
     search_fields = [
         "company",
@@ -20,6 +19,11 @@ class ChecklistViewSet(ProductActionsMixin, viewsets.ModelViewSet):
     ]
     ordering_fields = ["created_at"]
     filterset_fields = ["company", "process_number"]
+
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return ChecklistReadSerializer
+        return ChecklistWriteSerializer
 
 
 class ProductViewSet(viewsets.ModelViewSet):

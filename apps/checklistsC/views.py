@@ -2,12 +2,16 @@ from rest_framework import status, viewsets
 from rest_framework.response import Response
 
 from .models import ChecklistC
-from .serializers import ChecklistCSerializer
+from .serializers import ChecklistCReadSerializer, ChecklistCWriteSerializer
 
 
 class ChecklistCViewSet(viewsets.ModelViewSet):
     queryset = ChecklistC.objects.all()
-    serializer_class = ChecklistCSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return ChecklistCReadSerializer
+        return ChecklistCWriteSerializer
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
