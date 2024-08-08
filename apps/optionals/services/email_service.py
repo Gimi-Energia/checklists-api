@@ -9,6 +9,7 @@ def send_optionals_email(instance):
     subject = f"Checklist Serviços Opcionais {instance.process_number}"
     users = User.objects.all()
     recipient_list = [user.email for user in users]
+    recipient_list += instance.parent_checklist.client_email.replace(" ", "").split(",")
     email_from = settings.EMAIL_HOST_USER
 
     email = EmailMessage(
