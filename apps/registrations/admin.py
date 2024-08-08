@@ -4,7 +4,7 @@ from .models import Registration
 
 
 class RegistrationAdmin(admin.ModelAdmin):
-    list_display = ("id", "process_number")
+    list_display = ("id", "company", "process_number")
 
 
 admin.site.register(Registration, RegistrationAdmin)

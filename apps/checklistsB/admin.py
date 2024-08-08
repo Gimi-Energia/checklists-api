@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import ChecklistB
+
+
+class ChecklistBAdmin(admin.ModelAdmin):
+    list_display = ("id", "company", "process_number", "item")
+
+
+admin.site.register(ChecklistB, ChecklistBAdmin)
