@@ -26,11 +26,13 @@ def generate_pdf(instance):
     elements.append(Spacer(1, 0.2 * inch))
 
     lr_data = (
-        f"{instance.lr_name} | {instance.lr_email} | {instance.lr_phone} | {instance.lr_document}"
+        f"{instance.lr_name} | {instance.lr_email} | {instance.lr_document} | {instance.lr_phone}"
     )
 
     details_fat = [
-        Paragraph(f"<b>Document para faturamento:</b> {instance.billing_document}", styles["Normal"]),
+        Paragraph(
+            f"<b>Documento para faturamento:</b> {instance.billing_document}", styles["Normal"]
+        ),
         Paragraph(
             f"<b>Contribuinte de ICMS:</b> {'Sim' if instance.is_taxpayer else 'Não'}",
             styles["Normal"],
@@ -47,7 +49,8 @@ def generate_pdf(instance):
     if instance.billing_interval:
         details_fat.append(
             Paragraph(
-                f"<b>Prazo faturamento NF:</b> Dia {instance.billing_interval}", styles["Normal"]
+                f"<b>Intervalo faturamento NF:</b> Dia {instance.billing_interval}",
+                styles["Normal"],
             )
         )
     if instance.minimum_value:
