@@ -1,13 +1,11 @@
-from uuid import uuid4
-
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from apps.checklists.models import COMPANIES, Checklist
+from apps.checklists.models import Checklist
+from utils.base_model import BaseModel
 
 
-class ChecklistG(models.Model):
-    id = models.UUIDField(primary_key=True, unique=True, default=uuid4, editable=False)
+class ChecklistG(BaseModel):
     parent_checklist = models.ForeignKey(
         Checklist,
         verbose_name=_("Parent Checklist"),
@@ -15,9 +13,6 @@ class ChecklistG(models.Model):
         blank=True,
         null=True,
     )
-
-    process_number = models.CharField(_("Process Number"), max_length=10)
-    company = models.CharField(_("Company"), choices=COMPANIES, default="Gimi", max_length=4)
 
     responsible_name = models.CharField(_("Responsible Name"), max_length=50)
     responsible_phone = models.CharField(_("Responsible Phone"), max_length=15)

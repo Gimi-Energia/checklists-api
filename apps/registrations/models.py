@@ -1,9 +1,8 @@
-from uuid import uuid4
-
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from apps.checklists.models import COMPANIES, Checklist
+from apps.checklists.models import Checklist
+from utils.base_model import BaseModel
 
 MATERIAL_CHOICES = (
     ("Uso e consumo", "Uso e consumo"),
@@ -12,8 +11,7 @@ MATERIAL_CHOICES = (
 )
 
 
-class Registration(models.Model):
-    id = models.UUIDField(primary_key=True, unique=True, default=uuid4, editable=False)
+class Registration(BaseModel):
     parent_checklist = models.ForeignKey(
         Checklist,
         verbose_name=_("Parent Checklist"),
@@ -22,11 +20,9 @@ class Registration(models.Model):
         null=True,
     )
 
-    process_number = models.CharField(_("Process Number"), max_length=10)
-    company = models.CharField(_("Company"), choices=COMPANIES, default="Gimi", max_length=4)
-    billing_cnpj = models.CharField(_("Billing CNPJ"), max_length=18)
+    billing_document = models.CharField(_("Billing Document"), max_length=18)
     is_taxpayer = models.BooleanField(_("Is Taxpayer"), default=True)
-    deadline_day = models.PositiveIntegerField(_("Deadline"), blank=True, null=True)
+    billing_interval = models.CharField(_("Billing Deadline"), max_length=10, blank=True, null=True)
     minimum_value = models.FloatField(_("Minimum Value"), blank=True, null=True)
     material_destination = models.CharField(
         _("Material Destination"), max_length=50, choices=MATERIAL_CHOICES

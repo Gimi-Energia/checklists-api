@@ -30,7 +30,7 @@ def generate_pdf(instance):
     )
 
     details_fat = [
-        Paragraph(f"<b>CNPJ de faturamento:</b> {instance.billing_cnpj}", styles["Normal"]),
+        Paragraph(f"<b>Document para faturamento:</b> {instance.billing_document}", styles["Normal"]),
         Paragraph(
             f"<b>Contribuinte de ICMS:</b> {'Sim' if instance.is_taxpayer else 'Não'}",
             styles["Normal"],
@@ -44,9 +44,11 @@ def generate_pdf(instance):
         Paragraph(f"<b>Dados do responsável legal:</b> {lr_data}", styles["Normal"]),
     ]
 
-    if instance.deadline_day:
+    if instance.billing_interval:
         details_fat.append(
-            Paragraph(f"<b>Data limite NF:</b> Dia {instance.deadline_day}", styles["Normal"])
+            Paragraph(
+                f"<b>Prazo faturamento NF:</b> Dia {instance.billing_interval}", styles["Normal"]
+            )
         )
     if instance.minimum_value:
         details_fat.append(

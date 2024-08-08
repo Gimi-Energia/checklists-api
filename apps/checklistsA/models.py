@@ -1,9 +1,8 @@
-from uuid import uuid4
-
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from apps.checklists.models import COMPANIES, Checklist
+from apps.checklists.models import Checklist
+from utils.base_model import BaseModel
 
 CONCESSIONAIRE_CHOICES = [
     ("CEEE", "CEEE"),
@@ -28,8 +27,7 @@ CABLE_SIDE_CHOICES = [("Left", "Left"), ("Right", "Right")]
 TYPE_CHOICES = [("Air", "Air"), ("Oil", "Oil")]
 
 
-class ChecklistA(models.Model):
-    id = models.UUIDField(primary_key=True, unique=True, default=uuid4, editable=False)
+class ChecklistA(BaseModel):
     parent_checklist = models.ForeignKey(
         Checklist,
         verbose_name=_("Parent Checklist"),
@@ -38,9 +36,7 @@ class ChecklistA(models.Model):
         null=True,
     )
 
-    process_number = models.CharField(_("Process Number"), max_length=10)
     item = models.CharField(_("Item"), max_length=3, default="1")
-    company = models.CharField(_("Company"), choices=COMPANIES, default="Gimi", max_length=4)
     concessionaire = models.CharField(
         max_length=20, choices=CONCESSIONAIRE_CHOICES, default="CEEE", null=True, blank=True
     )

@@ -1,55 +1,52 @@
-from uuid import uuid4
-
 from django.db import models
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from apps.users.models import User
+from utils.base_model import BaseModel
 
-COMPANIES = [
-    ("Gimi", "Gimi"),
-    ("GBL", "GBL"),
-    ("GPB", "GPB"),
-    ("GS", "GS"),
-    ("GIR", "GIR"),
-]
-
+REPEATED = 1
 NOT_SENT = 1
 SENT = 2
 ANSWERED = 3
 
-STATUS_CHOICES = [
+ART_CHOICES = [
     (NOT_SENT, "NOT SENT"),
+    (SENT, "SENT"),
+    (ANSWERED, "ANSWERED"),
+]
+
+STATUS_CHOICES = [
+    (REPEATED, "PREVIOUSLY SENT"),
     (SENT, "SENT"),
     (ANSWERED, "ANSWERED"),
 ]
 
 
 class Product(models.Model):
-    id = models.CharField(primary_key=True, max_length=4, unique=True)
+    id = models.CharField(primary_key=True, max_length=1, unique=True)
     name = models.CharField(_("Product Name"), max_length=50)
 
     def __str__(self):
         return f"Checklist {self.id} - {self.name}"
 
 
-class Checklist(models.Model):
-    id = models.UUIDField(primary_key=True, unique=True, default=uuid4, editable=False)
+class Checklist(BaseModel):
     user = models.ForeignKey(
         User, verbose_name=_("User"), on_delete=models.CASCADE, null=True, blank=True
     )
-    company = models.CharField(_("Company"), choices=COMPANIES, default="Gimi", max_length=4)
-    budget_number = models.CharField(_("Budget Number"), max_length=10)
     client_name = models.CharField(_("Client Name"), max_length=120)
-    client_email = models.EmailField(_("Cliente Email"), max_length=254)
-    products = models.ManyToManyField(Product, through="ChecklistProduct", null=True, blank=True)
-    answered_registration = models.BooleanField(_("Answered Registration"), default=False)
-    answered_optional = models.BooleanField(_("Answered Optional"), default=False)
-    art_status = models.IntegerField(choices=STATUS_CHOICES, default=NOT_SENT)
-    created_at = models.DateTimeField(_("Created At"), default=timezone.now)
+    client_email = models.TextField(_("Client Email"))
+    products = models.ManyToManyField(Product, through="ChecklistProduct")
+    registration_status = models.IntegerField(
+        _("Answered Registration"), choices=STATUS_CHOICES, default=SENT
+    )
+    optional_status = models.IntegerField(
+        _("Answered Optional"), choices=STATUS_CHOICES, default=SENT
+    )
+    art_status = models.IntegerField(_("ART Status"), choices=ART_CHOICES, default=NOT_SENT)
 
     def __str__(self):
-        return f"{self.company} - {self.budget_number}"
+        return f"{self.company} - {self.process_number}"
 
 
 class ChecklistProduct(models.Model):

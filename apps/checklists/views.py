@@ -12,14 +12,14 @@ class ChecklistViewSet(ProductActionsMixin, viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
     search_fields = [
         "company",
-        "budget_number",
+        "process_number",
         "client_name",
         "client_email",
         "products__id",
         "user",
     ]
     ordering_fields = ["created_at"]
-    filterset_fields = ["company", "budget_number"]
+    filterset_fields = ["company", "process_number"]
 
 
 class ProductViewSet(viewsets.ModelViewSet):

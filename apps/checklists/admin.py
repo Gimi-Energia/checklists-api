@@ -13,12 +13,11 @@ class ChecklistAdmin(admin.ModelAdmin):
         "id",
         "user",
         "company",
-        "budget_number",
+        "process_number",
         "client_name",
         "client_email",
-        "answered_registration",
-        "answered_optional",
-        "created_at",
+        "registration_status",
+        "optional_status",
     )
     inlines = [ChecklistProductInline]
 
