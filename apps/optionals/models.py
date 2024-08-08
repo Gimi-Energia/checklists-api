@@ -15,6 +15,12 @@ class Optional(BaseModel):
     )
 
     extended_warranty = models.BooleanField(_("Extended Warranty"))
+    coord_selectivity = models.BooleanField(_("Coord Selectivity"), default=False)
+    relay_parameterization = models.BooleanField(_("Relay Parameterization"), default=False)
+    relay_commissioning = models.BooleanField(_("Relay Commissioning"), default=False)
+    panel_commissioning = models.BooleanField(_("Panel Commissioning"), default=False)
+    busbar_installation = models.BooleanField(_("Busbar Installation"), default=False)
+    protection_equipment = models.BooleanField(_("Protection Equipment"), default=False)
 
     def __str__(self):
-        return f"{self.company}-{self.process_number} | {self.extended_warranty}"
+        return f"{self.company}-{self.process_number}"

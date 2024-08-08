@@ -16,8 +16,6 @@ class ChecklistAdmin(admin.ModelAdmin):
         "process_number",
         "client_name",
         "client_email",
-        "registration_status",
-        "optional_status",
     )
     inlines = [ChecklistProductInline]
 
