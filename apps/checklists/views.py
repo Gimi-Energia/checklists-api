@@ -15,7 +15,7 @@ class ChecklistViewSet(ProductActionsMixin, viewsets.ModelViewSet):
         "client_name",
         "client_email",
         "products__id",
-        "user",
+        "user__email",
     ]
     ordering_fields = ["created_at"]
     filterset_fields = ["company", "process_number"]
