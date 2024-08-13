@@ -31,27 +31,27 @@ def generate_pdf(instance):
             styles["Normal"],
         ),
         Paragraph(
-            f"<b>Estudo de coordenação e seletividade:</b> {'Sim' if instance.coord_selectivity_study else 'Não'}",
+            f"<b>Estudo de coordenação e seletividade:</b> {'Sim' if instance.coord_selectivity else 'Não'}",
             styles["Normal"],
         ),
         Paragraph(
-            f"<b>Serviço de parametrização dos relés de proteção:</b> {'Sim' if instance.relay_parameterization_service else 'Não'}",
+            f"<b>Serviço de parametrização dos relés de proteção:</b> {'Sim' if instance.relay_parameterization else 'Não'}",
             styles["Normal"],
         ),
         Paragraph(
-            f"<b>Comissionamento dos relés de proteção:</b> {'Sim' if instance.relay_commissioning_service else 'Não'}",
+            f"<b>Comissionamento dos relés de proteção:</b> {'Sim' if instance.relay_commissioning else 'Não'}",
             styles["Normal"],
         ),
         Paragraph(
-            f"<b>Comissionamento e start-up dos painéis:</b> {'Sim' if instance.panel_commissioning_startup else 'Não'}",
+            f"<b>Comissionamento e start-up dos painéis:</b> {'Sim' if instance.panel_commissioning else 'Não'}",
             styles["Normal"],
         ),
         Paragraph(
-            f"<b>Instalação de barramento blindado:</b> {'Sim' if instance.busbar_installation_services else 'Não'}",
+            f"<b>Instalação de barramento blindado:</b> {'Sim' if instance.busbar_installation else 'Não'}",
             styles["Normal"],
         ),
         Paragraph(
-            f"<b>Aquisição de equipamentos de proteção (EPI e EPC):</b> {'Sim' if instance.protection_equipment_acquisition else 'Não'}",
+            f"<b>Aquisição de equipamentos de proteção (EPI e EPC):</b> {'Sim' if instance.protection_equipment else 'Não'}",
             styles["Normal"],
         ),
     ]
