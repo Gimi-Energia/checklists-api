@@ -36,7 +36,7 @@ class Registration(BaseModel):
     neighborhood = models.CharField(_("Neighborhood"), max_length=100)
     city = models.CharField(_("City"), max_length=100)
     state = models.CharField(_("State"), max_length=50)
-    zip_code = models.CharField(_("Zip Code"), max_length=20)
+    zip_code = models.CharField(_("Zip Code"), max_length=23)
     access_restriction = models.CharField(
         _("Access Restriction"), max_length=100, blank=True, null=True
     )
