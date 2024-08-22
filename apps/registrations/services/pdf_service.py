@@ -25,10 +25,6 @@ def generate_pdf(instance):
     elements.append(title_para)
     elements.append(Spacer(1, 0.2 * inch))
 
-    lr_data = (
-        f"{instance.lr_name} | {instance.lr_email} | {instance.lr_document} | {instance.lr_phone}"
-    )
-
     details_fat = [
         Paragraph(
             f"<b>Documento para faturamento:</b> {instance.billing_document}", styles["Normal"]
@@ -43,9 +39,18 @@ def generate_pdf(instance):
         ),
         Paragraph(f"<b>Emails NF:</b> {instance.nf_email}", styles["Normal"]),
         Paragraph(f"<b>Condição de Pagamento:</b> {instance.payment_condition}", styles["Normal"]),
-        Paragraph(f"<b>Dados do responsável legal:</b> {lr_data}", styles["Normal"]),
     ]
 
+    if (
+        instance.instance.lr_name
+        and instance.lr_email
+        and instance.lr_document
+        and instance.lr_phone
+    ):
+        lr_data = f"{instance.lr_name} | {instance.lr_email} | {instance.lr_document} | {instance.lr_phone}"
+        details_fat.append(
+            Paragraph(f"<b>Dados do responsável legal:</b> {lr_data}", styles["Normal"]),
+        )
     if instance.billing_interval:
         details_fat.append(
             Paragraph(
