@@ -14,7 +14,7 @@ class RegistrationWriteSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def validate(self, data):
-        if not valid_cpf(data["lr_document"]):
+        if data.get("lr_document") and not valid_cpf(data.get("lr_document")):
             raise serializers.ValidationError({"lr_document": "CPF inválido."})
 
         return data

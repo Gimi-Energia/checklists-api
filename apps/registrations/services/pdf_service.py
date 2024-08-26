@@ -41,12 +41,7 @@ def generate_pdf(instance):
         Paragraph(f"<b>Condição de Pagamento:</b> {instance.payment_condition}", styles["Normal"]),
     ]
 
-    if (
-        instance.instance.lr_name
-        and instance.lr_email
-        and instance.lr_document
-        and instance.lr_phone
-    ):
+    if instance.lr_name and instance.lr_email and instance.lr_document and instance.lr_phone:
         lr_data = f"{instance.lr_name} | {instance.lr_email} | {instance.lr_document} | {instance.lr_phone}"
         details_fat.append(
             Paragraph(f"<b>Dados do responsável legal:</b> {lr_data}", styles["Normal"]),
