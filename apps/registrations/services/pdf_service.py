@@ -5,7 +5,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
-from setup.pdf.pdf_utils import generate_header, subtitle_style
+from utils.pdf import generate_header, subtitle_style
 
 
 def generate_pdf(instance):
@@ -79,8 +79,18 @@ def generate_pdf(instance):
         Paragraph(f"<b>Bairro:</b> {instance.neighborhood}", styles["Normal"]),
         Paragraph(f"<b>Cidade:</b> {instance.city}", styles["Normal"]),
         Paragraph(f"<b>Estado:</b> {instance.state}", styles["Normal"]),
-        Paragraph(f"<b>CEP:</b> {instance.zip_code}", styles["Normal"]),
     ]
+
+    if instance.zip_code:
+        details_adress.append(
+            Paragraph(f"<b>CEP:</b> {instance.zip_code}", styles["Normal"]),
+        )
+
+    if instance.latitude and instance.longitude:
+        coordinates = f"{instance.latitude}, {instance.longitude}"
+        details_adress.append(
+            Paragraph(f"<b>Coordenadas:</b> {coordinates}", styles["Normal"]),
+        )
 
     if instance.complement:
         details_adress.append(

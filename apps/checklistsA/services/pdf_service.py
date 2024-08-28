@@ -5,7 +5,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
-from setup.pdf.pdf_utils import (
+from utils.pdf import (
     generate_header,
     subtitle_style,
     thirdtitle_style,
@@ -67,8 +67,22 @@ def generate_pdf(instance, transformers_data, current_transformers_data):
         ),
         Paragraph(f"<b>Cidade do Contratante:</b> {instance.contractor_city}", styles["Normal"]),
         Paragraph(f"<b>Estado do Contratante:</b> {instance.contractor_state}", styles["Normal"]),
-        Paragraph(f"<b>CEP/Coordenadas do Contratante:</b> {instance.contractor_zip_code}", styles["Normal"]),
     ]
+
+    if instance.contractor_zip_code:
+        details_contractor.append(
+            Paragraph(
+                f"<b>CEP do Contratante:</b> {instance.contractor_zip_code}", styles["Normal"]
+            ),
+        )
+
+    if instance.contractor_latitude and instance.contractor_longitude:
+        contractor_coordinates = f"{instance.contractor_latitude}, {instance.contractor_longitude}"
+        details_contractor.append(
+            Paragraph(
+                f"<b>Coordenadas do Contratante:</b> {contractor_coordinates}", styles["Normal"]
+            ),
+        )
 
     if instance.contractor_complement:
         details_contractor.append(
@@ -88,8 +102,18 @@ def generate_pdf(instance, transformers_data, current_transformers_data):
         Paragraph(f"<b>Bairro da Obra:</b> {instance.work_neighborhood}", styles["Normal"]),
         Paragraph(f"<b>Cidade da Obra:</b> {instance.work_city}", styles["Normal"]),
         Paragraph(f"<b>Estado da Obra:</b> {instance.work_state}", styles["Normal"]),
-        Paragraph(f"<b>CEP/Coordenadas da Obra:</b> {instance.work_zip_code}", styles["Normal"]),
     ]
+
+    if instance.work_zip_code:
+        details_owner_work.append(
+            Paragraph(f"<b>CEP da Obra:</b> {instance.work_zip_code}", styles["Normal"]),
+        )
+
+    if instance.work_latitude and instance.work_longitude:
+        work_coordinates = f"{instance.work_latitude}, {instance.work_longitude}"
+        details_owner_work.append(
+            Paragraph(f"<b>Coordenadas da Obra:</b> {work_coordinates}", styles["Normal"]),
+        )
 
     if instance.work_complement:
         details_owner_work.append(

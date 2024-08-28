@@ -2,7 +2,7 @@ from django.db import transaction
 from rest_framework import serializers
 
 from apps.checklists.serializers import ChecklistCustomSerializer
-from utils.validators.custom_validators import valid_cnpj, valid_cpf
+from utils.validators import valid_cnpj, valid_cpf
 
 from .models import Registration
 from .services.email_service import send_registration_email

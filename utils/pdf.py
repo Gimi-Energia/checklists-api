@@ -101,7 +101,7 @@ def generate_header(company, styles):
     )
     company_details_paragraph = Paragraph(company_details_content, small_style)
 
-    logo_path = f"setup/images/logo_{company.lower()}.png"
+    logo_path = f"utils/images/logo_{company.lower()}.png"
     logo = (
         Image(logo_path, width=2 * inch, height=1 * inch)
         if os.path.exists(logo_path)

@@ -72,7 +72,12 @@ class ChecklistC(BaseModel):
     contractor_neighborhood = models.CharField(_("Contractor Neighborhood"), max_length=100)
     contractor_city = models.CharField(_("Contractor City"), max_length=100)
     contractor_state = models.CharField(_("Contractor State"), max_length=50)
-    contractor_zip_code = models.CharField(_("Contractor Zip Code"), max_length=23)
+    contractor_zip_code = models.CharField(
+        _("Contractor Zip Code"), max_length=10, blank=True, null=True
+    )
+    contractor_latitude = models.FloatField(_("Contractor Latitude"), blank=True, null=True)
+    contractor_longitude = models.FloatField(_("Contractor Longitude"), blank=True, null=True)
+    
     owner_name = models.CharField(_("Owner Name"), max_length=50)
     owner_document = models.CharField(_("Owner Document"), max_length=18)
     owner_contact = models.CharField(_("Owner Contact"), max_length=50)
@@ -83,7 +88,10 @@ class ChecklistC(BaseModel):
     work_neighborhood = models.CharField(_("Work Neighborhood"), max_length=100)
     work_city = models.CharField(_("Work City"), max_length=100)
     work_state = models.CharField(_("Work State"), max_length=50)
-    work_zip_code = models.CharField(_("Work Zip Code"), max_length=23)
+    work_zip_code = models.CharField(_("Work Zip Code"), max_length=10, blank=True, null=True)
+    work_latitude = models.FloatField(_("Work Latitude"), blank=True, null=True)
+    work_longitude = models.FloatField(_("Work Longitude"), blank=True, null=True)
+
     gimi_study = models.BooleanField(_("Gimi Study?"), default=False)
     icc3f = models.FloatField(_("Icc3f"), blank=True, null=True)
     icc2f = models.FloatField(_("Icc2f"), blank=True, null=True)
