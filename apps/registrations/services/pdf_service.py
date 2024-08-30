@@ -27,6 +27,10 @@ def generate_pdf(instance):
 
     details_fat = [
         Paragraph(
+            f"<b>De acordo com faturamento antecipado:</b> {instance.advance_billing_agreed}",
+            styles["Normal"],
+        ),
+        Paragraph(
             f"<b>Documento para faturamento:</b> {instance.billing_document}", styles["Normal"]
         ),
         Paragraph(

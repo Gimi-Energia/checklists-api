@@ -20,6 +20,8 @@ class Registration(BaseModel):
         null=True,
     )
 
+    advance_billing_agreed = models.BooleanField(_("Advance Biliing Agreed?"), default=True)
+
     billing_document = models.CharField(_("Billing Document"), max_length=18)
     is_taxpayer = models.BooleanField(_("Is Taxpayer"), default=True)
     billing_interval = models.CharField(_("Billing Deadline"), max_length=10, blank=True, null=True)
