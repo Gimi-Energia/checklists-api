@@ -27,7 +27,7 @@ def generate_pdf(instance):
 
     details_fat = [
         Paragraph(
-            f"<b>De acordo com faturamento antecipado:</b> {instance.advance_billing_agreed}",
+            f"<b>De acordo com faturamento antecipado:</b> {'Sim' if instance.advance_billing_agreed else 'Não'}",
             styles["Normal"],
         ),
         Paragraph(

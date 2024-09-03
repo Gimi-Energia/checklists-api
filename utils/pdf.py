@@ -18,7 +18,7 @@ translations = {
     "Coupled Transformer": "Transformador Acoplado",
     "Flanged Transformer": "Transformador Flangeado",
     "Power": "Potência",
-    "Impedance": "Impendância",
+    "Impedance": "Impedância",
     "Demand": "Demanda",
     "Type": "Tipo",
     "Ratio": "Relação",

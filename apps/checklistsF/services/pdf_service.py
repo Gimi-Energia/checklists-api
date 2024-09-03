@@ -87,20 +87,22 @@ def generate_pdf(instance, transformers_data, current_transformers_data):
         )
 
         if not instance.have_study:
-            formatted_study_prediction = instance.study_prediction.strftime("%d/%m/%Y")
-            details_study.append(
-                Paragraph(
-                    f"<b>Previsão do envio do estudo:</b> {formatted_study_prediction}",
-                    styles["Normal"],
+            if instance.study_prediction:
+                formatted_study_prediction = instance.study_prediction.strftime("%d/%m/%Y")
+                details_study.append(
+                    Paragraph(
+                        f"<b>Previsão do envio do estudo:</b> {formatted_study_prediction}",
+                        styles["Normal"],
+                    )
                 )
-            )
         else:
-            details_study.append(
-                Paragraph(
-                    f"<b>Quantidade de Disjuntores:</b> {instance.breakers_quantity}",
-                    styles["Normal"],
+            if instance.breakers_quantity > 0:
+                details_study.append(
+                    Paragraph(
+                        f"<b>Quantidade de Disjuntores:</b> {instance.breakers_quantity}",
+                        styles["Normal"],
+                    )
                 )
-            )
 
     subtitle_cabin = "Dados da Subestação"
     subtitle_cabin_para = Paragraph(subtitle_cabin, subtitle_style)
@@ -132,32 +134,37 @@ def generate_pdf(instance, transformers_data, current_transformers_data):
             elements.append(Spacer(1, 0.1 * inch))
 
     elements.append(Spacer(1, 0.2 * inch))
-    subtitle_study = "Dados do Estudo"
-    subtitle_study_para = Paragraph(subtitle_study, subtitle_style)
+    subtitle_no_breakers = "Dados do Estudo"
+    subtitle_study_para = Paragraph(subtitle_no_breakers, subtitle_style)
     elements.append(subtitle_study_para)
     elements.append(Spacer(1, 0.2 * inch))
 
-    for detail in details_study:
-        elements.append(detail)
-        elements.append(Spacer(1, 0.1 * inch))
+    if instance.have_study or instance.breakers_quantity > 0:
+        for detail in details_study:
+            elements.append(detail)
+            elements.append(Spacer(1, 0.1 * inch))
 
-    if not instance.gimi_study and instance.have_study:
-        for index, current_transformer_data in enumerate(current_transformers_data, start=1):
-            elements.append(Spacer(1, 0.2 * inch))
-            subtitle_current_transformer = f"Definição do grupo {index} de TCs de proteção"
-            subtitle_current_transformer_para = Paragraph(
-                subtitle_current_transformer, thirdtitle_style
-            )
-            elements.append(subtitle_current_transformer_para)
-            elements.append(Spacer(1, 0.15 * inch))
-
-            for key, value in current_transformer_data.items():
-                paragraph = Paragraph(
-                    f"<b>{translations.get(key.capitalize())}:</b> {value}",
-                    styles["Normal"],
+        if not instance.gimi_study and instance.have_study:
+            for index, current_transformer_data in enumerate(current_transformers_data, start=1):
+                elements.append(Spacer(1, 0.2 * inch))
+                subtitle_current_transformer = f"Definição do grupo {index} de TCs de proteção"
+                subtitle_current_transformer_para = Paragraph(
+                    subtitle_current_transformer, thirdtitle_style
                 )
-                elements.append(paragraph)
-                elements.append(Spacer(1, 0.1 * inch))
+                elements.append(subtitle_current_transformer_para)
+                elements.append(Spacer(1, 0.15 * inch))
+
+                for key, value in current_transformer_data.items():
+                    paragraph = Paragraph(
+                        f"<b>{translations.get(key.capitalize())}:</b> {value}",
+                        styles["Normal"],
+                    )
+                    elements.append(paragraph)
+                    elements.append(Spacer(1, 0.1 * inch))
+    else:
+        subtitle_no_breakers = "Sem disjuntores"
+        subtitle_study_para = Paragraph(subtitle_no_breakers, thirdtitle_style)
+        elements.append(subtitle_study_para)
 
     document.build(elements)
 

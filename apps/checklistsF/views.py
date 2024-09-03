@@ -28,13 +28,17 @@ class ChecklistFViewSet(viewsets.ModelViewSet):
                     },
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-            if current_transformers_count > 0 and breakers_quantity != current_transformers_count:
+            if breakers_quantity != current_transformers_count:
                 return Response(
                     {
                         "error": f"Quantidade de TCs ({breakers_quantity}) não corresponde à contagem ({current_transformers_count})."
                     },
                     status=status.HTTP_400_BAD_REQUEST,
                 )
+            if not serializer.validated_data.get("gimi_study"):
+                serializer.save()
+                headers = self.get_success_headers(serializer.data)
+                return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
             if serializer.validated_data["gimi_study"] and not (
                 serializer.validated_data.get("icc3f", False)
                 or serializer.validated_data.get("icc2f", False)

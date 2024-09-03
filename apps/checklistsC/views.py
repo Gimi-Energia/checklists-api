@@ -42,11 +42,18 @@ class ChecklistCViewSet(viewsets.ModelViewSet):
             breakers_quantity = serializer.validated_data.get("breakers_quantity") + 1
             current_transformers_count = len(request.data.get("current_transformers", []))
 
-            if current_transformers_count > 0 and breakers_quantity != current_transformers_count:
+            if breakers_quantity != current_transformers_count:
                 return Response(
                     {
                         "error": f"Quantidade de TCs ({breakers_quantity}) não corresponde à contagem ({current_transformers_count})."
                     },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            if serializer.validated_data["fire_exit"] and not serializer.validated_data.get(
+                "fire_transformer_power"
+            ):
+                return Response(
+                    {"error": "Envie a potência do trafo de incêndio."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
             if serializer.validated_data["gimi_study"] and not (
