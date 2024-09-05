@@ -42,6 +42,9 @@ class ChecklistCViewSet(viewsets.ModelViewSet):
             breakers_quantity = serializer.validated_data.get("breakers_quantity") + 1
             current_transformers_count = len(request.data.get("current_transformers", []))
 
+            if current_transformers_count == 0:
+                current_transformers_count = 1
+
             if breakers_quantity != current_transformers_count:
                 return Response(
                     {
