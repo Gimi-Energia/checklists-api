@@ -27,7 +27,7 @@ def generate_pdf(instance):
 
     details_fat = [
         Paragraph(
-            f"<b>De acordo com faturamento antecipado:</b> {'Sim' if instance.advance_billing_agreed else 'Não'}",
+            f"<b>De Acordo com Faturamento Antecipado:</b> {'Sim' if instance.advance_billing_agreed else 'Não'}",
             styles["Normal"],
         ),
         Paragraph(
@@ -38,7 +38,7 @@ def generate_pdf(instance):
             styles["Normal"],
         ),
         Paragraph(
-            f"<b>Destino do material:</b> {instance.material_destination}",
+            f"<b>Destino do Material:</b> {instance.material_destination}",
             styles["Normal"],
         ),
         Paragraph(f"<b>Emails NF:</b> {instance.nf_email}", styles["Normal"]),
@@ -48,32 +48,32 @@ def generate_pdf(instance):
     if instance.lr_name and instance.lr_email and instance.lr_document and instance.lr_phone:
         lr_data = f"{instance.lr_name} | {instance.lr_email} | {instance.lr_document} | {instance.lr_phone}"
         details_fat.append(
-            Paragraph(f"<b>Dados do responsável legal:</b> {lr_data}", styles["Normal"]),
+            Paragraph(f"<b>Dados do Responsável Legal:</b> {lr_data}", styles["Normal"]),
         )
     if instance.billing_interval:
         details_fat.append(
             Paragraph(
-                f"<b>Intervalo faturamento NF:</b> Dia {instance.billing_interval}",
+                f"<b>Intervalo Faturamento NF:</b> Dia {instance.billing_interval}",
                 styles["Normal"],
             )
         )
     if instance.minimum_value:
         details_fat.append(
             Paragraph(
-                f"<b>Valor mínimo de faturamento:</b> {instance.minimum_value}", styles["Normal"]
+                f"<b>Valor Mínimo de Faturamento:</b> {instance.minimum_value}", styles["Normal"]
             )
         )
     if instance.additional_data:
         details_fat.append(
             Paragraph(
-                f"<b>Dados adicionais OBS NF:</b> {instance.additional_data}", styles["Normal"]
+                f"<b>Dados Adicionais OBS NF:</b> {instance.additional_data}", styles["Normal"]
             )
         )
     if instance.down_payment_date:
         formatted_down_payment_date = instance.down_payment_date.strftime("%d/%m/%Y")
         details_fat.append(
             Paragraph(
-                f"<b>Data pagamento sinal:</b> {formatted_down_payment_date}", styles["Normal"]
+                f"<b>Data Pagamento Sinal:</b> {formatted_down_payment_date}", styles["Normal"]
             )
         )
 
@@ -103,94 +103,94 @@ def generate_pdf(instance):
     if instance.access_restriction:
         details_adress.append(
             Paragraph(
-                f"<b>Restrição de acesso:</b> {instance.access_restriction}", styles["Normal"]
+                f"<b>Restrição de Acesso:</b> {instance.access_restriction}", styles["Normal"]
             )
         )
 
     details_tr = [
-        Paragraph(f"<b>Nome do responsável tecnico:</b> {instance.tr_name}", styles["Normal"]),
-        Paragraph(f"<b>Telefone do responsável tecnico:</b> {instance.tr_phone}", styles["Normal"]),
-        Paragraph(f"<b>Email do responsável tecnico:</b> {instance.tr_email}", styles["Normal"]),
+        Paragraph(f"<b>Nome do Responsável Tecnico:</b> {instance.tr_name}", styles["Normal"]),
+        Paragraph(f"<b>Telefone do Responsável Tecnico:</b> {instance.tr_phone}", styles["Normal"]),
+        Paragraph(f"<b>Email do Responsável Tecnico:</b> {instance.tr_email}", styles["Normal"]),
     ]
 
     if instance.tr_name_2:
         details_tr.append(
             Paragraph(
-                f"<b>Nome do responsável tecnico 2:</b> {instance.tr_name_2}", styles["Normal"]
+                f"<b>Nome do Responsável Tecnico 2:</b> {instance.tr_name_2}", styles["Normal"]
             )
         )
     if instance.tr_phone_2:
         details_tr.append(
             Paragraph(
-                f"<b>Telefone do responsável tecnico 2:</b> {instance.tr_phone_2}", styles["Normal"]
+                f"<b>Telefone do Responsável Tecnico 2:</b> {instance.tr_phone_2}", styles["Normal"]
             )
         )
     if instance.tr_email_2:
         details_tr.append(
             Paragraph(
-                f"<b>Email do responsável tecnico 2:</b> {instance.tr_email_2}", styles["Normal"]
+                f"<b>Email do Responsável Tecnico 2:</b> {instance.tr_email_2}", styles["Normal"]
             )
         )
 
     details_mr = [
         Paragraph(
-            f"<b>Nome do responsável pelo material:</b> {instance.mr_name}", styles["Normal"]
+            f"<b>Nome do Responsável pelo Material:</b> {instance.mr_name}", styles["Normal"]
         ),
         Paragraph(
-            f"<b>Telefone do responsável pelo material:</b> {instance.mr_phone}", styles["Normal"]
+            f"<b>Telefone do Responsável pelo Material:</b> {instance.mr_phone}", styles["Normal"]
         ),
         Paragraph(
-            f"<b>Email do responsável pelo material:</b> {instance.mr_email}", styles["Normal"]
+            f"<b>Email do Responsável pelo Material:</b> {instance.mr_email}", styles["Normal"]
         ),
     ]
 
     if instance.mr_name_2:
         details_mr.append(
             Paragraph(
-                f"<b>Nome do responsável pelo material 2:</b> {instance.mr_name_2}",
+                f"<b>Nome do Responsável pelo Material 2:</b> {instance.mr_name_2}",
                 styles["Normal"],
             )
         )
     if instance.mr_phone_2:
         details_mr.append(
             Paragraph(
-                f"<b>Telefone do responsável pelo material 2:</b> {instance.mr_phone_2}",
+                f"<b>Telefone do Responsável pelo Material 2:</b> {instance.mr_phone_2}",
                 styles["Normal"],
             )
         )
     if instance.mr_email_2:
         details_mr.append(
             Paragraph(
-                f"<b>Email do responsável pelo material 2:</b> {instance.mr_email_2}",
+                f"<b>Email do Responsável pelo Material 2:</b> {instance.mr_email_2}",
                 styles["Normal"],
             )
         )
 
     details_fr = [
-        Paragraph(f"<b>Nome do responsável financeiro:</b> {instance.fr_name}", styles["Normal"]),
+        Paragraph(f"<b>Nome do Responsável Financeiro:</b> {instance.fr_name}", styles["Normal"]),
         Paragraph(
-            f"<b>Telefone do responsável financeiro:</b> {instance.fr_phone}", styles["Normal"]
+            f"<b>Telefone do Responsável Financeiro:</b> {instance.fr_phone}", styles["Normal"]
         ),
-        Paragraph(f"<b>Email do responsável financeiro:</b> {instance.fr_email}", styles["Normal"]),
+        Paragraph(f"<b>Email do Responsável Financeiro:</b> {instance.fr_email}", styles["Normal"]),
     ]
 
     if instance.fr_name_2:
         details_fr.append(
             Paragraph(
-                f"<b>Nome do responsável financeiro 2:</b> {instance.fr_name_2}", styles["Normal"]
+                f"<b>Nome do Responsável Financeiro 2:</b> {instance.fr_name_2}", styles["Normal"]
             )
         )
     if instance.fr_phone_2:
         details_fr.append(
             Paragraph(
-                f"<b>Telefone do responsável financeiro 2:</b> {instance.fr_phone_2}",
+                f"<b>Telefone do Responsável Financeiro 2:</b> {instance.fr_phone_2}",
                 styles["Normal"],
             )
         )
     if instance.fr_email_2:
         details_fr.append(
             Paragraph(
-                f"<b>Email do responsável financeiro 2:</b> {instance.fr_email_2}", styles["Normal"]
+                f"<b>Email do Responsável Financeiro 2:</b> {instance.fr_email_2}", styles["Normal"]
             )
         )
 

@@ -42,7 +42,7 @@ def generate_pdf(instance):
         ),
         Paragraph(f"<b>Tensão Primária:</b> {instance.primary_voltage} kV", styles["Normal"]),
         Paragraph(
-            f"<b>Uso do painel:</b> {translations.get(instance.panel_usage)}", styles["Normal"]
+            f"<b>Uso do Painel:</b> {translations.get(instance.panel_usage)}", styles["Normal"]
         ),
         Paragraph(
             f"<b>Lado da Entrada dos Cabos:</b> {translations.get(instance.cable_side)}",
@@ -162,7 +162,7 @@ def generate_pdf(instance):
 
     details_study = [
         Paragraph(
-            f"<b>Estudo de fornecimento Gimi:</b> {'Sim' if instance.gimi_study else 'Não'}",
+            f"<b>Estudo de Fornecimento Gimi:</b> {'Sim' if instance.gimi_study else 'Não'}",
             styles["Normal"],
         ),
     ]
@@ -195,7 +195,7 @@ def generate_pdf(instance):
     else:
         details_study.append(
             Paragraph(
-                f"<b>Já possui o estudo:</b> {'Sim' if instance.have_study else 'Não'}",
+                f"<b>Possui o Estudo:</b> {'Sim' if instance.have_study else 'Não'}",
                 styles["Normal"],
             ),
         )
@@ -204,7 +204,7 @@ def generate_pdf(instance):
             formatted_study_prediction = instance.study_prediction.strftime("%d/%m/%Y")
             details_study.append(
                 Paragraph(
-                    f"<b>Previsão do envio do estudo:</b> {formatted_study_prediction}",
+                    f"<b>Previsão do Envio do Estudo:</b> {formatted_study_prediction}",
                     styles["Normal"],
                 )
             )

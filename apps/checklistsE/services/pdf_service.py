@@ -32,7 +32,7 @@ def generate_pdf(instance):
         ),
         Paragraph(f"<b>Tensão Primária:</b> {instance.primary_voltage} kV", styles["Normal"]),
         Paragraph(
-            f"<b>Uso do painel:</b> {translations.get(instance.panel_usage)}", styles["Normal"]
+            f"<b>Uso do Painel:</b> {translations.get(instance.panel_usage)}", styles["Normal"]
         ),
         Paragraph(
             f"<b>Lado da Entrada dos Cabos:</b> {translations.get(instance.cable_side)}",

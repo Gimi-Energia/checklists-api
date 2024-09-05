@@ -33,7 +33,7 @@ def generate_pdf(instance):
         Paragraph(f"<b>Tensão Primária:</b> {instance.primary_voltage} kV", styles["Normal"]),
         Paragraph(f"<b>Tensão Secundária:</b> {instance.secondary_voltage} V", styles["Normal"]),
         Paragraph(
-            f"<b>Uso do painel:</b> {translations.get(instance.panel_usage)}", styles["Normal"]
+            f"<b>Uso do Painel:</b> {translations.get(instance.panel_usage)}", styles["Normal"]
         ),
         Paragraph(f"<b>Demanda Contratada:</b> {instance.contracted_demand} kW", styles["Normal"]),
         Paragraph(
@@ -44,7 +44,7 @@ def generate_pdf(instance):
             styles["Normal"],
         ),
         Paragraph(
-            f"<b>Definido o fabricante do transformador e possui o projeto do mesmo:</b> {'Sim' if instance.manufacturer_project else 'Não'}",
+            f"<b>Definido o Fabricante do Transformador e Possui o Projeto:</b> {'Sim' if instance.manufacturer_project else 'Não'}",
             styles["Normal"],
         ),
     ]

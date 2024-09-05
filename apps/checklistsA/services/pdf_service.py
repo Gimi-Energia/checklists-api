@@ -38,7 +38,7 @@ def generate_pdf(instance, transformers_data, current_transformers_data):
         ),
         Paragraph(f"<b>Tensão Primária:</b> {instance.primary_voltage} kV", styles["Normal"]),
         Paragraph(
-            f"<b>Uso do painel:</b> {translations.get(instance.panel_usage)}", styles["Normal"]
+            f"<b>Uso do Painel:</b> {translations.get(instance.panel_usage)}", styles["Normal"]
         ),
         Paragraph(
             f"<b>Lado da Entrada dos Cabos:</b> {translations.get(instance.cable_side)}",
@@ -158,7 +158,7 @@ def generate_pdf(instance, transformers_data, current_transformers_data):
 
     details_study = [
         Paragraph(
-            f"<b>Estudo de fornecimento Gimi:</b> {'Sim' if instance.gimi_study else 'Não'}",
+            f"<b>Estudo de Fornecimento Gimi:</b> {'Sim' if instance.gimi_study else 'Não'}",
             styles["Normal"],
         ),
     ]
@@ -191,7 +191,7 @@ def generate_pdf(instance, transformers_data, current_transformers_data):
     else:
         details_study.append(
             Paragraph(
-                f"<b>Já possui o estudo:</b> {'Sim' if instance.have_study else 'Não'}",
+                f"<b>Possui o Estudo:</b> {'Sim' if instance.have_study else 'Não'}",
                 styles["Normal"],
             ),
         )
@@ -200,7 +200,7 @@ def generate_pdf(instance, transformers_data, current_transformers_data):
             formatted_study_prediction = instance.study_prediction.strftime("%d/%m/%Y")
             details_study.append(
                 Paragraph(
-                    f"<b>Previsão do envio do estudo:</b> {formatted_study_prediction}",
+                    f"<b>Previsão do Envio do Estudo:</b> {formatted_study_prediction}",
                     styles["Normal"],
                 )
             )
@@ -264,7 +264,7 @@ def generate_pdf(instance, transformers_data, current_transformers_data):
     if not instance.gimi_study and instance.have_study:
         for index, current_transformer_data in enumerate(current_transformers_data, start=1):
             elements.append(Spacer(1, 0.2 * inch))
-            subtitle_current_transformer = f"Definição do grupo {index} de TCs de proteção"
+            subtitle_current_transformer = f"Definição do Grupo {index} de TCs de Proteção"
             subtitle_current_transformer_para = Paragraph(
                 subtitle_current_transformer, thirdtitle_style
             )
