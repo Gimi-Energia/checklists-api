@@ -37,7 +37,7 @@ def generate_pdf(instance):
 
     details_cabin = [
         Paragraph(
-            f"<b>Concessionária:</b> {instance.concessionaire if instance.concessionaire else instance.other_concessionarie}",
+            f"<b>Concessionária:</b> {instance.concessionaire if instance.concessionaire else instance.other_concessionaire}",
             styles["Normal"],
         ),
         Paragraph(f"<b>Tensão Primária:</b> {instance.primary_voltage} kV", styles["Normal"]),
