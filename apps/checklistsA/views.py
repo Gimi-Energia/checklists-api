@@ -35,7 +35,7 @@ class ChecklistAViewSet(viewsets.ModelViewSet):
                     },
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-            if serializer.validated_data["fire_exit"] and not serializer.validated_data.get(
+            if serializer.validated_data.get("fire_exit") and not serializer.validated_data.get(
                 "fire_transformer_power"
             ):
                 return Response(
