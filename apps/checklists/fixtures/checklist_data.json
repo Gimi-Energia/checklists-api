@@ -1,13 +1,6 @@
 [
   {
     "model": "checklists.product",
-    "pk": "Init",
-    "fields": {
-      "name": "Dados Cadastrais"
-    }
-  },
-  {
-    "model": "checklists.product",
     "pk": "A",
     "fields": {
       "name": "Cabine Primária Convencional"

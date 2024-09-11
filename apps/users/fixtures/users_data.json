@@ -1,0 +1,227 @@
+[
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Comercial 1",
+            "email": "comercial1@gimi.com.br",
+            "company": "Gimi",
+            "password": "Comercial1#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Comercial 2",
+            "email": "comercial2@gimi.com.br",
+            "company": "Gimi",
+            "password": "Comercial2#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Comercial 3",
+            "email": "comercial3@gimi.com.br",
+            "company": "Gimi",
+            "password": "Comercial3#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Comercial 4",
+            "email": "comercial4@gimi.com.br",
+            "company": "Gimi",
+            "password": "Comercial4#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Comercial 5",
+            "email": "comercial5@gimi.com.br",
+            "company": "Gimi",
+            "password": "Comercial5#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Comercial 6",
+            "email": "comercial6@gimi.com.br",
+            "company": "Gimi",
+            "password": "Comercial6#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Comercial 7",
+            "email": "comercial7@gimi.com.br",
+            "company": "Gimi",
+            "password": "Comercial7#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Orcamento 9",
+            "email": "orcamento9@gimi.com.br",
+            "company": "Gimi",
+            "password": "Orcamento9#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Vendas",
+            "email": "vendas@gimi.com.br",
+            "company": "Gimi",
+            "password": "Vendas#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Representante",
+            "email": "representante@gimi.com.br",
+            "company": "Gimi",
+            "password": "Representante#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Representante",
+            "email": "representante@gimipogliano.com.br",
+            "company": "GPB",
+            "password": "Representante#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Vendas 2",
+            "email": "vendas2@gimibonomi.com.br",
+            "company": "GBL",
+            "password": "Vendas2#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Comercial 7",
+            "email": "comercial7@gimibonomi.com.br",
+            "company": "GBL",
+            "password": "Comercial7#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Comercial 1",
+            "email": "comercial1@gimipogliano.com.br",
+            "company": "GPB",
+            "password": "Comercial1#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Comercial 2",
+            "email": "comercial2@gimipogliano.com.br",
+            "company": "GPB",
+            "password": "Comercial2#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Comercial 4",
+            "email": "comercial4@gimipogliano.com.br",
+            "company": "GPB",
+            "password": "Comercial4#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Vendas",
+            "email": "vendas@gimipogliano.com.br",
+            "company": "GPB",
+            "password": "Vendas#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Vendas 2",
+            "email": "vendas2@gimipogliano.com.br",
+            "company": "GPB",
+            "password": "Vendas2#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Comercial 1",
+            "email": "comercial1@gimibonomi.com.br",
+            "company": "GBL",
+            "password": "Comercial1#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Comercial 2",
+            "email": "comercial2@gimibonomi.com.br",
+            "company": "GBL",
+            "password": "Comercial2#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Comercial 3",
+            "email": "comercial3@gimibonomi.com.br",
+            "company": "GBL",
+            "password": "Comercial3#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Comercial 4",
+            "email": "comercial4@gimibonomi.com.br",
+            "company": "GBL",
+            "password": "Comercial4#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Comercial 5",
+            "email": "comercial5@gimibonomi.com.br",
+            "company": "GBL",
+            "password": "Comercial5#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Comercial 6",
+            "email": "comercial6@gimibonomi.com.br",
+            "company": "GBL",
+            "password": "Comercial6#3530"
+        }
+    },
+    {
+        "model": "users.User",
+        "fields": {
+            "name": "Vendas",
+            "email": "vendas@gimibonomi.com.br",
+            "company": "GBL",
+            "password": "Vendas#3530"
+        }
+    }
+]
