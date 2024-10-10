@@ -108,27 +108,27 @@ def generate_pdf(instance):
         )
 
     details_tr = [
-        Paragraph(f"<b>Nome do Responsável Tecnico:</b> {instance.tr_name}", styles["Normal"]),
-        Paragraph(f"<b>Telefone do Responsável Tecnico:</b> {instance.tr_phone}", styles["Normal"]),
-        Paragraph(f"<b>Email do Responsável Tecnico:</b> {instance.tr_email}", styles["Normal"]),
+        Paragraph(f"<b>Nome do Responsável Técnico:</b> {instance.tr_name}", styles["Normal"]),
+        Paragraph(f"<b>Telefone do Responsável Técnico:</b> {instance.tr_phone}", styles["Normal"]),
+        Paragraph(f"<b>Email do Responsável Técnico:</b> {instance.tr_email}", styles["Normal"]),
     ]
 
     if instance.tr_name_2:
         details_tr.append(
             Paragraph(
-                f"<b>Nome do Responsável Tecnico 2:</b> {instance.tr_name_2}", styles["Normal"]
+                f"<b>Nome do Responsável Técnico 2:</b> {instance.tr_name_2}", styles["Normal"]
             )
         )
     if instance.tr_phone_2:
         details_tr.append(
             Paragraph(
-                f"<b>Telefone do Responsável Tecnico 2:</b> {instance.tr_phone_2}", styles["Normal"]
+                f"<b>Telefone do Responsável Técnico 2:</b> {instance.tr_phone_2}", styles["Normal"]
             )
         )
     if instance.tr_email_2:
         details_tr.append(
             Paragraph(
-                f"<b>Email do Responsável Tecnico 2:</b> {instance.tr_email_2}", styles["Normal"]
+                f"<b>Email do Responsável Técnico 2:</b> {instance.tr_email_2}", styles["Normal"]
             )
         )
 
@@ -214,7 +214,7 @@ def generate_pdf(instance):
         elements.append(Spacer(1, 0.1 * inch))
 
     elements.append(Spacer(1, 0.2 * inch))
-    subtitle_tr = "Responsável Técnico"
+    subtitle_tr = "Responsável Técnico (recebimento/aprovação dos projetos)"
     subtitle_tr_para = Paragraph(subtitle_tr, subtitle_style)
     elements.append(subtitle_tr_para)
     elements.append(Spacer(1, 0.2 * inch))
