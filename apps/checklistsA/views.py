@@ -1,4 +1,5 @@
-from rest_framework import status, viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, status, viewsets
 from rest_framework.response import Response
 
 from .models import ChecklistA
@@ -7,6 +8,9 @@ from .serializers import ChecklistAReadSerializer, ChecklistAWriteSerializer
 
 class ChecklistAViewSet(viewsets.ModelViewSet):
     queryset = ChecklistA.objects.all()
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    ordering_fields = ["created_at"]
+    filterset_fields = ["parent_checklist__id", "process_number", "item", "company"]
 
     def get_serializer_class(self):
         if self.request.method == "GET":
