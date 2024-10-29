@@ -169,6 +169,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:5173",
     "https://checklist-web-psi.vercel.app",
+    "https://checklist-web-git-upgrade-rev001-desenvolvimento-gimi.vercel.app",
 ]
 
 SIMPLE_JWT = {
