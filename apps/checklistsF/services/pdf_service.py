@@ -139,33 +139,40 @@ def generate_pdf(instance, transformers_data, current_transformers_data):
     elements.append(subtitle_study_para)
     elements.append(Spacer(1, 0.2 * inch))
 
-    if instance.have_study or instance.breakers_quantity > 0:
-        for detail in details_study:
-            elements.append(detail)
-            elements.append(Spacer(1, 0.1 * inch))
-
-        if not instance.gimi_study and instance.have_study:
-            for index, current_transformer_data in enumerate(current_transformers_data, start=1):
-                elements.append(Spacer(1, 0.2 * inch))
-                subtitle_current_transformer = f"Definição do Grupo {index} de TCs de Proteção"
-                subtitle_current_transformer_para = Paragraph(
-                    subtitle_current_transformer, thirdtitle_style
-                )
-                elements.append(subtitle_current_transformer_para)
-                elements.append(Spacer(1, 0.15 * inch))
-
-                for key, value in current_transformer_data.items():
-                    paragraph = Paragraph(
-                        f"<b>{translations.get(key.capitalize())}:</b> {value}",
-                        styles["Normal"],
-                    )
-                    elements.append(paragraph)
-                    elements.append(Spacer(1, 0.1 * inch))
-    else:
+    if (
+        not instance.gimi_study
+        and not instance.have_study
+        and not instance.study_prediction
+        and instance.breakers_quantity == 0
+    ):
         subtitle_no_breakers = "Sem disjuntores"
         subtitle_study_para = Paragraph(subtitle_no_breakers, thirdtitle_style)
         elements.append(subtitle_study_para)
 
-    document.build(elements)
+        document.build(elements)
+        return filename
 
+    for detail in details_study:
+        elements.append(detail)
+        elements.append(Spacer(1, 0.1 * inch))
+
+    if not instance.gimi_study and instance.have_study:
+        for index, current_transformer_data in enumerate(current_transformers_data, start=1):
+            elements.append(Spacer(1, 0.2 * inch))
+            subtitle_current_transformer = f"Definição do Grupo {index} de TCs de Proteção"
+            subtitle_current_transformer_para = Paragraph(
+                subtitle_current_transformer, thirdtitle_style
+            )
+            elements.append(subtitle_current_transformer_para)
+            elements.append(Spacer(1, 0.15 * inch))
+
+            for key, value in current_transformer_data.items():
+                paragraph = Paragraph(
+                    f"<b>{translations.get(key.capitalize())}:</b> {value}",
+                    styles["Normal"],
+                )
+                elements.append(paragraph)
+                elements.append(Spacer(1, 0.1 * inch))
+
+    document.build(elements)
     return filename
