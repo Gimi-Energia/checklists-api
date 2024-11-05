@@ -77,7 +77,7 @@ class ChecklistC(BaseModel):
     )
     contractor_latitude = models.FloatField(_("Contractor Latitude"), blank=True, null=True)
     contractor_longitude = models.FloatField(_("Contractor Longitude"), blank=True, null=True)
-    
+
     owner_name = models.CharField(_("Owner Name"), max_length=50)
     owner_document = models.CharField(_("Owner Document"), max_length=18)
     owner_contact = models.CharField(_("Owner Contact"), max_length=50)
@@ -92,12 +92,12 @@ class ChecklistC(BaseModel):
     work_latitude = models.FloatField(_("Work Latitude"), blank=True, null=True)
     work_longitude = models.FloatField(_("Work Longitude"), blank=True, null=True)
 
-    gimi_study = models.BooleanField(_("Gimi Study?"), default=False)
+    gimi_study = models.BooleanField(_("Gimi Study?"), blank=True, null=True)
     icc3f = models.FloatField(_("Icc3f"), blank=True, null=True)
     icc2f = models.FloatField(_("Icc2f"), blank=True, null=True)
     iccftmax = models.FloatField(_("Icc3f"), blank=True, null=True)
     iccftmin = models.FloatField(_("Icc3f"), blank=True, null=True)
-    have_study = models.BooleanField(_("Have Study?"), default=False)
+    have_study = models.BooleanField(_("Have Study?"), blank=True, null=True)
     study_prediction = models.DateField(
         _("Study Prediction"), auto_now=False, auto_now_add=False, blank=True, null=True
     )

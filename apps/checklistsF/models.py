@@ -31,12 +31,12 @@ class ChecklistF(BaseModel):
     transformers_quantity = models.PositiveIntegerField(_("Transformers Quantity"))
 
     breakers_protection = models.BooleanField(_("Breakers Protection?"), default=True)
-    gimi_study = models.BooleanField(_("Gimi Study?"), default=False)
+    gimi_study = models.BooleanField(_("Gimi Study?"), blank=True, null=True)
     icc3f = models.FloatField(_("Icc3f"), blank=True, null=True)
     icc2f = models.FloatField(_("Icc2f"), blank=True, null=True)
     iccftmax = models.FloatField(_("Icc3f"), blank=True, null=True)
     iccftmin = models.FloatField(_("Icc3f"), blank=True, null=True)
-    have_study = models.BooleanField(_("Have Study?"), default=False)
+    have_study = models.BooleanField(_("Have Study?"), blank=True, null=True)
     study_prediction = models.DateField(
         _("Study Prediction"), auto_now=False, auto_now_add=False, blank=True, null=True
     )
