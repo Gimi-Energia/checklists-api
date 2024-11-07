@@ -33,7 +33,7 @@ class ChecklistB(BaseModel):
 
     item = models.CharField(_("Item"), max_length=3, default="1")
     concessionaire = models.CharField(
-        max_length=20, choices=CONCESSIONAIRE_CHOICES, default="CEEE", null=True, blank=True
+        max_length=20, choices=CONCESSIONAIRE_CHOICES, null=True, blank=True
     )
     other_concessionaire = models.CharField(max_length=20, null=True, blank=True)
     primary_voltage = models.FloatField(_("Primary Voltage (kV)"))

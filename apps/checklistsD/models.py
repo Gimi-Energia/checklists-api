@@ -22,7 +22,7 @@ class ChecklistD(BaseModel):
 
     item = models.CharField(_("Item"), max_length=3, default="1")
     concessionaire = models.CharField(
-        max_length=20, choices=CONCESSIONAIRE_CHOICES, default="ENEL-SP", null=True, blank=True
+        max_length=20, choices=CONCESSIONAIRE_CHOICES, null=True, blank=True
     )
     other_concessionaire = models.CharField(max_length=20, null=True, blank=True)
     rated_voltage = models.CharField(_("Rated Voltage"), max_length=20)

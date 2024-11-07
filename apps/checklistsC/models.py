@@ -37,7 +37,7 @@ class ChecklistC(BaseModel):
     )
     item = models.CharField(_("Item"), max_length=3, default="1")
     concessionaire = models.CharField(
-        max_length=20, choices=CONCESSIONAIRE_CHOICES, default="CEEE", null=True, blank=True
+        max_length=20, choices=CONCESSIONAIRE_CHOICES, null=True, blank=True
     )
     other_concessionaire = models.CharField(max_length=20, null=True, blank=True)
     primary_voltage = models.FloatField(_("Primary Voltage (kV)"))
@@ -48,9 +48,7 @@ class ChecklistC(BaseModel):
         _("Cable Side"), max_length=20, choices=CABLE_SIDE_CHOICES, default="Left"
     )
     contracted_demand = models.CharField(_("Contracted Demand"), max_length=8)
-    fire_exit = models.BooleanField(
-        _("Transformer Fire Exit"), default=False, null=True, blank=True
-    )
+    fire_exit = models.BooleanField(_("Transformer Fire Exit"), default=False)
     fire_transformer_power = models.FloatField(_("Fire Transformer Power"), null=True, blank=True)
     fire_transformer_demand = models.FloatField(_("Fire Transformer Demand"), null=True, blank=True)
     fire_transformer_impedance = models.FloatField(
