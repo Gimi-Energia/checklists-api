@@ -6,7 +6,8 @@ from apps.users.models import User
 
 
 def send_registration_email(instance):
-    subject = f"Checklist Dados Cadastrais {instance.process_number}"
+    title = f"{instance.company} {instance.process_number}"
+    subject = f"Checklist Dados Cadastrais - {title}"
     users = User.objects.all()
     recipient_list = [user.email for user in users]
     recipient_list += instance.parent_checklist.client_email.replace(" ", "").split(",")
@@ -14,17 +15,13 @@ def send_registration_email(instance):
 
     email = EmailMessage(
         subject=subject,
-        body=f"Checklist de dados cadastrais ({instance.process_number}) foi respondido.",
+        body=f"Checklist de dados cadastrais ({title}) foi respondido.",
         from_email=email_from,
         to=recipient_list,
     )
 
     pdf_file = generate_pdf(instance)
     with open(pdf_file, "rb") as pdf_file:
-        email.attach(
-            f"Checklist_Dados_Cadastrais_{instance.process_number}.pdf",
-            pdf_file.read(),
-            "application/pdf",
-        )
+        email.attach(f"Checklist Dados Cadastrais {title}.pdf", pdf_file.read(), "application/pdf")
 
     email.send()

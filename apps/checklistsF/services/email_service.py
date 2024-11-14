@@ -6,7 +6,8 @@ from apps.users.models import User
 
 
 def send_checklist_email(instance, transformers_data, current_transformers_data):
-    subject = f"Checklist Subestações PMT - {instance.process_number}-{instance.item}"
+    title = f"{instance.company} {instance.process_number}-{instance.item}"
+    subject = f"Checklist Subestações PMT - {title}"
     users = User.objects.all()
     recipient_list = [user.email for user in users]
     recipient_list += instance.parent_checklist.client_email.replace(" ", "").split(",")
@@ -14,17 +15,13 @@ def send_checklist_email(instance, transformers_data, current_transformers_data)
 
     email = EmailMessage(
         subject=subject,
-        body=f"Checklist subestações PMT ({instance.process_number}-{instance.item}) foi respondido.",
+        body=f"Checklist subestações PMT ({title}) foi respondido.",
         from_email=email_from,
         to=recipient_list,
     )
 
     pdf_file = generate_pdf(instance, transformers_data, current_transformers_data)
     with open(pdf_file, "rb") as pdf_file:
-        email.attach(
-            f"Checklist_Subestacoes_PMT_{instance.process_number}-{instance.item}.pdf",
-            pdf_file.read(),
-            "application/pdf",
-        )
+        email.attach(f"Checklist F {title}.pdf", pdf_file.read(), "application/pdf")
 
     email.send()
