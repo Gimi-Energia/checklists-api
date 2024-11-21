@@ -42,6 +42,7 @@ def generate_pdf(instance):
             styles["Normal"],
         ),
         Paragraph(f"<b>Emails NF:</b> {instance.nf_email}", styles["Normal"]),
+        Paragraph(f"<b>Dados Adicionais OBS NF:</b> {instance.additional_data}", styles["Normal"]),
         Paragraph(f"<b>Condição de Pagamento:</b> {instance.payment_condition}", styles["Normal"]),
     ]
 
@@ -61,12 +62,6 @@ def generate_pdf(instance):
         details_fat.append(
             Paragraph(
                 f"<b>Valor Mínimo de Faturamento:</b> {instance.minimum_value}", styles["Normal"]
-            )
-        )
-    if instance.additional_data:
-        details_fat.append(
-            Paragraph(
-                f"<b>Dados Adicionais OBS NF:</b> {instance.additional_data}", styles["Normal"]
             )
         )
     if instance.down_payment_date:
