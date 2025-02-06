@@ -34,8 +34,12 @@ class Checklist(BaseModel):
     user = models.ForeignKey(
         User, verbose_name=_("User"), on_delete=models.CASCADE, null=True, blank=True
     )
+    auxiliary_number = models.CharField(_("Auxiliary Number"), max_length=20, null=True, blank=True)
     client_name = models.CharField(_("Client Name"), max_length=120)
     client_email = models.TextField(_("Client Email"))
+    construction_name = models.CharField(
+        _("Construction Name"), max_length=120, null=True, blank=True
+    )
     products = models.ManyToManyField(Product, through="ChecklistProduct")
     registration_status = models.IntegerField(
         _("Answered Registration"), choices=STATUS_CHOICES, default=SENT
