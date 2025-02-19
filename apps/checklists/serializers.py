@@ -93,4 +93,4 @@ class ChecklistReadSerializer(serializers.ModelSerializer):
 class ChecklistCustomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Checklist
-        fields = ["id", "company", "process_number"]
+        fields = ["id", "company", "process_number", "auxiliary_number"]
