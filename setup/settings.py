@@ -163,9 +163,14 @@ SWAGGER_SETTINGS = {
     "USE_SESSION_AUTH": False,
 }
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = []
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "https://checklist-web-psi.vercel.app",
+    "https://checklist-web-git-upgrade-rev001-desenvolvimento-gimi.vercel.app",
+]
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
