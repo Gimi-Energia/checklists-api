@@ -39,6 +39,9 @@ def send_new_checklist_email(instance):
     <body>
         <p>Olá <strong>{instance.client_name}</strong>!</p>
         <p>Um novo checklist do pedido {instance.process_number} do Grupo Gimi foi enviado. 🎉</p>
+
+        <p>Número Auxiliar: {instance.auxiliary_number}</p>
+        <p>Nome da Obra: {instance.construction_name}</p>
         <p>ID: <span class="code">{instance.id}</span></p>
         <a href="{url}" target="_blank" class="btn">Acessar Checklist</a>
     </body>
