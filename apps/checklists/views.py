@@ -12,15 +12,13 @@ class ChecklistViewSet(ProductActionsMixin, viewsets.ModelViewSet):
     search_fields = [
         "company",
         "process_number",
-        "auxiliary_number",
-        "construction_name",
         "client_name",
         "client_email",
         "products__id",
         "user__email",
     ]
     ordering_fields = ["created_at"]
-    filterset_fields = ["company", "process_number", "auxiliary_number"]
+    filterset_fields = ["company", "process_number"]
 
     def get_serializer_class(self):
         if self.request.method == "GET":

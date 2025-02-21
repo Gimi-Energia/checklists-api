@@ -14,8 +14,6 @@ class ChecklistAdmin(admin.ModelAdmin):
         "user",
         "company",
         "process_number",
-        "auxiliary_number",
-        "construction_name",
         "client_name",
         "client_email",
     )
